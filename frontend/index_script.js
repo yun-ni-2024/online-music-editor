@@ -1,4 +1,6 @@
-const online = false;
+const online = true;
+const onlineIP = '119.45.17.160';
+const offlineIP = 'localhost';
 const INIT_BEAT_NUM = 20;
 const MAX_NOTE_NUM = 21;
 
@@ -362,7 +364,7 @@ function playSound(frequency, duration) {
 
 
 // 创建 WebSocket 连接
-const socket = new WebSocket("ws://localhost:4333");
+const socket = new WebSocket(`ws://${online ? onlineIP : offlineIP}:4333`);
 
 // 当连接建立时
 socket.onopen = function(event) {

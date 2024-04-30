@@ -2,6 +2,10 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
+const online = true;
+const onlineIP = '119.45.17.160';
+const offlineIP = 'localhost';
+
 const server = http.createServer((req, res) => {
     let filePath = '';
 
@@ -39,5 +43,5 @@ const server = http.createServer((req, res) => {
 
 const port = 2333;
 server.listen(port, () => {
-    console.log(`Frontend server is running on http://localhost:${port}`);
+    console.log(`Frontend server is running on http://${online ? onlineIP : offlineIP}:${port}`);
 });

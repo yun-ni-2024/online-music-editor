@@ -4,6 +4,10 @@ const mongoose = require('mongoose');
 const WebSocket = require("ws");
 const { handleMessage } = require('./message_handler');
 
+const online = true;
+const onlineIP = '119.45.17.160';
+const offlineIP = 'localhost';
+
 const app = express();
 
 // 添加 CORS 中间件，允许所有源的请求
@@ -12,11 +16,11 @@ app.use(cors());
 // 启动服务器，监听指定端口
 const port = 3333;
 app.listen(port, () => {
-    console.log(`Backend server is running on http://localhost:${port}`);
+    console.log(`Backend server is running on http://${online ? onlineIP : offlineIP}:${port}`);
 });
 
 // 连接到 MongoDB 数据库
-mongoose.connect('mongodb://localhost:27017/music_editor', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(`mongodb://${online ? onlineIP : offlineIP}:27017/online-music-editor`, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         console.log("Connected to MongoDB");
     })
