@@ -1,0 +1,79 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+}
+
+#background {
+    display: grid;
+    grid-template-columns: 100px auto;
+    width: 100%;
+    height: 100%;
+    background-color: azure;
+}
+
+#sidebar {
+    background-color: antiquewhite;
+}
+
+#content {
+    background-color: aquamarine;
+    z-index: 0;
+    overflow-y: auto; /* 允许垂直滚动 */
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-item {
+    position: relative;
+}
+
+.submenu-head {
+    height: 50px;
+    background-color: azure;
+}
+
+.submenu {
+    height: 0px;
+    background-color: aliceblue;
+    transition: height 0.6s ease;
+    overflow: hidden;
+}
+
+.submenu-item {
+    height: 50px;
+}
+
+.profile {
+    height: 300px;
+    background-color: bisque;
+}
+
+.works {
+    min-height: calc(100% - 300px - 20px); /* 设置works区域的最小高度为剩余空间的高度 */
+    padding: 10px; /* 设置作品区域的内边距 */
+    background-color:lightpink;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* 从左向右排列 */
+    align-content: flex-start; /* 从上向下排列 */
+}
+
+.work {
+    width: calc(20% - 20px); /* 每行5个作品，减去间距 */
+    height: 200px; /* 作品高度 */
+    margin: 10px; /* 设置作品之间的间距 */
+    background-color: lightblue;
+}
+
+.new-work {
+    width: calc(20% - 20px); /* 每行5个作品，减去间距 */
+    height: 200px; /* 作品高度 */
+    margin: 10px; /* 设置作品之间的间距 */
+    background-color: lightblue;
+}

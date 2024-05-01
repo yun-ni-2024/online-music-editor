@@ -2,11 +2,18 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const WebSocket = require("ws");
-const { handleMessage } = require('./message_handler');
 
-const online = true;
-const onlineIP = '119.45.17.160';
-const offlineIP = 'localhost';
+const {
+    handleMessage
+} = require('./message_handler');
+
+const config = {
+    online: false,
+    onlineIP: "119.45.17.160",
+    offlineIP: "localhost",
+    INIT_BEAT_NUM: 20,
+    MAX_NOTE_NUM: 21
+};
 
 const app = express();
 
@@ -16,11 +23,11 @@ app.use(cors());
 // 启动服务器，监听指定端口
 const port = 3333;
 app.listen(port, () => {
-    console.log(`Backend server is running on http://${online ? onlineIP : offlineIP}:${port}`);
+    console.log(`Backend server is running on http://${config.online ? config.onlineIP : config.offlineIP}:${port}`);
 });
 
 // 连接到 MongoDB 数据库
-mongoose.connect(`mongodb://${online ? onlineIP : offlineIP}:27017/online-music-editor`, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(`mongodb://${config.online ? config.onlineIP : config.offlineIP}:27017/online-music-editor`, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         console.log("Connected to MongoDB");
     })

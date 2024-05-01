@@ -1,47 +1,27 @@
-const http = require('http');
-const fs = require('fs');
+const express = require('express');
 const path = require('path');
 
-const online = true;
-const onlineIP = '119.45.17.160';
-const offlineIP = 'localhost';
+const config = {
+    online: false,
+    onlineIP: "119.45.17.160",
+    offlineIP: "localhost",
+    INIT_BEAT_NUM: 20,
+    MAX_NOTE_NUM: 21
+};
 
-const server = http.createServer((req, res) => {
-    let filePath = '';
+const app = express();
 
-    // 根据请求的 URL 路径来确定要返回的文件
-    if (req.url === '/') {
-        // 如果请求的是根路径，则返回 index.html 文件
-        filePath = path.join(__dirname, 'index.html');
-    } else {
-        // 否则构造要返回的文件的完整路径
-        filePath = path.join(__dirname, req.url);
-    }
+// 配置静态文件服务，指定静态文件目录为当前目录
+app.use(express.static(path.join(__dirname)));
 
-    // 读取文件内容
-    fs.readFile(filePath, (err, data) => {
-        if (err) {
-            // 如果读取文件时发生错误，则返回 404 找不到文件响应
-            res.writeHead(404, { 'Content-Type': 'text/plain' });
-            res.end('404 Not Found');
-        } else {
-            // 根据文件扩展名设置正确的 Content-Type
-            let contentType = 'text/html';
-            const ext = path.extname(filePath);
-            if (ext === '.css') {
-                contentType = 'text/css';
-            } else if (ext === '.js') {
-                contentType = 'text/javascript';
-            }
-
-            // 返回 200 OK 响应和文件内容
-            res.writeHead(200, { 'Content-Type': contentType });
-            res.end(data);
-        }
-    });
+// 使用动态路由加载不同的HTML文件
+app.get('/:page', (req, res) => {
+    const page = req.params.page;
+    res.sendFile(path.join(__dirname, `${page}.html`));
 });
 
+// 启动服务器，监听指定端口
 const port = 2333;
-server.listen(port, () => {
-    console.log(`Frontend server is running on http://${online ? onlineIP : offlineIP}:${port}`);
+app.listen(port, () => {
+    console.log(`Frontend server is running on http://${config.online ? config.onlineIP : config.offlineIP}:${port}`);
 });

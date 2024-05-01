@@ -1,33 +1,20 @@
-const online = true;
-const onlineIP = '119.45.17.160';
-const offlineIP = 'localhost';
-const INIT_BEAT_NUM = 20;
-const MAX_NOTE_NUM = 21;
+const config = {
+    online: false,
+    onlineIP: "119.45.17.160",
+    offlineIP: "localhost",
+    INIT_BEAT_NUM: 20,
+    MAX_NOTE_NUM: 21
+};
 
+import {
+    sendMessage
+} from './message.js';
 
-// 页面动画
+import {
+    fetchMusic
+} from './edit_play.js';
 
-const menuItems = document.querySelectorAll('.menu-item');
-
-// 菜单栏动画
-function menuItemPosition() {
-    menuItems.forEach((menuItem, index) => {
-        const menu = menuItem.parentNode;
-        const menuItemBottom = menu.offsetHeight - (index * 45 + 5 + 40);
-    
-        if (menuItemBottom < 5) {
-            menuItem.style.top = '';
-            menuItem.style.bottom = '5px';
-        } else {
-            menuItem.style.bottom = '';
-            menuItem.style.top = String(index * 45 + 5) + 'px';
-        }
-    });
-}
-
-setInterval(menuItemPosition, 2);
-
-// 初始化新建按钮响应功能
+// 初始化
 document.addEventListener("DOMContentLoaded", function() {
     const newMusicBtn = document.getElementById('new-music-button');
 
@@ -42,8 +29,9 @@ document.addEventListener("DOMContentLoaded", function() {
         const trackEditor = document.createElement('div');
         trackEditor.classList.add('track-editor');
         trackEditor.dataset.trackNum = String(0);
-        trackEditor.dataset.beatNum = String(INIT_BEAT_NUM);
-        trackEditor.dataset.noteNum = String(MAX_NOTE_NUM);
+        console.log(config.INIT_BEAT_NUM)
+        trackEditor.dataset.beatNum = String(config.INIT_BEAT_NUM);
+        trackEditor.dataset.noteNum = String(config.MAX_NOTE_NUM);
         content.appendChild(trackEditor);
 
         // 添加新建音轨按钮
@@ -108,14 +96,14 @@ function createTrackContainer(beatNum, noteNum) {
     deleteButton.addEventListener('click', function(event) {
         event.stopPropagation();
 
-        id = parseInt(trackContainer.dataset.id, 10);
+        const id = parseInt(trackContainer.dataset.id, 10);
         const trackEditor = trackContainer.parentNode;
 
         // 删除音轨容器元素
         deleteTrackContainer(trackContainer);
 
         // 更新总音轨数量
-        trackNum = parseInt(trackEditor.dataset.trackNum, 10);
+        const trackNum = parseInt(trackEditor.dataset.trackNum, 10);
         trackEditor.dataset.trackNum = String(trackNum - 1);
 
         // 修改后继所有音轨编号
@@ -290,106 +278,3 @@ function editNote(note) {
         });
     }
 }
-
-// 播放所有音轨上的音乐
-function fetchMusic() {
-    sendMessage({
-        type: 'fetch',
-        option: 'fetch music'
-    });
-}
-
-async function playMusic(music) {
-    console.log('fff');
-    const trackEditor = document.querySelector('.track-editor');
-    console.log('222');
-    const trackNum = parseInt(trackEditor.dataset.trackNum, 10);
-    console.log('223');
-    const beatNum = parseInt(trackEditor.dataset.beatNum, 10);
-    console.log('224');
-    const noteNum = parseInt(trackEditor.dataset.noteNum, 10);
-    console.log('eee');
-    console.log(trackNum, beatNum, noteNum);
-    const beatDuration = 0.5;
-    const offset = -10;
-    for (let i = 0; i < beatNum; i++) {
-        for (let j = 0; j < trackNum; j++) {
-            for (let k = 0; k < noteNum; k++) {
-                switch (music.tracks[j].beats[i].notes[k].instrument) {
-                    case 'piano':
-                        console.log('ddd');
-                        playSound(pitchFrequancy(k + offset), beatDuration);
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-        await sleep(beatDuration * 1000);
-    }
-}
-
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-function pitchFrequancy(n) {
-    const referenceFrequency = 261.63; // 中央 C 的频率（单位：Hz）
-    const semitoneRatio = Math.pow(2, 1/12); // 半音的频率比率
-
-    // 计算从中央 C 向上两个半音的音高的频率
-    // const n = 2; // 两个半音
-    const frequency = referenceFrequency * Math.pow(semitoneRatio, n);
-
-    return frequency;
-}
-
-function playSound(frequency, duration) {
-    const audioContext = new AudioContext();
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain(); // 添加 gain 节点
-    oscillator.type = "sine"; // 此处设置为正弦波
-
-    oscillator.connect(gainNode); // 将振荡器连接到增益节点
-    gainNode.connect(audioContext.destination); // 将增益节点连接到目标
-
-    oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
-    gainNode.gain.setValueAtTime(0, audioContext.currentTime); // 初始音量设置为 0
-    gainNode.gain.linearRampToValueAtTime(1, audioContext.currentTime + 0.05); // 线性渐入到完整音量
-
-    oscillator.start();
-    oscillator.stop(audioContext.currentTime + duration);
-    gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + duration - 0.05); // 线性渐出到静音
-}
-
-
-// 创建 WebSocket 连接
-const socket = new WebSocket(`ws://${online ? onlineIP : offlineIP}:4333`);
-
-// 当连接建立时
-socket.onopen = function(event) {
-    console.log("WebSocket connection established.");
-};
-
-function sendMessage(message) {
-    const str = JSON.stringify(message);
-    socket.send(str);
-    console.log("Sent message:", message);
-}
-
-// 当收到消息时
-socket.onmessage = function(event) {
-    console.log("Received message:", event.data);
-
-    try {
-        const message = JSON.parse(event.data);
-        switch (message.type) {
-            case 'music':
-                playMusic(message.data)
-                break;
-            default:
-                break;
-        }
-    } catch (error) {
-    }
-};

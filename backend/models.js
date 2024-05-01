@@ -16,4 +16,20 @@ const musicSchema = new mongoose.Schema({
     tracks: [trackSchema]
 });
 
-module.exports = mongoose.model('Music', musicSchema);
+const musicFileSchema = new mongoose.Schema({
+    fileName: String,
+    music: musicSchema
+});
+
+const musicDescSchema = new mongoose.Schema({
+    fileId: String,
+    fileName: String
+});
+
+const MusicFile = mongoose.model('MusicFile', musicFileSchema);
+const MusicDesc = mongoose.model('MusicDesc', musicDescSchema);
+
+module.exports = {
+    MusicFile,
+    MusicDesc
+};

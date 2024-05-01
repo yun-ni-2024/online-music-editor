@@ -2,10 +2,16 @@ const {
     newTrack,
     delTrack,
     editNote
-} = require('./edit');
+} = require('./handle_edit');
+
 const {
-    fetchMusic
-} = require('./fetch');
+    fetchCurrentMusic,
+    fetchAllMusicDesc
+} = require('./handle_fetch');
+
+const {
+    saveFile
+} = require('./handle_file');
 
 function handleMessage(message) {
     var ret = {
@@ -18,6 +24,9 @@ function handleMessage(message) {
             break;
         case 'fetch':
             ret = handleFetch(message);
+            break;
+        case 'file':
+            handleFile(message);
             break;
         default:
             console.log("Unknown type.");
@@ -45,19 +54,43 @@ function handleEdit(message) {
 }
 
 function handleFetch(message) {
+    console.log('Handling fetch.');
+
     var ret = {
         sendBack: 1
     };
 
     switch (message.option) {
-        case 'fetch music':
-            ret = fetchMusic();
+        case 'fetch current music':
+            ret = fetchCurrentMusic();
+            break;
+        case 'fetch all music desc':
+            try {
+                const musicList = fetchAllMusicDesc();
+                ret = {
+                    sendBack: 1,
+                    data: musicList
+                };
+                console.log(`fetchAllMusicDesc()=${musicList}`)
+                console.log(`ret=${ret}`)
+                return ret;
+            } catch (error) {
+                console.error('Error fetching music list:', error);
+            }
             break;
         default:
             break;
     }
+}
 
-    return ret;
+function handleFile(message) {
+    switch (message.option) {
+        case 'save file':
+            saveFile(message.fileName);
+            break;
+        default:
+            break;
+    }
 }
 
 module.exports = {
