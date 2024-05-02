@@ -1,4 +1,4 @@
-const {
+let {
     tmpMusic
 } = require('./tmp_music');
 
@@ -12,7 +12,6 @@ function saveFile(fileName) {
 
     // 保存音乐文件到数据库
     const musicFile = new MusicFile({
-        fileName: fileName,
         music: tmpMusic
     })
 
@@ -40,6 +39,27 @@ function saveFile(fileName) {
         });
 }
 
+function openMyFile(fileId) {
+    console.log('Finding music by ID:', fileId);
+
+    MusicFile.findById(fileId)
+        .then(musicFile => {
+            if (musicFile) {
+                console.log('Found music:', musicFile);
+                
+                // tmpMusic = musicFile.music;
+                tmpMusic.tracks = musicFile.music.tracks;
+                console.log(`tmpMusic = ${tmpMusic}`)
+            } else {
+                console.log('Music not found');
+            }
+        })
+        .catch(error => {
+            console.error('Error finding music by ID:', error);
+        });
+}
+
 module.exports = {
-    saveFile
+    saveFile,
+    openMyFile
 };

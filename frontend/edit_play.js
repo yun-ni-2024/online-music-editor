@@ -12,6 +12,8 @@ import {
 
 // 播放所有音轨上的音乐
 function fetchMusic() {
+    console.log('In function \'fetchMusic\'');
+
     sendMessage({
         type: 'fetch',
         option: 'fetch current music'
@@ -19,6 +21,8 @@ function fetchMusic() {
 }
 
 async function playMusic(music) {
+    console.log('In function \'playMusic\'');
+
     const trackEditor = document.querySelector('.track-editor');
     const trackNum = parseInt(trackEditor.dataset.trackNum, 10);
     const beatNum = parseInt(trackEditor.dataset.beatNum, 10);

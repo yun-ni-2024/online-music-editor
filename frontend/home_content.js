@@ -10,11 +10,6 @@ import {
     sendMessage
 } from './message.js'
 
-// 初始化
-document.addEventListener("DOMContentLoaded", function() {
-    
-});
-
 function fetchHomeMusic() {
     sendMessage({
         type: 'fetch',
@@ -37,8 +32,16 @@ function initHomeMusic(musicDescs) {
         works.appendChild(work);
 
         // 监听作品元素的点击事件
-        newWork.addEventListener('click', () => {
-            // window.location.href = `http://${config.online ? config.onlineIP : config.offlineIP}:2333/edit`;
+        work.addEventListener('click', () => {
+            // 加载作品
+            sendMessage({
+                type: 'file',
+                option: 'open my file',
+                id: musicDesc.fileId
+            });
+
+            // 跳转到编辑页面
+            window.location.href = `http://${config.online ? config.onlineIP : config.offlineIP}:2333/edit`;
         });
     });
 

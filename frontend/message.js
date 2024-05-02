@@ -15,6 +15,11 @@ import {
     initHomeMusic
 } from './home_content.js'
 
+import {
+    fetchOpenedMusic,
+    initEditMusic
+} from './edit_content.js'
+
 // 创建 WebSocket 连接
 const socket = new WebSocket(`ws://${config.online ? config.onlineIP : config.offlineIP}:4333`);
 
@@ -29,6 +34,10 @@ socket.onopen = function(event) {
         case '/home':
         case '/home.html':
             fetchHomeMusic();
+            break;
+        case '/edit':
+        case '/edit.html':
+            fetchOpenedMusic();
             break;
         default:
             break;
@@ -54,6 +63,8 @@ socket.onmessage = function(event) {
             case 'all music desc':
                 initHomeMusic(message.data);
                 break;
+            case 'opened music':
+                initEditMusic(message.data);
             default:
                 break;
         }

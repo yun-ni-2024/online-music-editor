@@ -1,24 +1,7 @@
 const mongoose = require('mongoose');
 
-const noteSchema = new mongoose.Schema({
-    instrument: String
-})
-
-const beatSchema = new mongoose.Schema({
-    notes: [noteSchema]
-})
-
-const trackSchema = new mongoose.Schema({
-    beats: [beatSchema]
-})
-
-const musicSchema = new mongoose.Schema({
-    tracks: [trackSchema]
-});
-
 const musicFileSchema = new mongoose.Schema({
-    fileName: String,
-    music: musicSchema
+    music: mongoose.Schema.Types.Mixed
 });
 
 const musicDescSchema = new mongoose.Schema({
@@ -26,10 +9,16 @@ const musicDescSchema = new mongoose.Schema({
     fileName: String
 });
 
+const dbInfoSchema = new mongoose.Schema({
+    maxId: String
+});
+
 const MusicFile = mongoose.model('MusicFile', musicFileSchema);
 const MusicDesc = mongoose.model('MusicDesc', musicDescSchema);
+const DbInfo = mongoose.model('DbInfo', dbInfoSchema);
 
 module.exports = {
     MusicFile,
-    MusicDesc
+    MusicDesc,
+    DbInfo
 };

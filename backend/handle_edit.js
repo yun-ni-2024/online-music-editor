@@ -1,4 +1,4 @@
-const {
+let {
     tmpMusic
 } = require('./tmp_music');
 
@@ -23,6 +23,10 @@ function delTrack(id) {
 }
 
 function editNote(trackId, beatId, noteId, instrument) {
+    console.log(trackId)
+    console.log('00000', tmpMusic)
+    console.log('00055', tmpMusic.tracks)
+    console.log('11111', tmpMusic.tracks[trackId])
     tmpMusic.tracks[trackId].beats[beatId].notes[noteId].instrument = instrument;
     // tmpMusic.getTrack(trackId).getBeat(beatId).getNote(noteId).edit(instrument);
 

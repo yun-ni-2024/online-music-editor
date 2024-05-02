@@ -43,7 +43,7 @@ wss.on("connection", function connection(ws) {
     console.log("WebSocket connection established.");
 
     // 监听消息事件
-    ws.on("message", function incoming(str) {
+    ws.on("message", async function incoming(str) {
         const message = JSON.parse(str);
         console.log("Received message:", message);
 
@@ -51,12 +51,24 @@ wss.on("connection", function connection(ws) {
         ws.send("Received by server.");
         console.log("Sent message:", "Received by server.");
 
-        // 对消息做出相应操作
-        const response = handleMessage(message);
-        if (response.sendBack == 1) {
-            const str = JSON.stringify(response.data);
-            ws.send(str);
-            console.log("Sent message:", response.data);
+        try {
+            // 对消息做出相应操作
+            const response = await handleMessage(message);
+            if (response.sendBack == 1) {
+                const str = JSON.stringify(response.data);
+                ws.send(str);
+                console.log("Sent message:", response.data);
+            }
+        } catch (error) {
+            console.error('Error handling message:', error);
         }
+
+        // // 对消息做出相应操作
+        // const response = handleMessage(message);
+        // if (response.sendBack == 1) {
+        //     const str = JSON.stringify(response.data);
+        //     ws.send(str);
+        //     console.log("Sent message:", response.data);
+        // }
     });
 });

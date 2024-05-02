@@ -6,14 +6,16 @@ const {
 
 const {
     fetchCurrentMusic,
-    fetchAllMusicDesc
+    fetchAllMusicDesc,
+    fetchOpenedMusic
 } = require('./handle_fetch');
 
 const {
-    saveFile
+    saveFile,
+    openMyFile
 } = require('./handle_file');
 
-function handleMessage(message) {
+async function handleMessage(message) {
     var ret = {
         sendBack: 0
     };
@@ -23,7 +25,7 @@ function handleMessage(message) {
             handleEdit(message);
             break;
         case 'fetch':
-            ret = handleFetch(message);
+            ret = await handleFetch(message);
             break;
         case 'file':
             handleFile(message);
@@ -53,40 +55,59 @@ function handleEdit(message) {
     }
 }
 
-function handleFetch(message) {
-    console.log('Handling fetch.');
-
+async function handleFetch(message) {
     var ret = {
         sendBack: 1
     };
 
     switch (message.option) {
         case 'fetch current music':
-            ret = fetchCurrentMusic();
+            try {
+                const currMusic = await fetchCurrentMusic();
+                ret.data = {
+                    type: 'music',
+                    data: currMusic
+                }
+            } catch (error) {
+                console.error('Error fetching current music:', error);
+            }
             break;
         case 'fetch all music desc':
             try {
-                const musicList = fetchAllMusicDesc();
-                ret = {
-                    sendBack: 1,
-                    data: musicList
-                };
-                console.log(`fetchAllMusicDesc()=${musicList}`)
-                console.log(`ret=${ret}`)
-                return ret;
+                const musicDescs = await fetchAllMusicDesc();
+                ret.data = {
+                    type: 'all music desc',
+                    data: musicDescs
+                }
             } catch (error) {
                 console.error('Error fetching music list:', error);
+            }
+            break;
+        case 'fetch opened music':
+            try {
+                const openedMusic = await fetchOpenedMusic();
+                ret.data = {
+                    type: 'opened music',
+                    data: openedMusic
+                }
+            } catch (error) {
+                console.error('Error fetching opened music:', error);
             }
             break;
         default:
             break;
     }
+
+    return ret;
 }
 
 function handleFile(message) {
     switch (message.option) {
         case 'save file':
             saveFile(message.fileName);
+            break;
+        case 'open my file':
+            openMyFile(message.id);
             break;
         default:
             break;

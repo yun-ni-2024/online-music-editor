@@ -16,12 +16,14 @@ import {
 
 // 初始化
 document.addEventListener("DOMContentLoaded", function() {
-    const newMusicBtn = document.getElementById('new-music-button');
+    console.log('In function \'DOMContentLoaded\'');
 
-    // 添加鼠标点击事件的响应函数
-    newMusicBtn.addEventListener('click', function() {
-        // 删除新建按钮
-        newMusicBtn.remove();
+    // const newMusicBtn = document.getElementById('new-music-button');
+
+    // // 添加鼠标点击事件的响应函数
+    // newMusicBtn.addEventListener('click', function() {
+    //     // 删除新建按钮
+    //     newMusicBtn.remove();
 
         const content = document.getElementById('content');
 
@@ -29,7 +31,6 @@ document.addEventListener("DOMContentLoaded", function() {
         const trackEditor = document.createElement('div');
         trackEditor.classList.add('track-editor');
         trackEditor.dataset.trackNum = String(0);
-        console.log(config.INIT_BEAT_NUM)
         trackEditor.dataset.beatNum = String(config.INIT_BEAT_NUM);
         trackEditor.dataset.noteNum = String(config.MAX_NOTE_NUM);
         content.appendChild(trackEditor);
@@ -75,8 +76,58 @@ document.addEventListener("DOMContentLoaded", function() {
             fetchMusic();
         });
         content.appendChild(playButton);
-    });
+    // });
 });
+
+function fetchOpenedMusic() {
+    sendMessage({
+        type: 'fetch',
+        option: 'fetch opened music'
+    });
+}
+
+function initEditMusic(music) {
+    console.log('In function \'initEditMusic\'');
+
+    const trackEditor = document.querySelector('.track-editor');
+    const trackNum = music.tracks.length;
+    let beatNum = config.INIT_BEAT_NUM;
+    let noteNum = config.MAX_NOTE_NUM;
+    if (trackNum) {
+        beatNum = music.tracks[0].beats.length;
+        noteNum = music.tracks[0].beats[0].notes.length;
+    }
+    trackEditor.dataset.trackNum = String(trackNum);
+    trackEditor.dataset.beatNum = String(beatNum);
+    trackEditor.dataset.noteNum = String(noteNum);
+
+    console.log(`trackNum = ${trackNum}, beatNum = ${beatNum}, noteNum = ${noteNum}`);
+
+    for (let i = 0; i < trackNum; i++) {
+        const trackContainer = createTrackContainer(beatNum, noteNum);
+        trackContainer.dataset.id = String(i);
+        trackEditor.appendChild(trackContainer);
+        
+        const track = music.tracks[i];
+        for (let j = 0; j < beatNum; j++) {
+            for (let k = 0; k < noteNum; k++) {
+                const note = track.beats[j].notes[k];
+                const noteElement = trackContainer.querySelector('.track').querySelectorAll('.beat')[j].querySelectorAll('.note')[noteNum - 1 - k];
+                switch (note.instrument) {
+                    case 'none':
+                        noteElement.dataset.instrument = 'none';
+                        break;
+                    case 'piano':
+                        noteElement.dataset.instrument = 'piano';
+                        noteElement.style.backgroundColor = 'black';
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+}
 
 // 创建音轨容器
 function createTrackContainer(beatNum, noteNum) {
@@ -277,4 +328,9 @@ function editNote(note) {
             instrument: 'none'
         });
     }
+}
+
+export {
+    fetchOpenedMusic,
+    initEditMusic
 }
