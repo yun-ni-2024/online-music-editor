@@ -1,12 +1,3 @@
-const express = require('express');
-const cors = require('cors');
-const mongoose = require('mongoose');
-const WebSocket = require("ws");
-
-const {
-    handleMessage
-} = require('./message_handler');
-
 const config = {
     online: false,
     onlineIP: "119.45.17.160",
@@ -15,10 +6,30 @@ const config = {
     MAX_NOTE_NUM: 21
 };
 
+const express = require('express');
+const cors = require('cors');
+const mongoose = require('mongoose');
+const WebSocket = require("ws");
+const bodyParser = require('body-parser');
+
+const {
+    authRoutes
+} = require('./auth')
+
+const {
+    handleMessage
+} = require('./message_handler');
+
 const app = express();
 
 // 添加 CORS 中间件，允许所有源的请求
 app.use(cors());
+
+// 解析请求体中的 JSON 数据
+app.use(bodyParser.json());
+
+// 使用身份验证路由
+app.use(authRoutes);
 
 // 启动服务器，监听指定端口
 const port = 3333;
@@ -62,13 +73,5 @@ wss.on("connection", function connection(ws) {
         } catch (error) {
             console.error('Error handling message:', error);
         }
-
-        // // 对消息做出相应操作
-        // const response = handleMessage(message);
-        // if (response.sendBack == 1) {
-        //     const str = JSON.stringify(response.data);
-        //     ws.send(str);
-        //     console.log("Sent message:", response.data);
-        // }
     });
 });

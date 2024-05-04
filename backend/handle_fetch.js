@@ -8,11 +8,16 @@ const {
 } = require('./models')
 
 async function fetchCurrentMusic() {
-    return tmpMusic;
+    return tmpMusic.music;
 }
 
-async function fetchAllMusicDesc() {
-    return MusicDesc.find({}).exec();
+async function fetchMyMusicDesc(uid) {
+    try{
+        const musicDescs = await MusicDesc.find({ uid: uid });
+        return musicDescs
+    } catch (error) {
+        console.error('Error Finding my music desc:', error);
+    }
 }
 
 async function fetchOpenedMusic() {
@@ -23,6 +28,6 @@ async function fetchOpenedMusic() {
 
 module.exports = {
     fetchCurrentMusic,
-    fetchAllMusicDesc,
+    fetchMyMusicDesc,
     fetchOpenedMusic
 };

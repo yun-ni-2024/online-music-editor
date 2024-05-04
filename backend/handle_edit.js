@@ -3,11 +3,11 @@ let {
 } = require('./tmp_music');
 
 function newTrack(id, beatNum, noteNum) {
-    tmpMusic.tracks.push({ beats: [] });
+    tmpMusic.music.tracks.push({ beats: [] });
     for (let i = 0; i < beatNum; i++) {
-        tmpMusic.tracks[id].beats.push({ notes: [] });
+        tmpMusic.music.tracks[id].beats.push({ notes: [] });
         for (let j = 0; j < noteNum; j++) {
-            tmpMusic.tracks[id].beats[i].notes.push({ instrument: 'none' });
+            tmpMusic.music.tracks[id].beats[i].notes.push({ instrument: 'none' });
         }
     }
     // tmpMusic.addTrack(beatNum, noteNum);
@@ -16,25 +16,27 @@ function newTrack(id, beatNum, noteNum) {
 }
 
 function delTrack(id) {
-    tmpMusic.tracks.splice(id, 1);
+    tmpMusic.music.tracks.splice(id, 1);
     // tmpMusic.delTrack(id);
 
     console.log(`Delete Track, id = ${id}.`)
 }
 
 function editNote(trackId, beatId, noteId, instrument) {
-    console.log(trackId)
-    console.log('00000', tmpMusic)
-    console.log('00055', tmpMusic.tracks)
-    console.log('11111', tmpMusic.tracks[trackId])
-    tmpMusic.tracks[trackId].beats[beatId].notes[noteId].instrument = instrument;
+    tmpMusic.music.tracks[trackId].beats[beatId].notes[noteId].instrument = instrument;
     // tmpMusic.getTrack(trackId).getBeat(beatId).getNote(noteId).edit(instrument);
 
     console.log(`Edit note: trackId = ${trackId}, beatId = ${beatId}, noteId = ${noteId}, instrument = ${instrument}`);
 }
 
+function clearTmpMusic() {
+    tmpMusic.music.tracks = [];
+    tmpMusic.isNew = true;
+}
+
 module.exports = {
     newTrack,
     delTrack,
-    editNote
+    editNote,
+    clearTmpMusic
 };

@@ -1,5 +1,9 @@
 let tmpMusic = {
-    tracks: []
+    isNew: true,
+    fileId: null,
+    music: {
+        tracks: []
+    }
 };
 
 module.exports = {

@@ -7,12 +7,36 @@ const {
     MusicDesc
 } = require('./models')
 
-function saveFile(fileName) {
+async function saveFile() {
+    MusicFile.findById(tmpMusic.fileId)
+        .then(musicFile => {
+            if (musicFile) {
+                // 编辑文件内容
+                musicFile.music = tmpMusic.music;
+
+                // 保存文件更改
+                musicFile.save()
+                    .then(updatedMusicFile => {
+                        console.log('File updated successfully:', updatedMusicFile);
+                    })
+                    .catch(error => {
+                        console.error('Error saving updated file:', error);
+                    });
+            } else {
+                console.log('Music not found');
+            }
+        })
+        .catch(error => {
+            console.error('Error finding music by ID:', error);
+        });
+}
+
+function saveFileAs(uid, fileName) {
     let fileId = 'none';
 
     // 保存音乐文件到数据库
     const musicFile = new MusicFile({
-        music: tmpMusic
+        music: tmpMusic.music
     })
 
     musicFile.save()
@@ -20,8 +44,13 @@ function saveFile(fileName) {
             console.log('Music file saved successfully:', savedMusicFile, savedMusicFile._id);
             fileId = savedMusicFile._id;
 
+            // 更新 tmpMusic 信息
+            tmpMusic.isNew = false;
+            tmpMusic.fileId = fileId;
+
             // 保存音乐描述数据到数据库
             const musicDesc = new MusicDesc({
+                uid: uid,
                 fileId: fileId,
                 fileName: fileName
             })
@@ -47,8 +76,9 @@ function openMyFile(fileId) {
             if (musicFile) {
                 console.log('Found music:', musicFile);
                 
-                // tmpMusic = musicFile.music;
-                tmpMusic.tracks = musicFile.music.tracks;
+                tmpMusic.music = musicFile.music;
+                tmpMusic.fileId = fileId;
+                tmpMusic.isNew = false;
                 console.log(`tmpMusic = ${tmpMusic}`)
             } else {
                 console.log('Music not found');
@@ -61,5 +91,6 @@ function openMyFile(fileId) {
 
 module.exports = {
     saveFile,
+    saveFileAs,
     openMyFile
 };

@@ -10,14 +10,36 @@ import {
     sendMessage
 } from './message.js'
 
+document.addEventListener("DOMContentLoaded", function() {
+    console.log('In function \'DOMContentLoaded\'')
+    
+    // 检查是否存在认证令牌
+    const authToken = localStorage.getItem('authToken');
+
+    if (authToken) {
+        // 用户已登录，可以执行相关操作，例如显示用户信息或访问受限资源
+        console.log('User is logged in');
+    } else {
+        // 用户未登录，重定向到登录页面
+        console.log('User is not logged in');
+        window.location.href = '/login';
+    }
+});
+
 function fetchHomeMusic() {
+    const uid = localStorage.getItem('uid');
     sendMessage({
         type: 'fetch',
-        option: 'fetch all music desc'
+        option: 'fetch my music desc',
+        uid: uid
     });
 }
 
 function initHomeMusic(musicDescs) {
+    console.log('In function \'initHomeMusic\'')
+
+    console.log('musicDescs:', musicDescs)
+
     // 获取作品区域元素
     const works = document.querySelector('.works');
 
@@ -55,6 +77,13 @@ function initHomeMusic(musicDescs) {
 
     // 监听新建作品元素的点击事件
     newWork.addEventListener('click', () => {
+        // 清空 tmpMusic
+        sendMessage({
+            type: 'edit',
+            option: 'clear tmp music'
+        });
+        
+        // 跳转到编辑页面
         window.location.href = `http://${config.online ? config.onlineIP : config.offlineIP}:2333/edit`;
     });
 }

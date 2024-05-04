@@ -7,7 +7,8 @@ const config = {
 };
 
 import {
-    saveFile
+    saveFile,
+    saveFileAs
 } from './edit_file.js';
 
 // 初始化
@@ -34,6 +35,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // 添加保存按钮响应函数
     menuItems[1].querySelector('.submenu').querySelectorAll('.submenu-item')[1].addEventListener('click', () => {
-        saveFile();
+        const trackEditor = document.querySelector('.track-editor');
+        if (trackEditor.dataset.isNew == 'true') {
+            saveFileAs();
+        } else {
+            saveFile();
+        }
     });
 });

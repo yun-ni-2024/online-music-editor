@@ -1,17 +1,19 @@
 const {
     newTrack,
     delTrack,
-    editNote
+    editNote,
+    clearTmpMusic
 } = require('./handle_edit');
 
 const {
     fetchCurrentMusic,
-    fetchAllMusicDesc,
+    fetchMyMusicDesc,
     fetchOpenedMusic
 } = require('./handle_fetch');
 
 const {
     saveFile,
+    saveFileAs,
     openMyFile
 } = require('./handle_file');
 
@@ -28,7 +30,7 @@ async function handleMessage(message) {
             ret = await handleFetch(message);
             break;
         case 'file':
-            handleFile(message);
+            await handleFile(message);
             break;
         default:
             console.log("Unknown type.");
@@ -48,6 +50,9 @@ function handleEdit(message) {
             break;
         case 'edit note':
             editNote(message.trackId, message.beatId, message.noteId, message.instrument);
+            break;
+        case 'clear tmp music':
+            clearTmpMusic();
             break;
         default:
             console.log("Unknown option.");
@@ -72,11 +77,11 @@ async function handleFetch(message) {
                 console.error('Error fetching current music:', error);
             }
             break;
-        case 'fetch all music desc':
+        case 'fetch my music desc':
             try {
-                const musicDescs = await fetchAllMusicDesc();
+                const musicDescs = await fetchMyMusicDesc(message.uid);
                 ret.data = {
-                    type: 'all music desc',
+                    type: 'my music desc',
                     data: musicDescs
                 }
             } catch (error) {
@@ -95,21 +100,26 @@ async function handleFetch(message) {
             }
             break;
         default:
+            console.log("Unknown option.");
             break;
     }
 
     return ret;
 }
 
-function handleFile(message) {
+async function handleFile(message) {
     switch (message.option) {
         case 'save file':
-            saveFile(message.fileName);
+            await saveFile();
+            break;
+        case 'save file as':
+            saveFileAs(message.uid, message.fileName);
             break;
         case 'open my file':
             openMyFile(message.id);
             break;
         default:
+            console.log("Unknown option.");
             break;
     }
 }

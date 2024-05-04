@@ -14,70 +14,79 @@ import {
     fetchMusic
 } from './edit_play.js';
 
-// 初始化
 document.addEventListener("DOMContentLoaded", function() {
-    console.log('In function \'DOMContentLoaded\'');
+    console.log('In function \'DOMContentLoaded\'')
+    
+    // 检查是否存在认证令牌
+    const authToken = localStorage.getItem('authToken');
 
-    // const newMusicBtn = document.getElementById('new-music-button');
-
-    // // 添加鼠标点击事件的响应函数
-    // newMusicBtn.addEventListener('click', function() {
-    //     // 删除新建按钮
-    //     newMusicBtn.remove();
-
-        const content = document.getElementById('content');
-
-        // 添加音轨编辑栏
-        const trackEditor = document.createElement('div');
-        trackEditor.classList.add('track-editor');
-        trackEditor.dataset.trackNum = String(0);
-        trackEditor.dataset.beatNum = String(config.INIT_BEAT_NUM);
-        trackEditor.dataset.noteNum = String(config.MAX_NOTE_NUM);
-        content.appendChild(trackEditor);
-
-        // 添加新建音轨按钮
-        const addTrackBtn = document.createElement('div');
-        addTrackBtn.classList.add('add-track-button');
-        addTrackBtn.textContent = '新建音轨';
-        addTrackBtn.addEventListener('click', function(event) {
-            event.stopPropagation();
-
-            // 创建音轨容器元素
-            const beatNum = parseInt(trackEditor.dataset.beatNum, 10);
-            const noteNum = parseInt(trackEditor.dataset.noteNum, 10);
-            const trackContainer = createTrackContainer(beatNum, noteNum);
-
-            // 更新音轨容器id和音轨总数
-            const id = parseInt(trackEditor.dataset.trackNum, 10)
-            trackContainer.dataset.id = String(id);
-            trackEditor.dataset.trackNum = String(id + 1);
-            trackEditor.appendChild(trackContainer);
-
-            console.log(`Add track, id = ${id}`);
-            // 向后端发送消息，创建音轨
-            sendMessage({
-                type: 'edit',
-                option: 'new track',
-                id: id,
-                beatNum: beatNum,
-                noteNum: noteNum
-            });
-
-        });
-        content.appendChild(addTrackBtn);
-
-        // 添加播放按钮
-        const playButton = document.createElement('div');
-        playButton.classList.add('play-button');
-        playButton.textContent = '播放所有音轨';
-
-        // 为播放按钮添加相应函数
-        playButton.addEventListener('click', function(){
-            fetchMusic();
-        });
-        content.appendChild(playButton);
-    // });
+    if (authToken) {
+        // 用户已登录，可以执行相关操作，例如显示用户信息或访问受限资源
+        console.log('User is logged in');
+    } else {
+        // 用户未登录，重定向到登录页面
+        console.log('User is not logged in');
+        window.location.href = '/login';
+    }
 });
+
+// 初始化
+function initEditPage() {
+    console.log('In function \'initEditPage\'');
+
+    const content = document.getElementById('content');
+
+    // 添加音轨编辑栏
+    const trackEditor = document.createElement('div');
+    trackEditor.classList.add('track-editor');
+    trackEditor.dataset.trackNum = String(0);
+    trackEditor.dataset.beatNum = String(config.INIT_BEAT_NUM);
+    trackEditor.dataset.noteNum = String(config.MAX_NOTE_NUM);
+    trackEditor.dataset.isNew = 'true';
+    content.appendChild(trackEditor);
+
+    // 添加新建音轨按钮
+    const addTrackBtn = document.createElement('div');
+    addTrackBtn.classList.add('add-track-button');
+    addTrackBtn.textContent = '新建音轨';
+    addTrackBtn.addEventListener('click', function(event) {
+        event.stopPropagation();
+
+        // 创建音轨容器元素
+        const beatNum = parseInt(trackEditor.dataset.beatNum, 10);
+        const noteNum = parseInt(trackEditor.dataset.noteNum, 10);
+        const trackContainer = createTrackContainer(beatNum, noteNum);
+
+        // 更新音轨容器id和音轨总数
+        const id = parseInt(trackEditor.dataset.trackNum, 10)
+        trackContainer.dataset.id = String(id);
+        trackEditor.dataset.trackNum = String(id + 1);
+        trackEditor.appendChild(trackContainer);
+
+        console.log(`Add track, id = ${id}`);
+        // 向后端发送消息，创建音轨
+        sendMessage({
+            type: 'edit',
+            option: 'new track',
+            id: id,
+            beatNum: beatNum,
+            noteNum: noteNum
+        });
+
+    });
+    content.appendChild(addTrackBtn);
+
+    // 添加播放按钮
+    const playButton = document.createElement('div');
+    playButton.classList.add('play-button');
+    playButton.textContent = '播放所有音轨';
+
+    // 为播放按钮添加相应函数
+    playButton.addEventListener('click', function(){
+        fetchMusic();
+    });
+    content.appendChild(playButton);
+}
 
 function fetchOpenedMusic() {
     sendMessage({
@@ -86,16 +95,20 @@ function fetchOpenedMusic() {
     });
 }
 
-function initEditMusic(music) {
+function loadEditMusic(currMusic) {
     console.log('In function \'initEditMusic\'');
 
     const trackEditor = document.querySelector('.track-editor');
-    const trackNum = music.tracks.length;
+    if (currMusic.isNew == false){
+        trackEditor.dataset.isNew = 'false';
+    }
+
+    const trackNum = currMusic.music.tracks.length;
     let beatNum = config.INIT_BEAT_NUM;
     let noteNum = config.MAX_NOTE_NUM;
     if (trackNum) {
-        beatNum = music.tracks[0].beats.length;
-        noteNum = music.tracks[0].beats[0].notes.length;
+        beatNum = currMusic.music.tracks[0].beats.length;
+        noteNum = currMusic.music.tracks[0].beats[0].notes.length;
     }
     trackEditor.dataset.trackNum = String(trackNum);
     trackEditor.dataset.beatNum = String(beatNum);
@@ -108,7 +121,7 @@ function initEditMusic(music) {
         trackContainer.dataset.id = String(i);
         trackEditor.appendChild(trackContainer);
         
-        const track = music.tracks[i];
+        const track = currMusic.music.tracks[i];
         for (let j = 0; j < beatNum; j++) {
             for (let k = 0; k < noteNum; k++) {
                 const note = track.beats[j].notes[k];
@@ -331,6 +344,7 @@ function editNote(note) {
 }
 
 export {
+    initEditPage,
     fetchOpenedMusic,
-    initEditMusic
+    loadEditMusic
 }
