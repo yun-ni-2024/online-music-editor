@@ -1,10 +1,15 @@
 const config = {
     online: false,
     onlineIP: "119.45.17.160",
-    offlineIP: "localhost",
-    INIT_BEAT_NUM: 20,
-    MAX_NOTE_NUM: 21
+    offlineIP: "localhost"
 };
+
+const INIT_BEAT_NUM = 70;
+const MAX_NOTE_NUM = 36;
+
+const pianoColor = '#ffcc00';
+const guitarColor = '#cc3300';
+const violinColor = '#6600cc';
 
 import {
     sendMessage
@@ -40,9 +45,10 @@ function initEditPage() {
     const trackEditor = document.createElement('div');
     trackEditor.classList.add('track-editor');
     trackEditor.dataset.trackNum = String(0);
-    trackEditor.dataset.beatNum = String(config.INIT_BEAT_NUM);
-    trackEditor.dataset.noteNum = String(config.MAX_NOTE_NUM);
+    trackEditor.dataset.beatNum = String(INIT_BEAT_NUM);
+    trackEditor.dataset.noteNum = String(MAX_NOTE_NUM);
     trackEditor.dataset.isNew = 'true';
+    trackEditor.dataset.instrument = 'piano'
     content.appendChild(trackEditor);
 
     // 添加新建音轨按钮
@@ -104,8 +110,8 @@ function loadEditMusic(currMusic) {
     }
 
     const trackNum = currMusic.music.tracks.length;
-    let beatNum = config.INIT_BEAT_NUM;
-    let noteNum = config.MAX_NOTE_NUM;
+    let beatNum = INIT_BEAT_NUM;
+    let noteNum = MAX_NOTE_NUM;
     if (trackNum) {
         beatNum = currMusic.music.tracks[0].beats.length;
         noteNum = currMusic.music.tracks[0].beats[0].notes.length;
@@ -132,7 +138,15 @@ function loadEditMusic(currMusic) {
                         break;
                     case 'piano':
                         noteElement.dataset.instrument = 'piano';
-                        noteElement.style.backgroundColor = 'black';
+                        noteElement.style.backgroundColor = pianoColor;
+                        break;
+                    case 'guitar':
+                        noteElement.dataset.instrument = 'guitar';
+                        noteElement.style.backgroundColor = guitarColor;
+                        break;
+                    case 'violin':
+                        noteElement.dataset.instrument = 'violin';
+                        noteElement.style.backgroundColor = violinColor;
                         break;
                     default:
                         break;
@@ -237,6 +251,15 @@ function toggleTrackEdit(trackContainer) {
     const track = trackContainer.querySelector('.track');
     if (track) {
         track.style.height = '500px';
+        // sleep(500).then(() => {
+        //     const beats = track.querySelectorAll('.beat');
+        //     beats.forEach(beat => {
+        //         const notes = beat.querySelectorAll('.note');
+        //         notes.forEach(note => {
+        //             note.style.border = '1px solid gray';
+        //         });
+        //     });
+        // });
     }
 
     // 添加收回按钮
@@ -258,7 +281,16 @@ function closeTrackEdit(trackContainer) {
     // 降低音轨高度
     const track = trackContainer.querySelector('.track');
     if (track) {
-        track.style.height = '70px';
+        // const beats = track.querySelectorAll('.beat');
+        // beats.forEach(beat => {
+        //     const notes = beat.querySelectorAll('.note');
+        //     notes.forEach(note => {
+        //         note.style.border = '';
+        //     });
+        // });
+        // sleep(50).then(() => {
+            track.style.height = '100px';
+        // });
     }
 
     // 删除收回按钮
@@ -294,13 +326,71 @@ function createNote() {
     note.classList.add('note');
     note.dataset.instrument = 'none';
 
-    // 为这个音符元素添加鼠标点击时间的相应函数
-    note.addEventListener('click', function(event) {
-        event.stopPropagation();
-        editNote(note);
+    // 为这个音符元素添加鼠标点击事件的响应函数
+    note.addEventListener('click', function() {
+        const trackContainer = note.parentElement.parentElement.parentElement;
+        if (trackContainer.dataset.editMode == 'true'){
+            editNote(note);
+        }
+    });
+
+    // 为这个音符元素添加鼠标悬停事件的响应函数
+    note.addEventListener('mouseenter', () => {
+        const trackContainer = note.parentElement.parentElement.parentElement;
+        if (trackContainer.dataset.editMode == 'true'){
+            hoverNote(note);
+        }
+    });
+
+    // 为这个音符元素添加鼠标离开事件的响应函数
+    note.addEventListener('mouseleave', () => {
+        const trackContainer = note.parentElement.parentElement.parentElement;
+        if (trackContainer.dataset.editMode == 'true'){
+            cancelHoverNote(note);
+        }
     });
 
     return note;
+}
+
+// 鼠标在音符上悬停
+function hoverNote(currNote) {
+    const beat = currNote.parentElement;
+    const notes = beat.querySelectorAll('.note');
+    notes.forEach(note => {
+        note.style.filter = 'brightness(95%)';
+    });
+
+    const track = beat.parentElement;
+    const beats = track.querySelectorAll('.beat');
+    beats.forEach(beat => {
+        const notes = beat.querySelectorAll('.note');
+        const noteId = parseInt(currNote.dataset.id, 10);
+        const trackEditor = track.parentElement.parentElement;
+        const noteNum = parseInt(trackEditor.dataset.noteNum, 10);
+        notes[noteNum - 1 - noteId].style.filter = 'brightness(95%)';
+    })
+    
+    currNote.style.filter = 'brightness(80%)';
+}
+
+// 鼠标离开音符
+function cancelHoverNote(currNote) {
+    const beat = currNote.parentElement;
+    const notes = beat.querySelectorAll('.note');
+    notes.forEach(note => {
+        note.style.filter = '';
+    });
+
+    const track = beat.parentElement;
+    const beats = track.querySelectorAll('.beat');
+    beats.forEach(beat => {
+        const notes = beat.querySelectorAll('.note');
+        const noteId = parseInt(currNote.dataset.id, 10);
+        const trackEditor = track.parentElement.parentElement;
+        const noteNum = parseInt(trackEditor.dataset.noteNum, 10);
+        notes[noteNum - 1 - noteId].style.filter = '';
+    })
 }
 
 // 编辑音符
@@ -312,35 +402,41 @@ function editNote(note) {
     const trackContainer = beat.parentNode.parentNode;
     const trackId = parseInt(trackContainer.dataset.id, 10);
 
+    const trackEditor = document.querySelector('.track-editor');
+
     if (note.dataset.instrument == 'none') {
         // 添加音符特征
-        note.style.backgroundColor = 'black';
-        note.dataset.instrument = 'piano';
+        note.dataset.instrument = trackEditor.dataset.instrument;
 
-        // 向后端发送消息
-        sendMessage({
-            type: 'edit',
-            option: 'edit note',
-            trackId: trackId,
-            beatId: beatId,
-            noteId: noteId,
-            instrument: 'piano'
-        });
+        switch (note.dataset.instrument) {
+            case 'piano':
+                note.style.backgroundColor = pianoColor;
+                break;
+            case 'guitar':
+                note.style.backgroundColor = guitarColor;
+                break;
+            case 'violin':
+                note.style.backgroundColor = violinColor;
+                break;
+            default:
+                console.error('Unknown instrument: ', cote.dataset.instrument);
+                break;
+        }
     } else {
         // 删除音符特征
-        note.style.backgroundColor = 'aliceblue';
         note.dataset.instrument = 'none';
-
-        // 向后端发送消息
-        sendMessage({
-            type: 'edit',
-            option: 'edit note',
-            trackId: trackId,
-            beatId: beatId,
-            noteId: noteId,
-            instrument: 'none'
-        });
+        note.style.backgroundColor = 'aliceblue';
     }
+
+    // 向后端发送消息，更新音符
+    sendMessage({
+        type: 'edit',
+        option: 'edit note',
+        trackId: trackId,
+        beatId: beatId,
+        noteId: noteId,
+        instrument: note.dataset.instrument
+    });
 }
 
 export {

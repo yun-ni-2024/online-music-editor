@@ -1,9 +1,7 @@
 const config = {
     online: false,
     onlineIP: "119.45.17.160",
-    offlineIP: "localhost",
-    INIT_BEAT_NUM: 20,
-    MAX_NOTE_NUM: 21
+    offlineIP: "localhost"
 };
 
 document.addEventListener('DOMContentLoaded', function() {

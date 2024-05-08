@@ -1,9 +1,7 @@
 const config = {
     online: false,
     onlineIP: "119.45.17.160",
-    offlineIP: "localhost",
-    INIT_BEAT_NUM: 20,
-    MAX_NOTE_NUM: 21
+    offlineIP: "localhost"
 };
 
 import {
@@ -42,4 +40,35 @@ document.addEventListener("DOMContentLoaded", function() {
             saveFile();
         }
     });
+
+    // 设置乐器选项的点击事件
+    const pianoButton = document.getElementById('piano');
+    const guitarButton = document.getElementById('guitar');
+    const violinButton = document.getElementById('violin');
+
+
+    pianoButton.addEventListener('click', () => {
+        // 切换到钢琴
+        const trackEditor = document.querySelector('.track-editor');
+        trackEditor.dataset.instrument = 'piano';
+
+        console.log('Instrument switched to piano');
+    });
+
+    guitarButton.addEventListener('click', () => {
+        // 切换到吉他
+        const trackEditor = document.querySelector('.track-editor');
+        trackEditor.dataset.instrument = 'guitar';
+
+        console.log('Instrument switched to guitar');
+    });
+
+    violinButton.addEventListener('click', () => {
+        // 切换到小提琴
+        const trackEditor = document.querySelector('.track-editor');
+        trackEditor.dataset.instrument = 'violin';
+
+        console.log('Instrument switched to violin');
+    });
+
 });

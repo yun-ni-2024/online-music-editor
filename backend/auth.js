@@ -1,9 +1,7 @@
 const config = {
     online: false,
     onlineIP: "119.45.17.160",
-    offlineIP: "localhost",
-    INIT_BEAT_NUM: 20,
-    MAX_NOTE_NUM: 21
+    offlineIP: "localhost"
 };
 
 const express = require('express');
@@ -73,7 +71,7 @@ authRoutes.post('/auth/register', async (req, res) => {
     const { email, password, vrfyCode } = req.body;
 
     // 检查验证码是否正确
-    if (vrfyCode != tmpVrfyCodeDict[email]) {
+    if ((!email in tmpVrfyCodeDict) || vrfyCode != tmpVrfyCodeDict[email]) {
         return res.status(401).json({ error: 'Wrong verification code' });
     }
 
@@ -102,6 +100,7 @@ authRoutes.post('/auth/register', async (req, res) => {
     }
 
     // 注册成功
+    delete tmpVrfyCodeDict.email;
     return res.status(201).json({ success: 'Registration successful' });
 });
 
