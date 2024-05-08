@@ -1,0 +1,49 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+}
+
+#background {
+    display: grid;
+    grid-template-columns: 100px auto;
+    width: 100%;
+    height: 100%;
+    background-color: azure;
+}
+
+#sidebar {
+    background-color: antiquewhite;
+}
+
+#content {
+    background-color: aquamarine;
+    z-index: 0;
+    overflow-y: auto; /* 允许垂直滚动 */
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-item {
+    position: relative;
+}
+
+.submenu-head {
+    height: 50px;
+    background-color: azure;
+}
+
+.submenu {
+    height: 0px;
+    background-color: aliceblue;
+    transition: height 0.6s ease;
+    overflow: hidden;
+}
+
+.submenu-item {
+    height: 50px;
+}

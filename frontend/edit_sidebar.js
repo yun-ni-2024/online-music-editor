@@ -19,33 +19,18 @@ document.addEventListener("DOMContentLoaded", function() {
     menuItems.forEach(menuItem => {
         menuItem.addEventListener('mouseover', function() {
             if (activeMenu != menuItem) {
-                menuItem.querySelector('.submenu').style.height = '150px';
+                const submenuNum = menuItem.querySelectorAll('.submenu-item').length;
+                menuItem.querySelector('.submenu').style.height = String(submenuNum * 50) + 'px';
                 activeMenu.querySelector('.submenu').style.height = '0px';
                 activeMenu = menuItem;
             }
         });
     });
 
-    // 添加“我的空间”超链接
-    menuItems[2].querySelector('.submenu').querySelectorAll('.submenu-item')[0].addEventListener('click', function() {
-        window.location.href = `http://${config.online ? config.onlineIP : config.offlineIP}:2333/home`;
-    });
-
-    // 添加保存按钮响应函数
-    menuItems[1].querySelector('.submenu').querySelectorAll('.submenu-item')[1].addEventListener('click', () => {
-        const trackEditor = document.querySelector('.track-editor');
-        if (trackEditor.dataset.isNew == 'true') {
-            saveFileAs();
-        } else {
-            saveFile();
-        }
-    });
-
     // 设置乐器选项的点击事件
     const pianoButton = document.getElementById('piano');
     const guitarButton = document.getElementById('guitar');
     const violinButton = document.getElementById('violin');
-
 
     pianoButton.addEventListener('click', () => {
         // 切换到钢琴
@@ -71,4 +56,37 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log('Instrument switched to violin');
     });
 
+    // 添加保存按钮响应函数
+    menuItems[1].querySelector('.submenu').querySelectorAll('.submenu-item')[1].addEventListener('click', () => {
+        const trackEditor = document.querySelector('.track-editor');
+        if (trackEditor.dataset.isNew == 'true') {
+            saveFileAs();
+        } else {
+            saveFile();
+        }
+    });
+
+    // Add event listener to 'save as' button
+    const saveAsButton = document.getElementById('save-as');
+    saveAsButton.addEventListener('click', () => {
+        saveFileAs();
+    });
+
+    // Add event listener to 'home' button
+    const homeButton = document.getElementById('home');
+    homeButton.addEventListener('click', function() {
+        window.location.href = `http://${config.online ? config.onlineIP : config.offlineIP}:2333/home`;
+    });
+
+    // Add event listener to 'gallery' button
+    const galleryButton = document.getElementById('gallery');
+    galleryButton.addEventListener('click', () => {
+        window.location.href = `http://${config.online ? config.onlineIP : config.offlineIP}:2333/gallery`;
+    });
+
+    // Add event listener to 'switch account' button
+    const switchAccountButton = document.getElementById('switch-account');
+    switchAccountButton.addEventListener('click', () => {
+        window.location.href = `http://${config.online ? config.onlineIP : config.offlineIP}:2333/login`;
+    }); 
 });

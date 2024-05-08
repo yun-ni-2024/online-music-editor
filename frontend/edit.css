@@ -94,6 +94,8 @@ body, html {
 }
 
 .track-container {
+    display: flex;
+    flex-direction: row;
     position: relative;
     width: 100%;
     background-color: darkslategray;
@@ -102,11 +104,12 @@ body, html {
 
 .track {
     display: flex;
+    flex-direction: row;
     position: relative;
-    width: calc(100% - 90px);
+    width: calc(100% - 120px);
     height: 100px;
     background-color: #f0f0f0;
-    margin: 5px 0; /* 添加音轨之间的间距 */
+    /* margin: 5px 0; */
     transition-duration: 0.5s;
 }
 
@@ -139,10 +142,23 @@ body, html {
 .beat {
     display: flex;
     flex-direction: column;
-    /* width: 18px; */
-    /* height: 300px; */
     background-color: #fff;
-    /* border: 1px solid black; */
+}
+
+.corner {
+    display: flex;
+    width: 20px;
+    height: 17px;
+    background-color: #f0f0f0;
+}
+
+.time-stamp {
+    display: flex;
+    width: 18px;
+    height: 17px;
+    background-color: #f0f0f0;
+    transition-property: width, height;
+    transition-duration: 0.5s;
 }
 
 .note {
@@ -150,8 +166,23 @@ body, html {
     width: 18px;
     height: 15px;
     background-color: aliceblue;
-    /* transition-duration: 0.5s; */
-    /* border: 1px solid gray; */
+}
+
+.pinch-bar {
+    display: flex;
+    flex-direction: column;
+    width: 0px;
+    height: 100px;
+    background-color: #aaaaaa;
+    transition-duration: 0.5s;
+    overflow: hidden;
+}
+
+.pinch {
+    display: flex;
+    width: 20px;
+    height: 15px;
+    background-color: #f0f0f0;
 }
 
 .save-modal {
@@ -186,4 +217,4 @@ body, html {
     color: #000;
     text-decoration: none;
     cursor: pointer;
-}  
+}

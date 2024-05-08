@@ -35,13 +35,13 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-// 初始化
+// Initialize
 function initEditPage() {
     console.log('In function \'initEditPage\'');
 
     const content = document.getElementById('content');
 
-    // 添加音轨编辑栏
+    // Create track editor
     const trackEditor = document.createElement('div');
     trackEditor.classList.add('track-editor');
     trackEditor.dataset.trackNum = String(0);
@@ -51,26 +51,26 @@ function initEditPage() {
     trackEditor.dataset.instrument = 'piano'
     content.appendChild(trackEditor);
 
-    // 添加新建音轨按钮
+    // Create 'new track' button
     const addTrackBtn = document.createElement('div');
     addTrackBtn.classList.add('add-track-button');
     addTrackBtn.textContent = '新建音轨';
     addTrackBtn.addEventListener('click', function(event) {
         event.stopPropagation();
 
-        // 创建音轨容器元素
+        // Create track container
         const beatNum = parseInt(trackEditor.dataset.beatNum, 10);
         const noteNum = parseInt(trackEditor.dataset.noteNum, 10);
         const trackContainer = createTrackContainer(beatNum, noteNum);
 
-        // 更新音轨容器id和音轨总数
+        // Update track ID and track number
         const id = parseInt(trackEditor.dataset.trackNum, 10)
         trackContainer.dataset.id = String(id);
         trackEditor.dataset.trackNum = String(id + 1);
         trackEditor.appendChild(trackContainer);
 
         console.log(`Add track, id = ${id}`);
-        // 向后端发送消息，创建音轨
+        // Send message to backend to create a track
         sendMessage({
             type: 'edit',
             option: 'new track',
@@ -82,12 +82,12 @@ function initEditPage() {
     });
     content.appendChild(addTrackBtn);
 
-    // 添加播放按钮
+    // Create 'play all' button
     const playButton = document.createElement('div');
     playButton.classList.add('play-button');
     playButton.textContent = '播放所有音轨';
 
-    // 为播放按钮添加相应函数
+    // Add event listener for 'play all' button
     playButton.addEventListener('click', function(){
         fetchMusic();
     });
@@ -156,21 +156,40 @@ function loadEditMusic(currMusic) {
     }
 }
 
-// 创建音轨容器
+// Create track container
 function createTrackContainer(beatNum, noteNum) {
-    // 创建音轨容器元素
+    // Create track container
     const trackContainer = document.createElement('div');
     trackContainer.classList.add('track-container');
     trackContainer.dataset.editMode = 'false';
 
-    // 添加音轨
+    // Add pinch bar
+    const pinchBar = document.createElement('div');
+    pinchBar.classList.add('pinch-bar');
+
+    const corner = document.createElement('div');
+    corner.classList.add('corner');
+    corner.textContent = '0';
+    pinchBar.appendChild(corner);
+
+    for (let i = 0; i < noteNum; i++) {
+        const pinch = document.createElement('div');
+        pinch.classList.add('pinch');
+        pinch.textContent = String(i);
+        pinchBar.appendChild(pinch);
+    }
+
+    trackContainer.appendChild(pinchBar);
+
+    // Add track
     const track = createTrack(beatNum, noteNum);
     trackContainer.appendChild(track);
 
-    // 添加删除按钮
+    // Add 'delete' button
     const deleteButton = document.createElement('div');
     deleteButton.classList.add('delete-button');
     deleteButton.textContent = '删除';
+
     deleteButton.addEventListener('click', function(event) {
         event.stopPropagation();
 
@@ -202,6 +221,7 @@ function createTrackContainer(beatNum, noteNum) {
             id: id
         });
     });
+
     trackContainer.appendChild(deleteButton);
 
     return trackContainer;
@@ -223,7 +243,7 @@ function createTrack(beatNum, noteNum) {
     // 添加节拍
     for (let i = 0; i < beatNum; ++i) {
         // 创建节拍元素
-        const beat = createBeat(noteNum);
+        const beat = createBeat(i, noteNum);
 
         // 添加编号
         beat.dataset.id = String(i);
@@ -240,27 +260,29 @@ function deleteTrackContainer(trackContainer) {
 
 // 切管音轨容器状态为编辑状态
 function toggleTrackEdit(trackContainer) {
-    // 标记进入编辑模式
     if (trackContainer.dataset.editMode == 'true') {
         return;
-    } else {
-        trackContainer.dataset.editMode = 'true';
     }
 
-    // 提升音轨高度
+    // Increase track height
     const track = trackContainer.querySelector('.track');
-    if (track) {
-        track.style.height = '500px';
-        // sleep(500).then(() => {
-        //     const beats = track.querySelectorAll('.beat');
-        //     beats.forEach(beat => {
-        //         const notes = beat.querySelectorAll('.note');
-        //         notes.forEach(note => {
-        //             note.style.border = '1px solid gray';
-        //         });
-        //     });
-        // });
-    }
+    track.style.height = '557px';
+
+    // Increase time stamp height
+    const timeStamps = track.querySelectorAll('.time-stamp');
+    timeStamps.forEach(timeStamp => {
+        timeStamp.style.height = '17px';
+    })
+
+    // Increase pinch bar height
+    const pinchBar = trackContainer.querySelector('.pinch-bar');
+    pinchBar.style.height = '557px';
+    pinchBar.style.width = '20px';
+
+    // 标记进入编辑模式
+    sleep(500).then(() => {
+        trackContainer.dataset.editMode = 'true';
+    });
 
     // 添加收回按钮
     const closeButton = document.createElement('div');
@@ -281,17 +303,19 @@ function closeTrackEdit(trackContainer) {
     // 降低音轨高度
     const track = trackContainer.querySelector('.track');
     if (track) {
-        // const beats = track.querySelectorAll('.beat');
-        // beats.forEach(beat => {
-        //     const notes = beat.querySelectorAll('.note');
-        //     notes.forEach(note => {
-        //         note.style.border = '';
-        //     });
-        // });
-        // sleep(50).then(() => {
-            track.style.height = '100px';
-        // });
+        track.style.height = '100px';
     }
+
+    // Decrease time stamp height
+    const timeStamps = track.querySelectorAll('.time-stamp');
+    timeStamps.forEach(timeStamp => {
+        timeStamp.style.height = '0px';
+    })
+
+    // Decrease pinch bar height
+    const pinchBar = trackContainer.querySelector('.pinch-bar');
+    pinchBar.style.height = '100px';
+    pinchBar.style.width = '0px';
 
     // 删除收回按钮
     const closeButton = trackContainer.querySelector('.close-button');
@@ -300,13 +324,20 @@ function closeTrackEdit(trackContainer) {
     }
 }
 
-// 创建节拍
-function createBeat(noteNum) {
-    // 创建节拍元素
+// Create beat
+function createBeat(id, noteNum) {
+    // Create beat element
     const beat = document.createElement('div');
     beat.classList.add('beat');
 
-    // 添加音符
+    // Add time stamp
+    const timeStamp = document.createElement('div');
+    timeStamp.classList.add('time-stamp');
+    timeStamp.textContent = String(id + 1);
+    timeStamp.style.height = '0px';
+    beat.appendChild(timeStamp);
+
+    // Add note
     for (let i = 0; i < noteNum; ++i) {
         // 创建音符元素
         const note = createNote();
@@ -356,41 +387,70 @@ function createNote() {
 // 鼠标在音符上悬停
 function hoverNote(currNote) {
     const beat = currNote.parentElement;
+    const track = beat.parentElement;
+    const trackContainer = track.parentElement;
+    const trackEditor = trackContainer.parentElement;
+
+    const noteId = parseInt(currNote.dataset.id, 10);
+    const noteNum = parseInt(trackEditor.dataset.noteNum, 10);
+
+    // Add shadow effect to notes in the same column
     const notes = beat.querySelectorAll('.note');
     notes.forEach(note => {
         note.style.filter = 'brightness(95%)';
     });
 
-    const track = beat.parentElement;
+    // Add shadow effect to notes in the same row
     const beats = track.querySelectorAll('.beat');
     beats.forEach(beat => {
         const notes = beat.querySelectorAll('.note');
-        const noteId = parseInt(currNote.dataset.id, 10);
-        const trackEditor = track.parentElement.parentElement;
-        const noteNum = parseInt(trackEditor.dataset.noteNum, 10);
         notes[noteNum - 1 - noteId].style.filter = 'brightness(95%)';
     })
     
+    // Add shadow effect to current note
     currNote.style.filter = 'brightness(80%)';
+
+    // Add shadow effect to corresponding time stamp
+    const timeStamp = beat.querySelector('.time-stamp');
+    timeStamp.style.filter = 'brightness(90%)';
+
+    // Add shadow effect to corresponding pinch
+    const pinchBar = trackContainer.querySelector('.pinch-bar');
+    const pinches = pinchBar.querySelectorAll('.pinch');
+    pinches[noteNum - 1 - noteId].style.filter = 'brightness(90%)';
 }
 
 // 鼠标离开音符
 function cancelHoverNote(currNote) {
     const beat = currNote.parentElement;
+    const track = beat.parentElement;
+    const trackContainer = track.parentElement;
+    const trackEditor = trackContainer.parentElement;
+
+    const noteId = parseInt(currNote.dataset.id, 10);
+    const noteNum = parseInt(trackEditor.dataset.noteNum, 10);
+
+    // Remove shadow effect from notes in the same column
     const notes = beat.querySelectorAll('.note');
     notes.forEach(note => {
         note.style.filter = '';
     });
 
-    const track = beat.parentElement;
+    // Remove shadow effect from notes in the same row
     const beats = track.querySelectorAll('.beat');
     beats.forEach(beat => {
         const notes = beat.querySelectorAll('.note');
-        const noteId = parseInt(currNote.dataset.id, 10);
-        const trackEditor = track.parentElement.parentElement;
-        const noteNum = parseInt(trackEditor.dataset.noteNum, 10);
         notes[noteNum - 1 - noteId].style.filter = '';
     })
+    
+    // Remove shadow effect from corresponding time stamp
+    const timeStamp = beat.querySelector('.time-stamp');
+    timeStamp.style.filter = '';
+
+    // Remove shadow effect from corresponding pinch
+    const pinchBar = trackContainer.querySelector('.pinch-bar');
+    const pinches = pinchBar.querySelectorAll('.pinch');
+    pinches[noteNum - 1 - noteId].style.filter = '';
 }
 
 // 编辑音符
@@ -437,6 +497,10 @@ function editNote(note) {
         noteId: noteId,
         instrument: note.dataset.instrument
     });
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 export {
