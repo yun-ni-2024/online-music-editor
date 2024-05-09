@@ -15,5 +15,5 @@ app.get('/:page', (req, res) => {
 // 启动服务器，监听指定端口
 const port = 2333;
 app.listen(port, () => {
-    console.log(`Frontend server is running on ${port}`);
+    console.log(`Frontend server is running on port ${port}`);
 });

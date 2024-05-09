@@ -3,10 +3,6 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const WebSocket = require("ws");
 const bodyParser = require('body-parser');
-const fs = require('fs');
-
-const configFile = fs.readFileSync('../frontend/config.json');
-const config = JSON.parse(configFile);
 
 const {
     authRoutes
@@ -30,7 +26,7 @@ app.use(authRoutes);
 // 启动服务器，监听指定端口
 const port = 3333;
 app.listen(port, () => {
-    console.log(`Backend server is running on http://${config.online ? config.onlineIP : config.offlineIP}:${port}`);
+    console.log(`Backend server is running on port :${port}`);
 });
 
 // 连接到 MongoDB 数据库
