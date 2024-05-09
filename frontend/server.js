@@ -1,9 +1,7 @@
 const express = require('express');
 const path = require('path');
-const cors = require('cors');
 
 const app = express();
-app.use(cors());
 
 // 配置静态文件服务，指定静态文件目录为当前目录
 app.use(express.static(path.join(__dirname)));
