@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // 发送邮箱给后端，请求验证码
         try {
-            response = await fetch(`http://119.45.17.160:3333/auth/send-code`, {
+            response = await fetch(`/auth/send-code`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
