@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // Add event listener to 'save' button
-    const saveButton = document.getElementById('save-as');
+    const saveButton = document.getElementById('save');
     saveButton.addEventListener('click', () => {
         const trackEditor = document.querySelector('.track-editor');
         console.log(111)
