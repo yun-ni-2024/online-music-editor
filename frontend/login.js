@@ -50,5 +50,5 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // 添加注册超链接
-    document.getElementById('register-link').href = '/register.html';
+    document.getElementById('register-link').href = '/register';
 });

@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // 发送邮箱给后端，请求验证码
         try {
-            response = await fetch(`http://localhost:3333/auth/send-code`, {
+            response = await fetch(`http://119.45.17.160:3333/auth/send-code`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (response.ok) {
                 // 注册成功，重定向到登录页面
                 alert('注册成功')
-                window.location.href = '/login.html';
+                window.location.href = '/login';
             } else {
                 // 注册失败，处理错误信息
                 const errorMessage = await response.text();
