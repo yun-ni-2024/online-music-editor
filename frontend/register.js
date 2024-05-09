@@ -1,15 +1,9 @@
-let config;
+import {
+    config
+} from './config.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('In function \'DOMContentLoaded\'')
-
-    fetch('config.json')
-        .then(response => response.json())
-        .then(data => {
-            config = data;
-            console.log('Load config: ', data);
-        })
-        .catch(error => console.error('Error loading configuration:', error));
 
     const sendCodeBtn = document.getElementById('send-code-btn');
     const registerBtn = document.getElementById('register-btn');
@@ -33,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // 发送邮箱给后端，请求验证码
         try {
-            response = await fetch(`http://119.45.17.160:3333/auth/send-code`, {
+            response = await fetch(`http://${config.online ? config.onlineIP : config.offlineIP}/auth/send-code`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -82,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         try {
-            const response = await fetch(`http://localhost:3333/auth/register`, {
+            const response = await fetch(`http:/${config.online ? config.onlineIP : config.offlineIP}/auth/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
