@@ -3,10 +3,6 @@ const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
-const fs = require('fs');
-
-const configFile = fs.readFileSync('../frontend/config.json');
-const config = JSON.parse(configFile);
 
 const {
     User
@@ -152,10 +148,10 @@ authRoutes.post('/auth/send-code', async (req, res) => {
 authRoutes.get('/home', (req, res) => {
     if (!req.cookies.authToken) {
         console.log('Redirected')
-        res.redirect(`http://${config.online ? config.onlineIP : config.offlineIP}:2333/login`); // 重定向到登录页面
+        res.redirect('/login'); // 重定向到登录页面
     } else {
         // 用户已经登录，渲染home页面
-        res.render(`http://${config.online ? config.onlineIP : config.offlineIP}:2333/home`);
+        res.render('/home');
     }
 });
 
@@ -163,10 +159,10 @@ authRoutes.get('/home', (req, res) => {
 authRoutes.get('/edit', (req, res) => {
     if (!req.cookies.authToken) {
         console.log('Redirected')
-        res.redirect(`http://${config.online ? config.onlineIP : config.offlineIP}:2333/login`); // 重定向到登录页面
+        res.redirect('/login'); // 重定向到登录页面
     } else {
         // 用户已经登录，渲染 edit 页面
-        res.render(`http://${config.online ? config.onlineIP : config.offlineIP}:2333/edit`);
+        res.render('/edit');
     }
 });
 
