@@ -1,11 +1,9 @@
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 
-const config = {
-    online: false,
-    onlineIP: "119.45.17.160",
-    offlineIP: "localhost"
-};
+const configFile = fs.readFileSync('config.json');
+const config = JSON.parse(configFile);
 
 const app = express();
 

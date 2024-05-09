@@ -1,14 +1,12 @@
-const config = {
-    online: false,
-    onlineIP: "119.45.17.160",
-    offlineIP: "localhost"
-};
-
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const WebSocket = require("ws");
 const bodyParser = require('body-parser');
+const fs = require('fs');
+
+const configFile = fs.readFileSync('../frontend/config.json');
+const config = JSON.parse(configFile);
 
 const {
     authRoutes

@@ -1,8 +1,12 @@
-const config = {
-    online: false,
-    onlineIP: "119.45.17.160",
-    offlineIP: "localhost"
-};
+let config;
+
+fetch('config.json')
+    .then(response => response.json())
+    .then(data => {
+        config = data;
+        console.log('Load config: ', data);
+    })
+    .catch(error => console.error('Error loading configuration:', error));
 
 // 初始化
 document.addEventListener("DOMContentLoaded", function() {

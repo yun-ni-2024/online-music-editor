@@ -1,8 +1,12 @@
-const config = {
-    online: false,
-    onlineIP: "119.45.17.160",
-    offlineIP: "localhost"
-};
+let config;
+
+fetch('config.json')
+    .then(response => response.json())
+    .then(data => {
+        config = data;
+        console.log('Load config: ', data);
+    })
+    .catch(error => console.error('Error loading configuration:', error));
 
 import {
     sendMessage
@@ -65,7 +69,7 @@ async function playMusic(music) {
 
         // Highlight all note elements at this beat
         const tracks = trackEditor.querySelectorAll('.track');
-        
+
         tracks.forEach(track => {
             const beats = track.querySelectorAll('.beat');
             const notes = beats[i].querySelectorAll('.note');

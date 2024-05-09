@@ -1,14 +1,12 @@
-const config = {
-    online: false,
-    onlineIP: "119.45.17.160",
-    offlineIP: "localhost"
-};
-
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
+const fs = require('fs');
+
+const configFile = fs.readFileSync('../frontend/config.json');
+const config = JSON.parse(configFile);
 
 const {
     User
