@@ -33,7 +33,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // 发送邮箱给后端，请求验证码
         try {
-            const response = await fetch(`http://${config.online ? config.onlineIP : config.offlineIP}:3333/auth/send-code`, {
+            response = await fetch(`http://${config.offlineIP}:3333/auth/send-code`, {
+            // const response = await fetch(`http://${config.online ? config.onlineIP : config.offlineIP}:3333/auth/send-code`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -82,7 +83,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         try {
-            const response = await fetch(`http://${config.online ? config.onlineIP : config.offlineIP}:3333/auth/register`, {
+            const response = await fetch(`http://${config.offlineIP}:3333/auth/register`, {
+            // const response = await fetch(`http://${config.online ? config.onlineIP : config.offlineIP}:3333/auth/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
