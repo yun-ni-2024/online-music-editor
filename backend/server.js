@@ -30,7 +30,7 @@ app.listen(port, () => {
 });
 
 // 连接到 MongoDB 数据库
-mongoose.connect(`mongodb://${config.offlineIP}:27017/online-music-editor`, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(`mongodb://localhost:27017/online-music-editor`, { useNewUrlParser: true, useUnifiedTopology: true })
 // mongoose.connect(`mongodb://${config.online ? config.onlineIP : config.offlineIP}:27017/online-music-editor`, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         console.log("Connected to MongoDB");
