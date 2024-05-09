@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // 发送邮箱给后端，请求验证码
         try {
-            response = await fetch(`http://${config.online ? config.onlineIP : config.offlineIP}:3333/auth/send-code`, {
+            const response = await fetch(`http://${config.online ? config.onlineIP : config.offlineIP}:3333/auth/send-code`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
