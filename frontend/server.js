@@ -1,11 +1,5 @@
 const express = require('express');
 const path = require('path');
-const fs = require('fs');
-
-// const configFile = fs.readFileSync('config.json');
-// const config = JSON.parse(configFile);
-
-const { config } = require('./config.js');
 
 const app = express();
 
@@ -21,5 +15,5 @@ app.get('/:page', (req, res) => {
 // 启动服务器，监听指定端口
 const port = 2333;
 app.listen(port, () => {
-    console.log(`Frontend server is running on http://${config.online ? config.onlineIP : config.offlineIP}:${port}`);
+    console.log(`Frontend server is running on ${port}`);
 });
