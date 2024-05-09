@@ -2,8 +2,10 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 
-const configFile = fs.readFileSync('config.json');
-const config = JSON.parse(configFile);
+// const configFile = fs.readFileSync('config.json');
+// const config = JSON.parse(configFile);
+
+const { config } = require('./config.js');
 
 const app = express();
 
