@@ -2,15 +2,18 @@ let config;
 
 document.addEventListener("DOMContentLoaded", function() {
     console.log('In function \'DOMContentLoaded\'');
-    
+
     fetch('config.json')
         .then(response => response.json())
         .then(data => {
             config = data;
             console.log('Load config: ', data);
+            initLoginPage();
         })
         .catch(error => console.error('Error loading configuration:', error));
-    
+});
+
+function initLoginPage() {
     const loginForm = document.querySelector('form');
 
     loginForm.addEventListener('submit', async function(event) {
@@ -49,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function() {
             alert('An error occurred while logging in. Please try again later.');
         }
     });
-
+    
     // 添加注册超链接
     document.getElementById('register-link').href = `http://${config.online ? config.onlineIP : config.offlineIP}:2333/register`;
-});
+}
