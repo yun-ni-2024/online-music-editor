@@ -1,12 +1,6 @@
-let config;
-
-fetch('config.json')
-    .then(response => response.json())
-    .then(data => {
-        config = data;
-        console.log('Load config: ', data);
-    })
-    .catch(error => console.error('Error loading configuration:', error));
+import {
+    config
+} from './config.js';
 
 import {
     sendMessage
@@ -65,7 +59,7 @@ function initHomeMusic(musicDescs) {
             });
 
             // 跳转到编辑页面
-            window.location.href = `http://${config.online ? config.onlineIP : config.offlineIP}:2333/edit`;
+            window.location.href = '/edit';
         });
     });
 
@@ -86,7 +80,7 @@ function initHomeMusic(musicDescs) {
         });
         
         // 跳转到编辑页面
-        window.location.href = `http://${config.online ? config.onlineIP : config.offlineIP}:2333/edit`;
+        window.location.href = '/edit';
     });
 }
 
