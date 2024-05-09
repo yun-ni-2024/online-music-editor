@@ -42,7 +42,6 @@ async function playMusic(music) {
     playbackIndicators.forEach(playbackIndicator => {
         playbackIndicator.style.visibility = 'visible';
         playbackIndicator.style.transition = 'left 0.25s linear';
-        console.log(playbackIndicator.style.visible, playbackIndicator.style.left, playbackIndicator.style.transition)
     });
 
     for (let i = 0; i < beatNum; i++) {
@@ -58,7 +57,6 @@ async function playMusic(music) {
         // Move all playback indicators to the next beat
         playbackIndicators.forEach(playbackIndicator => {
             playbackIndicator.style.left = String((i + 1) * beatWidth) + 'px';
-            console.log(playbackIndicator.style.visible, playbackIndicator.style.left, playbackIndicator.style.transition)
         });
 
         // Highlight all note elements at this beat
@@ -88,7 +86,6 @@ async function playMusic(music) {
         playbackIndicator.style.transition = '';
         playbackIndicator.style.left = '0px';
         playbackIndicator.style.visibility = 'hidden';
-        console.log(playbackIndicator.style.visible, playbackIndicator.style.left, playbackIndicator.style.transition)
     });
 }
 

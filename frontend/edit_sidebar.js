@@ -54,9 +54,11 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log('Instrument switched to violin');
     });
 
-    // 添加保存按钮响应函数
-    menuItems[1].querySelector('.submenu').querySelectorAll('.submenu-item')[1].addEventListener('click', () => {
+    // Add event listener to 'save' button
+    const saveButton = document.getElementById('save-as');
+    saveButton.addEventListener('click', () => {
         const trackEditor = document.querySelector('.track-editor');
+        console.log(111)
         if (trackEditor.dataset.isNew == 'true') {
             saveFileAs();
         } else {
