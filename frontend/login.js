@@ -20,7 +20,8 @@ document.addEventListener("DOMContentLoaded", function() {
         const password = document.getElementById('password').value;
 
         try {
-            const response = await fetch(`http://${config.online ? config.onlineIP : config.offlineIP}:3333/auth/login`, {
+            const response = await fetch(`http://${config.offlineIP}:3333/auth/login`, {
+            // const response = await fetch(`http://${config.online ? config.onlineIP : config.offlineIP}:3333/auth/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -50,5 +51,5 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // 添加注册超链接
-    document.getElementById('register-link').href = `http://${config.online ? config.onlineIP : config.offlineIP}:2333/register`;
+    // document.getElementById('register-link').href = `http://${config.online ? config.onlineIP : config.offlineIP}:2333/register`;
 });
