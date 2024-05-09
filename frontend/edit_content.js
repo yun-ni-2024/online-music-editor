@@ -4,13 +4,6 @@ const config = {
     offlineIP: "localhost"
 };
 
-const INIT_BEAT_NUM = 70;
-const MAX_NOTE_NUM = 36;
-
-const pianoColor = '#ffcc00';
-const guitarColor = '#cc3300';
-const violinColor = '#6600cc';
-
 import {
     sendMessage
 } from './message.js';
@@ -18,6 +11,19 @@ import {
 import {
     fetchMusic
 } from './edit_play.js';
+
+const INIT_BEAT_NUM = 70;
+const MAX_NOTE_NUM = 36;
+
+const pianoColor = '#99ccff';
+const guitarColor = '#ffcc00';
+const violinColor = '#ff99ff';
+
+const pinch = [
+    'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4', 'A#4', 'B4',
+    'C5', 'C#5', 'D5', 'D#5', 'E5', 'F5', 'F#5', 'G5', 'G#5', 'A5', 'A#5', 'B5',
+    'C6', 'C#6', 'D6', 'D#6', 'E6', 'F6', 'F#6', 'G6', 'G#6', 'A6', 'A#6', 'B6'
+];
 
 document.addEventListener("DOMContentLoaded", function() {
     console.log('In function \'DOMContentLoaded\'')
@@ -173,10 +179,12 @@ function createTrackContainer(beatNum, noteNum) {
     pinchBar.appendChild(corner);
 
     for (let i = 0; i < noteNum; i++) {
-        const pinch = document.createElement('div');
-        pinch.classList.add('pinch');
-        pinch.textContent = String(i);
-        pinchBar.appendChild(pinch);
+        const pinchLabel = document.createElement('div');
+        pinchLabel.classList.add('pinch-label');
+        const trackEditor = document.querySelector('.track-editor');
+        const noteNum = parseInt(trackEditor.dataset.noteNum);
+        pinchLabel.textContent = pinch[noteNum - 1 - i];
+        pinchBar.appendChild(pinchLabel);
     }
 
     trackContainer.appendChild(pinchBar);
@@ -184,6 +192,11 @@ function createTrackContainer(beatNum, noteNum) {
     // Add track
     const track = createTrack(beatNum, noteNum);
     trackContainer.appendChild(track);
+
+    // Add playback indicator
+    const playbackIndicator = document.createElement('div');
+    playbackIndicator.classList.add('playback-indicator');
+    trackContainer.appendChild(playbackIndicator);
 
     // Add 'delete' button
     const deleteButton = document.createElement('div');
@@ -196,14 +209,14 @@ function createTrackContainer(beatNum, noteNum) {
         const id = parseInt(trackContainer.dataset.id, 10);
         const trackEditor = trackContainer.parentNode;
 
-        // 删除音轨容器元素
+        // Delete track container
         deleteTrackContainer(trackContainer);
 
-        // 更新总音轨数量
+        // Update total track number
         const trackNum = parseInt(trackEditor.dataset.trackNum, 10);
         trackEditor.dataset.trackNum = String(trackNum - 1);
 
-        // 修改后继所有音轨编号
+        // Edit id of track containers after it
         for (let i = 0; i < trackEditor.children.length; i++) {
             const element = trackEditor.children[i];
             const elementId = parseInt(element.dataset.id, 10);
@@ -416,8 +429,8 @@ function hoverNote(currNote) {
 
     // Add shadow effect to corresponding pinch
     const pinchBar = trackContainer.querySelector('.pinch-bar');
-    const pinches = pinchBar.querySelectorAll('.pinch');
-    pinches[noteNum - 1 - noteId].style.filter = 'brightness(90%)';
+    const pinchLabels = pinchBar.querySelectorAll('.pinch-label');
+    pinchLabels[noteNum - 1 - noteId].style.filter = 'brightness(90%)';
 }
 
 // 鼠标离开音符
@@ -447,10 +460,10 @@ function cancelHoverNote(currNote) {
     const timeStamp = beat.querySelector('.time-stamp');
     timeStamp.style.filter = '';
 
-    // Remove shadow effect from corresponding pinch
+    // Remove shadow effect from corresponding pinch label
     const pinchBar = trackContainer.querySelector('.pinch-bar');
-    const pinches = pinchBar.querySelectorAll('.pinch');
-    pinches[noteNum - 1 - noteId].style.filter = '';
+    const pinchLabels = pinchBar.querySelectorAll('.pinch-label');
+    pinchLabels[noteNum - 1 - noteId].style.filter = '';
 }
 
 // 编辑音符
@@ -464,8 +477,12 @@ function editNote(note) {
 
     const trackEditor = document.querySelector('.track-editor');
 
-    if (note.dataset.instrument == 'none') {
-        // 添加音符特征
+    if (note.dataset.instrument == trackEditor.dataset.instrument) {
+        // Delete note feature
+        note.dataset.instrument = 'none';
+        note.style.backgroundColor = 'aliceblue';
+    } else {
+        // Add note feature
         note.dataset.instrument = trackEditor.dataset.instrument;
 
         switch (note.dataset.instrument) {
@@ -482,10 +499,6 @@ function editNote(note) {
                 console.error('Unknown instrument: ', cote.dataset.instrument);
                 break;
         }
-    } else {
-        // 删除音符特征
-        note.dataset.instrument = 'none';
-        note.style.backgroundColor = 'aliceblue';
     }
 
     // 向后端发送消息，更新音符

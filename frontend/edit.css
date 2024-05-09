@@ -110,7 +110,7 @@ body, html {
     height: 100px;
     background-color: #f0f0f0;
     /* margin: 5px 0; */
-    transition-duration: 0.5s;
+    transition: height 0.5s ease;
 }
 
 .close-button {
@@ -157,8 +157,7 @@ body, html {
     width: 18px;
     height: 17px;
     background-color: #f0f0f0;
-    transition-property: width, height;
-    transition-duration: 0.5s;
+    transition: height 0.5s ease;
 }
 
 .note {
@@ -174,15 +173,27 @@ body, html {
     width: 0px;
     height: 100px;
     background-color: #aaaaaa;
-    transition-duration: 0.5s;
+    transition: 0.5s ease;
     overflow: hidden;
 }
 
-.pinch {
+.pinch-label {
     display: flex;
     width: 20px;
     height: 15px;
     background-color: #f0f0f0;
+}
+
+.playback-indicator {
+    position: absolute;
+    visibility: hidden;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background-color:yellowgreen;
+    z-index: 9999;
+    transition: left 0.25s linear;
 }
 
 .save-modal {
