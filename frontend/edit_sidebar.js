@@ -1,12 +1,6 @@
-let config;
-
-fetch('config.json')
-    .then(response => response.json())
-    .then(data => {
-        config = data;
-        console.log('Load config: ', data);
-    })
-    .catch(error => console.error('Error loading configuration:', error));
+import {
+    config
+} from './config.js';
 
 import {
     saveFile,
@@ -79,18 +73,18 @@ document.addEventListener("DOMContentLoaded", function() {
     // Add event listener to 'home' button
     const homeButton = document.getElementById('home');
     homeButton.addEventListener('click', function() {
-        window.location.href = `http://${config.online ? config.onlineIP : config.offlineIP}:2333/home`;
+        window.location.href = '/home';
     });
 
     // Add event listener to 'gallery' button
     const galleryButton = document.getElementById('gallery');
     galleryButton.addEventListener('click', () => {
-        window.location.href = `http://${config.online ? config.onlineIP : config.offlineIP}:2333/gallery`;
+        window.location.href = '/gallery';
     });
 
     // Add event listener to 'switch account' button
     const switchAccountButton = document.getElementById('switch-account');
     switchAccountButton.addEventListener('click', () => {
-        window.location.href = `http://${config.online ? config.onlineIP : config.offlineIP}:2333/login`;
+        window.location.href = '/login';
     }); 
 });
