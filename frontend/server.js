@@ -6,7 +6,7 @@ const app = express();
 // 配置静态文件服务，指定静态文件目录为当前目录
 app.use(express.static(path.join(__dirname)));
 
-// 使用动态路由加载不同的HTML文件
+// 使用动态路由加载不同的 HTML 文件
 app.get('/:page', (req, res) => {
     const page = req.params.page;
     res.sendFile(path.join(__dirname, `${page}.html`));
