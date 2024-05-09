@@ -51,5 +51,5 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // 添加注册超链接
-    // document.getElementById('register-link').href = `http://${config.online ? config.onlineIP : config.offlineIP}:2333/register`;
+    document.getElementById('register-link').href = `http://${config.online ? config.onlineIP : config.offlineIP}:2333/register`;
 });
