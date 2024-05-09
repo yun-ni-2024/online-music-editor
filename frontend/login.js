@@ -1,15 +1,9 @@
-let config;
+import {
+    config
+} from './config.js';
 
 document.addEventListener("DOMContentLoaded", function() {
     console.log('In function \'DOMContentLoaded\'');
-
-    fetch('config.json')
-        .then(response => response.json())
-        .then(data => {
-            config = data;
-            console.log('Load config: ', data);
-        })
-        .catch(error => console.error('Error loading configuration:', error));
     
     const loginForm = document.querySelector('form');
 

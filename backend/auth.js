@@ -125,8 +125,6 @@ authRoutes.post('/auth/send-code', async (req, res) => {
             text: `Your verification code is: ${verificationCode}`
         };
 
-        console.log(111)
-
         // 发送邮件
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {

@@ -76,7 +76,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         try {
-            console.log(222)
             const response = await fetch(`http://${config.online ? config.onlineIP : config.offlineIP}:3333/auth/register`, {
                 method: 'POST',
                 headers: {
