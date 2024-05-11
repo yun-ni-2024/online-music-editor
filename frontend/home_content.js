@@ -15,6 +15,9 @@ document.addEventListener("DOMContentLoaded", function() {
     if (authToken) {
         // 用户已登录，可以执行相关操作，例如显示用户信息或访问受限资源
         console.log('User is logged in');
+
+        const userName = document.getElementById('user-name');
+        userName.textContent = localStorage.getItem('uid');
     } else {
         // 用户未登录，重定向到登录页面
         console.log('User is not logged in');

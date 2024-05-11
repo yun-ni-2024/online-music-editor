@@ -5,6 +5,36 @@ body, html {
     font-family: Arial, sans-serif;
 }
 
+.button {
+    display: flex;
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
+    --hover-brightness: 90%;
+    --active-brightness: 80%;
+}
+
+.button:hover {
+    filter: brightness(var(--hover-brightness));
+}
+
+.button:active {
+    filter: brightness(var(--active-brightness));
+}
+
+.centering {
+    display: flex;
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
+}
+
+.hoverable {
+    --hover-brightness: 90%;
+}
+
+.hoverable:hover {
+    filter: brightness(var(--hover-brightness));
+}
+
 #background {
     display: flex;
     width: 100%;
@@ -14,18 +44,21 @@ body, html {
 
 #sidebar {
     width: 100px;
+    height: 100%;
     background-color: antiquewhite;
 }
 
 #content {
     flex: 1;
     overflow: auto;
-    background-color: aquamarine;
+    background-color:#f0f0f0;
     z-index: 0;
 }
 
 .menu {
     display: flex;
+    height: 100%;
+    background-color: aliceblue;
     flex-direction: column;
 }
 
@@ -46,6 +79,7 @@ body, html {
 }
 
 .submenu-item {
+    background-color: #fff;
     height: 50px;
 }
 
@@ -97,16 +131,16 @@ body, html {
     display: flex;
     flex-direction: row;
     position: relative;
-    width: 100%;
+    width: calc(100% - 2px);
     background-color: darkslategray;
-    border-bottom: 1px solid #ddd;
+    border: 1px solid #ddd;
 }
 
 .track {
     display: flex;
     flex-direction: row;
     position: relative;
-    width: calc(100% - 120px);
+    /* width: calc(100% - 100px); */
     height: 100px;
     background-color: #f0f0f0;
     /* margin: 5px 0; */
@@ -114,28 +148,28 @@ body, html {
 }
 
 .close-button {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    width: 50px;
-    height: 50px;
+    display: none;
+    flex: 1;
+    top: 0px;
+    right: 0px;
     background-color: gray;
     color: #fff;
     border: none;
-    padding: 5px 10px;
+    
+    align-items: center; /* 垂直居中 */
+    justify-content: center; /* 水平居中 */
     cursor: pointer;
 }
 
 .delete-button {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    width: 50px;
-    height: 50px;
+    flex: 1;
+    top: 0px;
+    right: 0px;
     background-color: gray;
     color: #fff;
     border: none;
-    padding: 5px 10px;
+    /* text-align: center;
+    line-height: 100px; */
     cursor: pointer;
 }
 
@@ -158,6 +192,8 @@ body, html {
     height: 17px;
     background-color: #f0f0f0;
     transition: height 0.5s ease;
+    overflow: hidden;
+    font-size: 10px;
 }
 
 .note {
@@ -182,6 +218,7 @@ body, html {
     width: 20px;
     height: 15px;
     background-color: #f0f0f0;
+    font-size: 10px;
 }
 
 .playback-indicator {
@@ -191,7 +228,7 @@ body, html {
     left: 0;
     width: 2px;
     height: 100%;
-    background-color:yellowgreen;
+    background-color:dimgray;
     z-index: 9999;
     transition: left 0.25s linear;
 }
@@ -213,7 +250,7 @@ body, html {
     margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
+    width: 250px;
 }
   
 .close {

@@ -2,6 +2,10 @@ import {
     config
 } from './config.js';
 
+import {
+    showToast
+} from './package.js'
+
 document.addEventListener("DOMContentLoaded", function() {
     console.log('In function \'DOMContentLoaded\'');
     
@@ -32,10 +36,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 localStorage.setItem('authToken', data.authToken);
 
                 // 重定向到用户的个人页面或其他需要登录的页面
+                // showToast('登陆成功', 3000);
                 window.location.href = '/home';
             } else {
                 // 登录失败，显示错误消息
-                alert(data.error);
+                showToast(data.error, 3000);
             }
         } catch (error) {
             console.error('Error logging in:', error);

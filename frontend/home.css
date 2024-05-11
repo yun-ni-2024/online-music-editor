@@ -5,6 +5,36 @@ body, html {
     font-family: Arial, sans-serif;
 }
 
+.button {
+    display: flex;
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
+    --hover-brightness: 90%;
+    --active-brightness: 80%;
+}
+
+.button:hover {
+    filter: brightness(var(--hover-brightness));
+}
+
+.button:active {
+    filter: brightness(var(--active-brightness));
+}
+
+.centering {
+    display: flex;
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
+}
+
+.hoverable {
+    --hover-brightness: 90%;
+}
+
+.hoverable:hover {
+    filter: brightness(var(--hover-brightness));
+}
+
 #background {
     display: grid;
     grid-template-columns: 100px auto;
@@ -14,17 +44,22 @@ body, html {
 }
 
 #sidebar {
+    width: 100px;
+    height: 100%;
     background-color: antiquewhite;
 }
 
 #content {
-    background-color: aquamarine;
+    flex: 1;
+    overflow: auto;
+    background-color:#f0f0f0;
     z-index: 0;
-    overflow-y: auto; /* 允许垂直滚动 */
 }
 
 .menu {
     display: flex;
+    height: 100%;
+    background-color: aliceblue;
     flex-direction: column;
 }
 
@@ -45,19 +80,28 @@ body, html {
 }
 
 .submenu-item {
+    background-color: #fff;
     height: 50px;
 }
 
 .profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     height: 300px;
-    background-color: bisque;
+    background-color: lemonchiffon;
+}
+
+.profile img {
+    width: 200px; /* 设置宽度为 100 像素 */
+    height: 200px; /* 设置高度为 100 像素 */
 }
 
 .works {
     min-height: calc(100% - 300px - 20px); /* 设置works区域的最小高度为剩余空间的高度 */
     padding: 10px; /* 设置作品区域的内边距 */
-    background-color:lightpink;
-
+    background-color: linen;
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start; /* 从左向右排列 */

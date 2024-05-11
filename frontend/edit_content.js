@@ -10,7 +10,7 @@ import {
     fetchMusic
 } from './edit_play.js';
 
-const INIT_BEAT_NUM = 70;
+const INIT_BEAT_NUM = 75;
 const MAX_NOTE_NUM = 36;
 
 const pianoColor = '#99ccff';
@@ -54,48 +54,6 @@ function initEditPage() {
     trackEditor.dataset.isNew = 'true';
     trackEditor.dataset.instrument = 'piano'
     content.appendChild(trackEditor);
-
-    // Create 'new track' button
-    const addTrackBtn = document.createElement('div');
-    addTrackBtn.classList.add('add-track-button');
-    addTrackBtn.textContent = '新建音轨';
-    addTrackBtn.addEventListener('click', function(event) {
-        event.stopPropagation();
-
-        // Create track container
-        const beatNum = parseInt(trackEditor.dataset.beatNum, 10);
-        const noteNum = parseInt(trackEditor.dataset.noteNum, 10);
-        const trackContainer = createTrackContainer(beatNum, noteNum);
-
-        // Update track ID and track number
-        const id = parseInt(trackEditor.dataset.trackNum, 10)
-        trackContainer.dataset.id = String(id);
-        trackEditor.dataset.trackNum = String(id + 1);
-        trackEditor.appendChild(trackContainer);
-
-        console.log(`Add track, id = ${id}`);
-        // Send message to backend to create a track
-        sendMessage({
-            type: 'edit',
-            option: 'new track',
-            id: id,
-            beatNum: beatNum,
-            noteNum: noteNum
-        });
-
-    });
-    content.appendChild(addTrackBtn);
-
-    // Create 'play all' button
-    const playButton = document.createElement('div');
-    playButton.classList.add('play-button');
-    playButton.textContent = '播放所有音轨';
-
-    // Add event listener for 'play all' button
-    playButton.addEventListener('click', function(){
-        fetchMusic();
-    });
-    content.appendChild(playButton);
 }
 
 function fetchOpenedMusic() {
@@ -173,12 +131,12 @@ function createTrackContainer(beatNum, noteNum) {
 
     const corner = document.createElement('div');
     corner.classList.add('corner');
-    corner.textContent = '0';
     pinchBar.appendChild(corner);
 
     for (let i = 0; i < noteNum; i++) {
         const pinchLabel = document.createElement('div');
         pinchLabel.classList.add('pinch-label');
+        pinchLabel.classList.add('centering');
         const trackEditor = document.querySelector('.track-editor');
         const noteNum = parseInt(trackEditor.dataset.noteNum);
         pinchLabel.textContent = pinch[noteNum - 1 - i];
@@ -199,38 +157,17 @@ function createTrackContainer(beatNum, noteNum) {
     // Add 'delete' button
     const deleteButton = document.createElement('div');
     deleteButton.classList.add('delete-button');
+    deleteButton.classList.add('button');
     deleteButton.textContent = '删除';
 
     deleteButton.addEventListener('click', function(event) {
         event.stopPropagation();
-
-        const id = parseInt(trackContainer.dataset.id, 10);
-        const trackEditor = trackContainer.parentNode;
-
-        // Delete track container
-        deleteTrackContainer(trackContainer);
-
-        // Update total track number
-        const trackNum = parseInt(trackEditor.dataset.trackNum, 10);
-        trackEditor.dataset.trackNum = String(trackNum - 1);
-
-        // Edit id of track containers after it
-        for (let i = 0; i < trackEditor.children.length; i++) {
-            const element = trackEditor.children[i];
-            const elementId = parseInt(element.dataset.id, 10);
-            if (element.classList.contains('track-container') && elementId > id) {
-                element.dataset.id = String(elementId - 1);
-            }
+        if (trackContainer.dataset.editMode == 'false') {
+            deleteTrackContainer(trackContainer);
+        } else {
+            closeTrackEdit(trackContainer);
         }
-
-        console.log(`Delete track, id = ${id}`)
-
-        // 向后端发送消息，删除音轨
-        sendMessage({
-            type: 'edit',
-            option: 'delete track',
-            id: id
-        });
+        
     });
 
     trackContainer.appendChild(deleteButton);
@@ -243,6 +180,7 @@ function createTrack(beatNum, noteNum) {
     // 创建音轨元素
     const track = document.createElement('div');
     track.classList.add('track');
+    track.classList.add('hoverable');
 
     // 为这个音轨元素添加鼠标点击事件的响应函数
     track.addEventListener('click', function(event) {
@@ -266,7 +204,33 @@ function createTrack(beatNum, noteNum) {
 
 // 删除音轨容器
 function deleteTrackContainer(trackContainer) {
+    const id = parseInt(trackContainer.dataset.id, 10);
+    const trackEditor = trackContainer.parentNode;
+
+    // Delete track container
     trackContainer.remove();
+
+    // Update total track number
+    const trackNum = parseInt(trackEditor.dataset.trackNum, 10);
+    trackEditor.dataset.trackNum = String(trackNum - 1);
+
+    // Edit id of track containers after it
+    for (let i = 0; i < trackEditor.children.length; i++) {
+        const element = trackEditor.children[i];
+        const elementId = parseInt(element.dataset.id, 10);
+        if (element.classList.contains('track-container') && elementId > id) {
+            element.dataset.id = String(elementId - 1);
+        }
+    }
+
+    console.log(`Delete track, id = ${id}`)
+
+    // 向后端发送消息，删除音轨
+    sendMessage({
+        type: 'edit',
+        option: 'delete track',
+        id: id
+    });
 }
 
 // 切管音轨容器状态为编辑状态
@@ -275,8 +239,9 @@ function toggleTrackEdit(trackContainer) {
         return;
     }
 
-    // Increase track height
+    // Increase track height and remove hoverability
     const track = trackContainer.querySelector('.track');
+    track.classList.remove('hoverable');
     track.style.height = '557px';
 
     // Increase time stamp height
@@ -295,15 +260,9 @@ function toggleTrackEdit(trackContainer) {
         trackContainer.dataset.editMode = 'true';
     });
 
-    // 添加收回按钮
-    const closeButton = document.createElement('div');
-    closeButton.classList.add('close-button');
-    closeButton.textContent = '收回';
-    closeButton.addEventListener('click', function(event) {
-        event.stopPropagation();
-        closeTrackEdit(trackContainer);
-    }, {passive: true});
-    trackContainer.appendChild(closeButton);
+    // Change the delete button to close button
+    const deleteButton = trackContainer.querySelector('.delete-button');
+    deleteButton.textContent = '收回';
 }
 
 // 关闭音轨容器的编辑状态
@@ -311,11 +270,10 @@ function closeTrackEdit(trackContainer) {
     // 取消标记编辑模式
     trackContainer.dataset.editMode = 'false';
 
-    // 降低音轨高度
+    // Decrease track height and add hoverability back
     const track = trackContainer.querySelector('.track');
-    if (track) {
-        track.style.height = '100px';
-    }
+    track.classList.add('hoverable');
+    track.style.height = '100px';
 
     // Decrease time stamp height
     const timeStamps = track.querySelectorAll('.time-stamp');
@@ -328,11 +286,9 @@ function closeTrackEdit(trackContainer) {
     pinchBar.style.height = '100px';
     pinchBar.style.width = '0px';
 
-    // 删除收回按钮
-    const closeButton = trackContainer.querySelector('.close-button');
-    if (closeButton) {
-        closeButton.remove();
-    }
+    // Change the close button to remove button
+    const deleteButton = trackContainer.querySelector('.delete-button');
+    deleteButton.textContent = '删除';
 }
 
 // Create beat
@@ -344,6 +300,7 @@ function createBeat(id, noteNum) {
     // Add time stamp
     const timeStamp = document.createElement('div');
     timeStamp.classList.add('time-stamp');
+    timeStamp.classList.add('centering');
     timeStamp.textContent = String(id + 1);
     timeStamp.style.height = '0px';
     beat.appendChild(timeStamp);
@@ -517,5 +474,6 @@ function sleep(ms) {
 export {
     initEditPage,
     fetchOpenedMusic,
-    loadEditMusic
+    loadEditMusic,
+    createTrackContainer
 }

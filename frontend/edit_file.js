@@ -6,6 +6,10 @@ import {
     sendMessage
 } from './message.js';
 
+import {
+    showToast
+} from './package.js'
+
 // 获取保存弹窗容器
 const saveModal = document.querySelector('.save-modal');
 
@@ -18,6 +22,9 @@ function saveFile() {
         type: 'file',
         option: 'save file'
     });
+
+    // Show toast
+    showToast('保存成功', 3000);
 }
 
 // 保存为新的文件
@@ -58,6 +65,12 @@ function saveFileAs() {
         // 更新当前音乐文件状态
         const trackEditor = document.querySelector('.track-editor');
         trackEditor.dataset.isNew = 'false';
+
+        // Hide save modal
+        saveModal.style.display = "none";
+
+        // Show toast
+        showToast('保存成功', 3000);
     });
 }
 

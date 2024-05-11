@@ -44,6 +44,14 @@ async function playMusic(music) {
         playbackIndicator.style.transition = 'left 0.25s linear';
     });
 
+    for (let j = 0; j < trackNum; j++) {
+        for (let k = 0; k < noteNum; k++) {
+            if (music.tracks[j].beats[0].notes[k].instrument != 'none'){
+                const trash = music.tracks[j].beats[0].notes[k].instrument;
+            }
+        }
+    }
+
     for (let i = 0; i < beatNum; i++) {
         // Play all notes at this beat
         for (let j = 0; j < trackNum; j++) {

@@ -3,22 +3,35 @@ import {
 } from './config.js';
 
 import {
+    createTrackContainer
+} from './edit_content.js';
+
+import {
+    fetchMusic
+} from './edit_play.js';
+
+import {
+    sendMessage
+} from './message.js';
+
+import {
     saveFile,
     saveFileAs
 } from './edit_file.js';
 
-// 初始化
+// Initialize
 document.addEventListener("DOMContentLoaded", function() {
     const menuItems = document.querySelectorAll('.menu-item');
     let activeMenu = menuItems[0];
-    menuItems[0].querySelector('.submenu').style.height = '150px';
+    const menu = document.querySelector('.menu')
+    const totalHeight = menu.clientHeight;
+    menuItems[0].querySelector('.submenu').style.height = String(totalHeight - (menuItems.length * 50 + 1)) + 'px';
 
-    // 鼠标悬停在菜单项上时显示对应的子菜单
+    // Show submenus when mouse is hovering on the menu
     menuItems.forEach(menuItem => {
         menuItem.addEventListener('mouseover', function() {
             if (activeMenu != menuItem) {
-                const submenuNum = menuItem.querySelectorAll('.submenu-item').length;
-                menuItem.querySelector('.submenu').style.height = String(submenuNum * 50) + 'px';
+                menuItem.querySelector('.submenu').style.height = String(totalHeight - (menuItems.length * 50 + 1)) + 'px';
                 activeMenu.querySelector('.submenu').style.height = '0px';
                 activeMenu = menuItem;
             }
@@ -26,39 +39,68 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // 设置乐器选项的点击事件
-    const pianoButton = document.getElementById('piano');
-    const guitarButton = document.getElementById('guitar');
-    const violinButton = document.getElementById('violin');
+    const musicMenu = document.getElementById('music-menu');
+    const instrumentButtons = musicMenu.querySelectorAll('.submenu-item');
+    const instruments = ['piano', 'guitar', 'violin'];
 
-    pianoButton.addEventListener('click', () => {
-        // 切换到钢琴
-        const trackEditor = document.querySelector('.track-editor');
-        trackEditor.dataset.instrument = 'piano';
+    let activeInstrumentButton = instrumentButtons[0];
+    activeInstrumentButton.style.filter = 'brightness(85%)';
 
-        console.log('Instrument switched to piano');
+    instrumentButtons.forEach((instrumentButton, ind) => {
+        instrumentButton.addEventListener('click', () => {
+            if (activeInstrumentButton != instrumentButton) {
+                const trackEditor = document.querySelector('.track-editor');
+                trackEditor.dataset.instrument = instruments[ind];
+                
+                instrumentButton.style.filter = 'brightness(85%)';
+                activeInstrumentButton.style.filter = '';
+                activeInstrumentButton = instrumentButton;
+            }
+        });
     });
 
-    guitarButton.addEventListener('click', () => {
-        // 切换到吉他
-        const trackEditor = document.querySelector('.track-editor');
-        trackEditor.dataset.instrument = 'guitar';
+    // Add event listener to 'new track' button
+    const newTrackBtn = document.getElementById('new-track');
 
-        console.log('Instrument switched to guitar');
+    newTrackBtn.addEventListener('click', function(event) {
+        event.stopPropagation();
+
+        const trackEditor = document.querySelector('.track-editor');
+
+        // Create track container
+        const beatNum = parseInt(trackEditor.dataset.beatNum, 10);
+        const noteNum = parseInt(trackEditor.dataset.noteNum, 10);
+        const trackContainer = createTrackContainer(beatNum, noteNum);
+
+        // Update track ID and track number
+        const id = parseInt(trackEditor.dataset.trackNum, 10)
+        trackContainer.dataset.id = String(id);
+        trackEditor.dataset.trackNum = String(id + 1);
+        trackEditor.appendChild(trackContainer);
+
+        console.log(`Add track, id = ${id}`);
+        // Send message to backend to create a track
+        sendMessage({
+            type: 'edit',
+            option: 'new track',
+            id: id,
+            beatNum: beatNum,
+            noteNum: noteNum
+        });
+
     });
 
-    violinButton.addEventListener('click', () => {
-        // 切换到小提琴
-        const trackEditor = document.querySelector('.track-editor');
-        trackEditor.dataset.instrument = 'violin';
+    // Add event listener to 'play all'button
+    const playAllButton = document.getElementById('play-all');
 
-        console.log('Instrument switched to violin');
+    playAllButton.addEventListener('click', function(){
+        fetchMusic();
     });
 
     // Add event listener to 'save' button
     const saveButton = document.getElementById('save');
     saveButton.addEventListener('click', () => {
         const trackEditor = document.querySelector('.track-editor');
-        console.log(111)
         if (trackEditor.dataset.isNew == 'true') {
             saveFileAs();
         } else {
