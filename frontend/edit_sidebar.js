@@ -19,8 +19,24 @@ import {
     saveFileAs
 } from './edit_file.js';
 
+import {
+    tmpMusicNewTrack
+} from './tmp_music.js';
+
+import {
+    getUrlParam
+} from './package.js';
+
 // Initialize
 document.addEventListener("DOMContentLoaded", function() {
+    const path = document.location.pathname;
+    console.log('Path = ', path);
+    const pathWoParams = path.split('?')[0];
+    if (pathWoParams != '/edit' && pathWoParams != '/edit.html') {
+        console.log('Not in edit page, skip.');
+        return;
+    }
+
     const menuItems = document.querySelectorAll('.menu-item');
     let activeMenu = menuItems[0];
     const menu = document.querySelector('.menu')
@@ -73,21 +89,23 @@ document.addEventListener("DOMContentLoaded", function() {
         const trackContainer = createTrackContainer(beatNum, noteNum);
 
         // Update track ID and track number
-        const id = parseInt(trackEditor.dataset.trackNum, 10)
-        trackContainer.dataset.id = String(id);
-        trackEditor.dataset.trackNum = String(id + 1);
+        const trackId = parseInt(trackEditor.dataset.trackNum, 10)
+        trackContainer.dataset.id = String(trackId);
+        trackEditor.dataset.trackNum = String(trackId + 1);
         trackEditor.appendChild(trackContainer);
 
-        console.log(`Add track, id = ${id}`);
+        console.log(`Add track, id = ${trackId}`);
         // Send message to backend to create a track
-        sendMessage({
-            type: 'edit',
-            option: 'new track',
-            id: id,
-            beatNum: beatNum,
-            noteNum: noteNum
-        });
+        // sendMessage({
+        //     type: 'edit',
+        //     option: 'new track',
+        //     id: id,
+        //     beatNum: beatNum,
+        //     noteNum: noteNum
+        // });
 
+        const tmpMusicId = getUrlParam('tmpMusicId');
+        tmpMusicNewTrack(tmpMusicId, trackId, beatNum, noteNum);
     });
 
     // Add event listener to 'play all'button
@@ -117,7 +135,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Add event listener to 'home' button
     const homeButton = document.getElementById('home');
     homeButton.addEventListener('click', function() {
-        window.location.href = '/home';
+        window.location.href = '/home?uid=' + localStorage.getItem('uid');
     });
 
     // Add event listener to 'gallery' button

@@ -30,7 +30,7 @@ async function handleMessage(message) {
             ret = await handleFetch(message);
             break;
         case 'file':
-            await handleFile(message);
+            ret = await handleFile(message);
             break;
         default:
             console.log("Unknown type.");
@@ -108,20 +108,32 @@ async function handleFetch(message) {
 }
 
 async function handleFile(message) {
+    var ret = {
+        sendBack: 0
+    };
     switch (message.option) {
-        case 'save file':
-            await saveFile();
-            break;
-        case 'save file as':
-            saveFileAs(message.uid, message.fileName);
-            break;
-        case 'open my file':
+        // case 'save file':
+        //     await saveFile();
+        //     break;
+        // case 'save file as':
+        //     saveFileAs(message.uid, message.fileName);
+        //     break;
+        case 'fetch my file':
             openMyFile(message.id);
+            break;
+        case 'save as':
+            ret.sendBack = 1;
+            ret.data = {
+                type: 'file id',
+                data: await saveFileAs(message.tmpMusic, message.uid, message.fileName)
+            };
             break;
         default:
             console.log("Unknown option.");
             break;
     }
+
+    return ret;
 }
 
 module.exports = {

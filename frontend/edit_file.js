@@ -7,8 +7,13 @@ import {
 } from './message.js';
 
 import {
-    showToast
+    showToast,
+    getUrlParam
 } from './package.js'
+
+import {
+    saveTmpMusicAs
+} from './tmp_music.js';
 
 // 获取保存弹窗容器
 const saveModal = document.querySelector('.save-modal');
@@ -27,7 +32,7 @@ function saveFile() {
     showToast('保存成功', 3000);
 }
 
-// 保存为新的文件
+// Save current music as a new file
 function saveFileAs() {
     console.log('In function \'saveFileAs\'');
 
@@ -54,13 +59,15 @@ function saveFileAs() {
         const uid = localStorage.getItem('uid');
         const fileName = document.getElementById('saveFileName').value;
         
-        // 向后端发送消息，执行保存操作
-        sendMessage({
-            type: 'file',
-            option: 'save file as',
-            uid: uid,
-            fileName: fileName
-        });
+        // // 向后端发送消息，执行保存操作
+        // sendMessage({
+        //     type: 'file',
+        //     option: 'save file as',
+        //     uid: uid,
+        //     fileName: fileName
+        // });
+        const tmpMusicId = getUrlParam('tmpMusicId');
+        saveTmpMusicAs(tmpMusicId, uid, fileName);
 
         // 更新当前音乐文件状态
         const trackEditor = document.querySelector('.track-editor');

@@ -3,10 +3,27 @@ import {
 } from './config.js';
 
 import {
-    sendMessage
-} from './message.js'
+    // sendMessage
+} from './message.js';
 
-document.addEventListener("DOMContentLoaded", function() {
+import {
+    newTmpMusic,
+    loadMusicToTmp
+} from './tmp_music.js';
+
+import {
+    getUrlParam
+} from './package.js';
+
+document.addEventListener("DOMContentLoaded", async function() {
+    const path = document.location.pathname;
+    console.log('Path = ', path);
+    const pathWoParams = path.split('?')[0];
+    if (pathWoParams != '/home' && pathWoParams != '/home.html') {
+        console.log('Not in home page, skip.');
+        return;
+    }
+
     console.log('In function \'DOMContentLoaded\'')
     
     // 检查是否存在认证令牌
@@ -15,56 +32,72 @@ document.addEventListener("DOMContentLoaded", function() {
     if (authToken) {
         // 用户已登录，可以执行相关操作，例如显示用户信息或访问受限资源
         console.log('User is logged in');
-
-        const userName = document.getElementById('user-name');
-        userName.textContent = localStorage.getItem('uid');
     } else {
         // 用户未登录，重定向到登录页面
         console.log('User is not logged in');
         window.location.href = '/login';
     }
-});
 
-function fetchHomeMusic() {
-    const uid = localStorage.getItem('uid');
-    sendMessage({
-        type: 'fetch',
-        option: 'fetch my music desc',
-        uid: uid
-    });
-}
-
-function initHomeMusic(musicDescs) {
-    console.log('In function \'initHomeMusic\'')
-
-    console.log('musicDescs:', musicDescs)
+    const userName = document.getElementById('user-name');
+    userName.textContent = localStorage.getItem('uid');
 
     // 获取作品区域元素
     const works = document.querySelector('.works');
 
-    // 添加所有作品
-    musicDescs.forEach(musicDesc => {
-        // 创建作品元素
-        const work = document.createElement('div');
-        work.classList.add('work');
-        work.textContent = musicDesc.fileName;
-
-        // 将作品元素添加到作品区域的最后
-        works.appendChild(work);
-
-        // 监听作品元素的点击事件
-        work.addEventListener('click', () => {
-            // 加载作品
-            sendMessage({
-                type: 'file',
-                option: 'open my file',
-                id: musicDesc.fileId
-            });
-
-            // 跳转到编辑页面
-            window.location.href = '/edit';
+    try {
+        const uid = getUrlParam('uid');
+        const response = await fetch(`http://${config.online ? config.onlineIP : config.offlineIP}:3333/home/?uid=${uid}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
         });
-    });
+
+        const data = await response.json();
+        console.log('Receiving response:', data);
+
+        // 添加所有作品
+        data.musicDescs.forEach(musicDesc => {
+            // 创建作品元素
+            const work = document.createElement('div');
+            work.classList.add('work');
+            work.textContent = musicDesc.fileName;
+
+            // 将作品元素添加到作品区域的最后
+            works.appendChild(work);
+
+            // 监听作品元素的点击事件
+            work.addEventListener('click', async () => {
+                try {
+                    const fileId = musicDesc.fileId;
+
+                    // Fetch music from database
+                    const response = await fetch(`http://${config.online ? config.onlineIP : config.offlineIP}:3333/file/fetch`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ fileId })
+                    });
+                    
+                    const data = await response.json();
+                    console.log('Receiving response:', data);
+
+                    const music = data.music;
+
+                    // Load music to TmpMusic
+                    const tmpMusicId = loadMusicToTmp(music, fileId);
+
+                    // Switch to edit page
+                    window.location.href = '/edit?tmpMusicId=' + String(tmpMusicId);
+                } catch (error) {
+                    console.error('Error fetching file:', error);
+                }
+            });
+        });
+    } catch (error) {
+        console.error('Error initializing home:', error);
+    }
 
     // 创建新建作品元素
     const newWork = document.createElement('div');
@@ -76,18 +109,15 @@ function initHomeMusic(musicDescs) {
 
     // 监听新建作品元素的点击事件
     newWork.addEventListener('click', () => {
-        // 清空 tmpMusic
-        sendMessage({
-            type: 'edit',
-            option: 'clear tmp music'
-        });
+        // // 清空 tmpMusic
+        // sendMessage({
+        //     type: 'edit',
+        //     option: 'clear tmp music'
+        // });
+
+        const tmpMusicId = newTmpMusic();
         
         // 跳转到编辑页面
-        window.location.href = '/edit';
+        window.location.href = '/edit?tmpMusicId=' + String(tmpMusicId);
     });
-}
-
-export {
-    fetchHomeMusic,
-    initHomeMusic
-};
+});

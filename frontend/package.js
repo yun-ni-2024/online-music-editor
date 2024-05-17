@@ -23,6 +23,18 @@ function showToast(message, duration) {
     }, duration);
 }
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function getUrlParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const value = urlParams.get(param);
+    return value;
+}
+
 export {
-    showToast
+    showToast,
+    sleep,
+    getUrlParam
 };

@@ -21,10 +21,10 @@ function generateAuthToken(user) {
 const authRoutes = express.Router();
 
 // 解析请求体中的 JSON 数据
-authRoutes.use(bodyParser.json());
+// authRoutes.use(bodyParser.json());
 
 // 处理登录请求
-authRoutes.post('/auth/login', async (req, res) => {
+authRoutes.post('/login', async (req, res) => {
     console.log('Handling POST /auth/login');
 
     const { email, password } = req.body;
@@ -59,7 +59,7 @@ authRoutes.post('/auth/login', async (req, res) => {
 });
 
 // 处理注册请求
-authRoutes.post('/auth/register', async (req, res) => {
+authRoutes.post('/register', async (req, res) => {
     console.log('Handling POST /auth/register');
 
     const { email, password, vrfyCode } = req.body;
@@ -99,7 +99,7 @@ authRoutes.post('/auth/register', async (req, res) => {
 });
 
 // 处理发送邮件请求
-authRoutes.post('/auth/send-code', async (req, res) => {
+authRoutes.post('/send-code', async (req, res) => {
     console.log('Handling POST /auth/send-code');
 
     const { email } = req.body;
@@ -144,27 +144,27 @@ authRoutes.post('/auth/send-code', async (req, res) => {
     }
 });
 
-// 在 home 页面路由中检查认证令牌
-authRoutes.get('/home', (req, res) => {
-    if (!req.cookies.authToken) {
-        console.log('Redirected')
-        res.redirect('/login'); // 重定向到登录页面
-    } else {
-        // 用户已经登录，渲染home页面
-        res.render('/home');
-    }
-});
+// // 在 home 页面路由中检查认证令牌
+// authRoutes.get('/home', (req, res) => {
+//     if (!req.cookies.authToken) {
+//         console.log('Redirected')
+//         res.redirect('/login'); // 重定向到登录页面
+//     } else {
+//         // 用户已经登录，渲染home页面
+//         res.render('/home');
+//     }
+// });
 
-// 在 edit 页面路由中检查认证令牌
-authRoutes.get('/edit', (req, res) => {
-    if (!req.cookies.authToken) {
-        console.log('Redirected')
-        res.redirect('/login'); // 重定向到登录页面
-    } else {
-        // 用户已经登录，渲染 edit 页面
-        res.render('/edit');
-    }
-});
+// // 在 edit 页面路由中检查认证令牌
+// authRoutes.get('/edit', (req, res) => {
+//     if (!req.cookies.authToken) {
+//         console.log('Redirected')
+//         res.redirect('/login'); // 重定向到登录页面
+//     } else {
+//         // 用户已经登录，渲染 edit 页面
+//         res.render('/edit');
+//     }
+// });
 
 // 导出路由
 module.exports = {

@@ -1,6 +1,6 @@
-let {
-    tmpMusic
-} = require('./tmp_music');
+// let {
+//     tmpMusic
+// } = require('./tmp_music');
 
 const {
     MusicFile,
@@ -31,41 +31,27 @@ async function saveFile() {
         });
 }
 
-function saveFileAs(uid, fileName) {
+async function saveFileAs(tmpMusic, uid, fileName) {
     let fileId = 'none';
 
     // 保存音乐文件到数据库
     const musicFile = new MusicFile({
         music: tmpMusic.music
-    })
+    });
 
-    musicFile.save()
-        .then(savedMusicFile => {
-            console.log('Music file saved successfully:', savedMusicFile, savedMusicFile._id);
-            fileId = savedMusicFile._id;
+    const savedMusicFile = await musicFile.save();
+    fileId = savedMusicFile._id;
 
-            // 更新 tmpMusic 信息
-            tmpMusic.isNew = false;
-            tmpMusic.fileId = fileId;
+    // 保存音乐描述数据到数据库
+    const musicDesc = new MusicDesc({
+        uid: uid,
+        fileId: fileId,
+        fileName: fileName
+    });
 
-            // 保存音乐描述数据到数据库
-            const musicDesc = new MusicDesc({
-                uid: uid,
-                fileId: fileId,
-                fileName: fileName
-            })
-
-            musicDesc.save()
-                .then(savedMusicDesc => {
-                    console.log('Music desc saved successfully:', savedMusicDesc, savedMusicDesc._id);
-                })
-                .catch(error => {
-                    console.error('Error saving music desc:', error);
-                });
-        })
-        .catch(error => {
-            console.error('Error saving music:', error);
-        });
+    const savedMusicDesc = await musicDesc.save();
+    
+    return fileId;
 }
 
 function openMyFile(fileId) {

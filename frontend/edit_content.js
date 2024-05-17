@@ -3,12 +3,16 @@ import {
 } from './config.js';
 
 import {
-    sendMessage
-} from './message.js';
+    sleep,
+    getUrlParam
+} from './package.js';
 
 import {
-    fetchMusic
-} from './edit_play.js';
+    getTmpMusic,
+    tmpMusicEditNote,
+    tmpMusicDelTrack,
+    removeTmpMusic
+} from './tmp_music.js';
 
 const INIT_BEAT_NUM = 75;
 const MAX_NOTE_NUM = 36;
@@ -24,6 +28,14 @@ const pinch = [
 ];
 
 document.addEventListener("DOMContentLoaded", function() {
+    const path = document.location.pathname;
+    console.log('Path = ', path);
+    const pathWoParams = path.split('?')[0];
+    if (pathWoParams != '/edit' && pathWoParams != '/edit.html') {
+        console.log('Not in edit page, skip.');
+        return;
+    }
+
     console.log('In function \'DOMContentLoaded\'')
     
     // 检查是否存在认证令牌
@@ -37,15 +49,10 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log('User is not logged in');
         window.location.href = '/login';
     }
-});
-
-// Initialize
-function initEditPage() {
-    console.log('In function \'initEditPage\'');
-
-    const content = document.getElementById('content');
 
     // Create track editor
+    const content = document.getElementById('content');
+
     const trackEditor = document.createElement('div');
     trackEditor.classList.add('track-editor');
     trackEditor.dataset.trackNum = String(0);
@@ -53,17 +60,17 @@ function initEditPage() {
     trackEditor.dataset.noteNum = String(MAX_NOTE_NUM);
     trackEditor.dataset.isNew = 'true';
     trackEditor.dataset.instrument = 'piano'
+
     content.appendChild(trackEditor);
-}
 
-function fetchOpenedMusic() {
-    sendMessage({
-        type: 'fetch',
-        option: 'fetch opened music'
-    });
-}
+    // Load current music file
+    const tmpMusicId = getUrlParam('tmpMusicId');
+    const tmpMusic = getTmpMusic(tmpMusicId);
+    console.log('tmpMusic=', tmpMusic);
+    InitCurrMusic(tmpMusic);
+});
 
-function loadEditMusic(currMusic) {
+function InitCurrMusic(currMusic) {
     console.log('In function \'initEditMusic\'');
 
     const trackEditor = document.querySelector('.track-editor');
@@ -223,14 +230,7 @@ function deleteTrackContainer(trackContainer) {
         }
     }
 
-    console.log(`Delete track, id = ${id}`)
-
-    // 向后端发送消息，删除音轨
-    sendMessage({
-        type: 'edit',
-        option: 'delete track',
-        id: id
-    });
+    tmpMusicDelTrack(tmpMusicId, trackId);
 }
 
 // 切管音轨容器状态为编辑状态
@@ -456,24 +456,17 @@ function editNote(note) {
         }
     }
 
-    // 向后端发送消息，更新音符
-    sendMessage({
-        type: 'edit',
-        option: 'edit note',
-        trackId: trackId,
-        beatId: beatId,
-        noteId: noteId,
-        instrument: note.dataset.instrument
-    });
+    // Update note in tmpMusic
+    const tmpMusicId = getUrlParam('tmpMusicId');
+    tmpMusicEditNote(tmpMusicId, trackId, beatId, noteId, note.dataset.instrument);
 }
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
+// Clear tmpMusic before closing the page
+window.addEventListener('beforeunload', () => {
+    const tmpMusicId = getUrlParam('tmpMusicId');
+    removeTmpMusic(tmpMusicId);
+});
 
 export {
-    initEditPage,
-    fetchOpenedMusic,
-    loadEditMusic,
     createTrackContainer
 }

@@ -3,8 +3,12 @@ import {
 } from './config.js';
 
 import {
-    sendMessage
+    // sendMessage
 } from './message.js';
+
+import {
+    sleep
+} from './package.js';
 
 const pinch = [
     'C4', 'C4s', 'D4', 'D4s', 'E4', 'F4', 'F4s', 'G4', 'G4s', 'A4', 'A4s', 'B4',
@@ -16,10 +20,10 @@ const pinch = [
 function fetchMusic() {
     console.log('In function \'fetchMusic\'');
 
-    sendMessage({
-        type: 'fetch',
-        option: 'fetch current music'
-    });
+    // sendMessage({
+    //     type: 'fetch',
+    //     option: 'fetch current music'
+    // });
 }
 
 async function playMusic(music) {
@@ -95,10 +99,6 @@ async function playMusic(music) {
         playbackIndicator.style.left = '0px';
         playbackIndicator.style.visibility = 'hidden';
     });
-}
-
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 // Play a note

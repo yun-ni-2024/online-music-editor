@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 // 重定向到用户的个人页面或其他需要登录的页面
                 // showToast('登陆成功', 3000);
-                window.location.href = '/home';
+                window.location.href = '/home?uid=' + data.uid;
             } else {
                 // 登录失败，显示错误消息
                 showToast(data.error, 3000);
