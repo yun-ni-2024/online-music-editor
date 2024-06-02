@@ -74,7 +74,7 @@ function InitCurrMusic(currMusic) {
     console.log('In function \'initEditMusic\'');
 
     const trackEditor = document.querySelector('.track-editor');
-    if (currMusic.isNew == false){
+    if (currMusic.fileId && currMusic.uid == localStorage.getItem('uid')) {
         trackEditor.dataset.isNew = 'false';
     }
 

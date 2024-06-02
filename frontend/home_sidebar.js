@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Add event listener to 'home' button
     const homeButton = document.getElementById('home');
     homeButton.addEventListener('click', function() {
-        window.location.href = '/home';
+        window.location.href = '/home?uid=' + localStorage.getItem('uid');
     });
 
     // Add event listener to 'gallery' button

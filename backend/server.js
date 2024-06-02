@@ -13,6 +13,10 @@ const {
 } = require('./home')
 
 const {
+    galleryRoutes
+} = require('./gallery')
+
+const {
     fileRoutes
 } = require('./file')
 
@@ -32,6 +36,8 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 app.use('/auth', authRoutes);
 
 app.use('/home', homeRoutes);
+
+app.use('/gallery', galleryRoutes);
 
 app.use('/file', fileRoutes);
 

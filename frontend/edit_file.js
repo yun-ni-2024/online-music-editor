@@ -12,7 +12,8 @@ import {
 } from './package.js'
 
 import {
-    saveTmpMusicAs
+    saveTmpMusicAs,
+    saveTmpMusic
 } from './tmp_music.js';
 
 // 获取保存弹窗容器
@@ -21,12 +22,9 @@ const saveModal = document.querySelector('.save-modal');
 // 保存为已有文件
 function saveFile() {
     console.log('In function \'saveFile\'');
-
-    // 向后端发送消息，执行保存操作
-    sendMessage({
-        type: 'file',
-        option: 'save file'
-    });
+    
+    const tmpMusicId = getUrlParam('tmpMusicId');
+    saveTmpMusic(tmpMusicId);
 
     // Show toast
     showToast('保存成功', 3000);

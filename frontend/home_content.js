@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", async function() {
                     const music = data.music;
 
                     // Load music to TmpMusic
-                    const tmpMusicId = loadMusicToTmp(music, fileId);
+                    const tmpMusicId = loadMusicToTmp(music, fileId, localStorage.getItem('uid'));
 
                     // Switch to edit page
                     window.location.href = '/edit?tmpMusicId=' + String(tmpMusicId);

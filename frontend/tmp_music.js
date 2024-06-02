@@ -8,6 +8,7 @@ function newTmpMusic() {
 
     tmpMusics[nonce] = {
         fileId: null,
+        uid: null,
         music: {
             tracks: []
         }
@@ -57,9 +58,29 @@ async function saveTmpMusicAs(tmpMusicId, uid, fileName) {
         console.log('Receiving response:', data)
 
         tmpMusic.fileId = data.fileId;
+        tmpMusic.uid = uid;
         localStorage.setItem('tmpMusics', JSON.stringify(tmpMusics));
     } catch (error) {
         console.error('Error saving file as:', error);
+    }
+}
+
+async function saveTmpMusic(tmpMusicId) {
+    const tmpMusics = JSON.parse(localStorage.getItem('tmpMusics')) || {};
+    const tmpMusic = tmpMusics[tmpMusicId];
+
+    try {
+        const music = tmpMusic.music;
+
+        const response = await fetch(`http://${config.online ? config.onlineIP : config.offlineIP}:3333/file/save`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ music })
+        });
+    } catch (error) {
+        console.error('Error saving file:', error);
     }
 }
 
@@ -70,12 +91,13 @@ function getTmpMusic(tmpMusicId) {
     return tmpMusic;
 }
 
-function loadMusicToTmp(music, fileId) {
+function loadMusicToTmp(music, fileId, uid) {
     const tmpMusics = JSON.parse(localStorage.getItem('tmpMusics')) || {};
     const nonce = parseInt(localStorage.getItem('nonce'), 10) || 0;
 
     tmpMusics[nonce] = {
         fileId: fileId,
+        uid: uid,
         music: music
     };
 
@@ -112,6 +134,7 @@ export {
     newTmpMusic,
     tmpMusicNewTrack,
     saveTmpMusicAs,
+    saveTmpMusic,
     getTmpMusic,
     loadMusicToTmp,
     tmpMusicEditNote,

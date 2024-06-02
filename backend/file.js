@@ -12,7 +12,7 @@ fileRoutes.post('/saveAs', async (req, res) => {
     console.log('Handling POST /file/saveAs');
 
     const { music, uid, fileName } = req.body;
-    console.log('Saving file:', music, uid, fileName);
+    console.log('Saving file as:', music, uid, fileName);
 
     try {
         // 保存音乐文件到数据库
@@ -36,6 +36,24 @@ fileRoutes.post('/saveAs', async (req, res) => {
     } catch (error) {
         console.log('Error saving file as:', error);
         res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+fileRoutes.post('/save', async (req, res) => {
+    console.log('Handling POST /file/save');
+
+    const { updatedMusic } = req.body;
+    console.log('Saving file:', updatedMusic);
+
+    try {
+        const musicId = music.fileId;
+        const originalMusic = await MusicFile.findById(musicId);
+
+        originalMusic.music = updatedMusic;
+
+        await originalMusic.save();
+    } catch (error) {
+        console.error('Error updating music:', error);
     }
 });
 

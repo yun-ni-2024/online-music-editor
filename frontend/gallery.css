@@ -5,6 +5,36 @@ body, html {
     font-family: Arial, sans-serif;
 }
 
+.button {
+    display: flex;
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
+    --hover-brightness: 90%;
+    --active-brightness: 80%;
+}
+
+.button:hover {
+    filter: brightness(var(--hover-brightness));
+}
+
+.button:active {
+    filter: brightness(var(--active-brightness));
+}
+
+.centering {
+    display: flex;
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
+}
+
+.hoverable {
+    --hover-brightness: 90%;
+}
+
+.hoverable:hover {
+    filter: brightness(var(--hover-brightness));
+}
+
 #background {
     display: grid;
     grid-template-columns: 100px auto;
@@ -14,17 +44,24 @@ body, html {
 }
 
 #sidebar {
+    width: 100px;
+    height: 100%;
     background-color: antiquewhite;
 }
 
 #content {
-    background-color: aquamarine;
+    flex: 1;
+    /* display: flex; */
+    flex-direction: column;
+    overflow: auto;
+    background-color:#f0f0f0;
     z-index: 0;
-    overflow-y: auto; /* 允许垂直滚动 */
 }
 
 .menu {
     display: flex;
+    height: 100%;
+    background-color: aliceblue;
     flex-direction: column;
 }
 
@@ -45,5 +82,164 @@ body, html {
 }
 
 .submenu-item {
+    background-color: #fff;
     height: 50px;
+}
+
+/* Styles for search bar */
+.search-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+/* Styles for search input */
+#search-input {
+    padding: 8px 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+}
+
+/* Styles for search button */
+#search-button {
+    padding: 8px 20px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 0 5px 5px 0;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    outline: none;
+}
+
+/* Styles for search button hover state */
+#search-button:hover {
+    background-color: #e0e0e0;
+}
+
+/* Styles for scrolling board */
+.scrolling-board {
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+    background-color: lemonchiffon;
+    box-sizing: border-box; /* Ensure padding and border are included in the height */
+    /* display: flex;
+    height: 300px;
+    justify-content: center;
+    align-items: center;
+    overflow-x: auto;
+    white-space: nowrap;
+    margin-bottom: 20px;
+    background-color: aqua; */
+}
+
+.swiper-button-prev {
+    position: absolute;
+    left: 50px;
+    bottom: 50px;
+    width: 30px;
+    height: 30px;
+    background-color: beige;
+}
+
+.swiper-button-next {
+    width: 30;
+    height: 30;
+    background-color: beige;
+}
+
+.swiper-container {
+    position: relative;
+    width: 500px;
+    height: 300px;
+    border: 1px solid #ccc;
+    /* padding: 10px; */
+    overflow: hidden;
+}
+
+.swiper-wrapper {
+
+}
+
+/* Position the next button at the top right */
+.swiper-button-next {
+    top: 10px;
+    right: 10px;
+    left: auto;
+    transform: none;
+}
+
+/* Position the prev button at the top left */
+.swiper-button-prev {
+    top: 10px;
+    left: 10px;
+    right: auto;
+    transform: none;
+}
+
+/* Make all slides translucent */
+.swiper-slide {
+    display: flex;
+    background-color: darkkhaki;
+    justify-content: center;
+    align-items: center;
+    opacity: 0.5;
+    transition: 0.5s ease; /* Ensure a smooth transition */
+}
+
+/* Override the opacity for the active slide to make it fully opaque */
+.swiper-slide-active {
+    opacity: 1;
+}
+  
+.swiper-container-horizontal > .swiper-wrapper {
+    display: flex;
+}
+
+.scrolling-board::-webkit-scrollbar {
+    width: 0; /* Hide scrollbar */
+}
+
+.swiper-container::-webkit-scrollbar {
+    width: 0; /* Hide scrollbar */
+}
+
+.swiper-wrapper::-webkit-scrollbar {
+    width: 0; /* Hide scrollbar */
+}
+
+/* Styles for image container
+.work-container {
+    width: 200px;
+    height: 200px;
+    display: inline-block;
+    background-color: aqua;
+    margin-right: 10px;
+} */
+
+.works {
+    /* flex: 1; */
+    /* flex-grow: 1; */
+    /* min-height: calc(100% - 300px - 20px); */
+    min-height: calc(100% - 500px - 36px - 20px - 20px);
+    padding: 10px; /* 设置作品区域的内边距 */
+    background-color: linen;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* 从左向右排列 */
+    align-content: flex-start; /* 从上向下排列 */
+    box-sizing: border-box; /* Ensure padding and border are included in the height */
+}
+
+.work {
+    width: calc(20% - 20px); /* 每行5个作品，减去间距 */
+    height: 200px; /* 作品高度 */
+    margin: 10px; /* 设置作品之间的间距 */
+    background-color: lightblue;
 }
