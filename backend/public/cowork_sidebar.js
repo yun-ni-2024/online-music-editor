@@ -3,21 +3,18 @@ import {
 } from './config.js';
 
 import {
+    socket,
     createTrackContainer
-} from './edit_content.js';
+} from './cowork_content.js';
 
 import {
     fetchMusic
-} from './edit_play.js';
-
-import {
-    sendMessage
-} from './message.js';
+} from './cowork_play.js';
 
 import {
     saveFile,
     saveFileAs
-} from './edit_file.js';
+} from './cowork_file.js';
 
 import {
     getTmpMusic,
@@ -30,14 +27,6 @@ import {
 
 // Initialize
 document.addEventListener("DOMContentLoaded", async function() {
-    const path = document.location.pathname;
-    console.log('Path = ', path);
-    const pathWoParams = path.split('?')[0];
-    if (pathWoParams != '/edit' && pathWoParams != '/edit.html') {
-        console.log('Not in edit page, skip.');
-        return;
-    }
-
     const menuItems = document.querySelectorAll('.menu-item');
     let activeMenu = menuItems[0];
     const menu = document.querySelector('.menu')
@@ -87,26 +76,38 @@ document.addEventListener("DOMContentLoaded", async function() {
         // Create track container
         const beatNum = parseInt(trackEditor.dataset.beatNum, 10);
         const noteNum = parseInt(trackEditor.dataset.noteNum, 10);
+        const trackId = parseInt(trackEditor.dataset.trackNum, 10)
+        const trackContainer = createTrackContainer(beatNum, noteNum);
+        
+        // Update track ID and track number
+        trackContainer.dataset.id = String(trackId);
+        trackEditor.dataset.trackNum = String(trackId + 1);
+        trackEditor.appendChild(trackContainer);
+
+        socket.emit('add track', {
+            trackId,
+            beatNum,
+            noteNum
+        });
+    });
+
+    socket.on('add track', (opt) => {
+        console.log('Receive socket message: add track');
+
+        const trackEditor = document.querySelector('.track-editor');
+
+        // Create track container
+        const beatNum = opt.beatNum;
+        const noteNum = opt.noteNum;
         const trackContainer = createTrackContainer(beatNum, noteNum);
 
         // Update track ID and track number
-        const trackId = parseInt(trackEditor.dataset.trackNum, 10)
+        const trackId = opt.trackId;
         trackContainer.dataset.id = String(trackId);
         trackEditor.dataset.trackNum = String(trackId + 1);
         trackEditor.appendChild(trackContainer);
 
         console.log(`Add track, id = ${trackId}`);
-        // Send message to backend to create a track
-        // sendMessage({
-        //     type: 'edit',
-        //     option: 'new track',
-        //     id: id,
-        //     beatNum: beatNum,
-        //     noteNum: noteNum
-        // });
-
-        const tmpMusicId = getUrlParam('tmpMusicId');
-        tmpMusicNewTrack(tmpMusicId, trackId, beatNum, noteNum);
     });
 
     // Add event listener to 'play all'button
@@ -131,30 +132,6 @@ document.addEventListener("DOMContentLoaded", async function() {
     const saveAsButton = document.getElementById('save-as');
     saveAsButton.addEventListener('click', () => {
         saveFileAs();
-    });
-
-    // Add event listener to 'cowork' button
-    const coworkButton = document.getElementById('cowork');
-    coworkButton.addEventListener('click', async () => {
-        try {
-            const tmpMusicId = getUrlParam('tmpMusicId');
-            const tmpMusic = getTmpMusic(tmpMusicId);
-            const response = await fetch(`http://${config.online ? config.onlineIP : config.offlineIP}:3333/file/cowork`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ tmpMusic })
-            });
-
-            const data = await response.json();
-            console.log('Receiving response:', data);
-
-            const port = data.port;
-            window.location.href = `http://${config.online ? config.onlineIP : config.offlineIP}:${port}`;
-        } catch (error) {
-            console.error('Error starting cowork:', error);
-        }
     });
 
     // Add event listener to 'home' button

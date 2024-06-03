@@ -1,0 +1,268 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+}
+
+.button {
+    display: flex;
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
+    --hover-brightness: 90%;
+    --active-brightness: 80%;
+}
+
+.button:hover {
+    filter: brightness(var(--hover-brightness));
+}
+
+.button:active {
+    filter: brightness(var(--active-brightness));
+}
+
+.centering {
+    display: flex;
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
+}
+
+.hoverable {
+    --hover-brightness: 90%;
+}
+
+.hoverable:hover {
+    filter: brightness(var(--hover-brightness));
+}
+
+#background {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    background-color: azure;
+}
+
+#sidebar {
+    width: 100px;
+    height: 100%;
+    background-color: antiquewhite;
+}
+
+#content {
+    flex: 1;
+    overflow: auto;
+    background-color:#f0f0f0;
+    z-index: 0;
+}
+
+.menu {
+    display: flex;
+    height: 100%;
+    background-color: aliceblue;
+    flex-direction: column;
+}
+
+.menu-item {
+    position: relative;
+}
+
+.submenu-head {
+    height: 50px;
+    background-color: azure;
+}
+
+.submenu {
+    height: 0px;
+    background-color: aliceblue;
+    transition: height 0.6s ease;
+    overflow: hidden;
+}
+
+.submenu-item {
+    background-color: #fff;
+    height: 50px;
+}
+
+.track-editor {
+    position: relative;
+    width: 100%;
+    overflow: auto;
+    background-color: cadetblue;
+    z-index: 1;
+}
+
+#new-music-button {
+    position: relative;
+    top: 0;
+    width: 70px;
+    height: 70px;
+    background-color:blueviolet;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.add-track-button {
+    position: relative;
+    top: 0;
+    width: 70px;
+    height: 70px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.play-button {
+    position: relative;
+    top: 0;
+    width: 70px;
+    height: 70px;
+    background-color: crimson;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.track-container {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    width: calc(100% - 2px);
+    background-color: darkslategray;
+    border: 1px solid #ddd;
+}
+
+.track {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    /* width: calc(100% - 100px); */
+    height: 100px;
+    background-color: #f0f0f0;
+    /* margin: 5px 0; */
+    transition: height 0.5s ease;
+}
+
+.close-button {
+    display: none;
+    flex: 1;
+    top: 0px;
+    right: 0px;
+    background-color: gray;
+    color: #fff;
+    border: none;
+    
+    align-items: center; /* 垂直居中 */
+    justify-content: center; /* 水平居中 */
+    cursor: pointer;
+}
+
+.delete-button {
+    flex: 1;
+    top: 0px;
+    right: 0px;
+    background-color: gray;
+    color: #fff;
+    border: none;
+    /* text-align: center;
+    line-height: 100px; */
+    cursor: pointer;
+}
+
+.beat {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+}
+
+.corner {
+    display: flex;
+    width: 20px;
+    height: 17px;
+    background-color: #f0f0f0;
+}
+
+.time-stamp {
+    display: flex;
+    width: 18px;
+    height: 17px;
+    background-color: #f0f0f0;
+    transition: height 0.5s ease;
+    overflow: hidden;
+    font-size: 10px;
+}
+
+.note {
+    display: flex;
+    width: 18px;
+    height: 15px;
+    background-color: aliceblue;
+}
+
+.pinch-bar {
+    display: flex;
+    flex-direction: column;
+    width: 0px;
+    height: 100px;
+    background-color: #aaaaaa;
+    transition: 0.5s ease;
+    overflow: hidden;
+}
+
+.pinch-label {
+    display: flex;
+    width: 20px;
+    height: 15px;
+    background-color: #f0f0f0;
+    font-size: 10px;
+}
+
+.playback-indicator {
+    position: absolute;
+    visibility: hidden;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background-color:dimgray;
+    z-index: 9999;
+    transition: left 0.25s linear;
+}
+
+.save-modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+  
+.save-modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 250px;
+}
+  
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+  
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}

@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>在线音乐编辑器 - 编辑</title>
-        <link rel="stylesheet" href="edit.css">
+        <link rel="stylesheet" href="cowork.css">
     </head>
     <body>
         <div id="background">
@@ -30,7 +30,6 @@
                         <div class="submenu">
                             <div class="submenu-item button" id="save">保存</div>
                             <div class="submenu-item button" id="save-as">另存为</div>
-                            <div class="submenu-item button" id="cowork">共同创作</div>
                         </div>
                     </div>
                     <div class="menu-item" id="web-menu">
@@ -55,9 +54,10 @@
                 <button id="saveButton">保存</button>
             </div>
         </div>
-        <script type="module" src="edit_sidebar.js"></script>
-        <script type="module" src="edit_content.js"></script>
-        <script type="module" src="edit_play.js"></script>
-        <script type="module" src="edit_file.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script type="module" src="cowork_sidebar.js"></script>
+        <script type="module" src="cowork_content.js"></script>
+        <!-- <script type="module" src="cowork_play.js"></script>
+        <script type="module" src="cowork_file.js"></script> -->
     </body>
 </html>

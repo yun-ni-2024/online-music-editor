@@ -5,6 +5,10 @@ const WebSocket = require("ws");
 const bodyParser = require('body-parser');
 
 const {
+    handleMessage
+} = require('./message_handler');
+
+const {
     authRoutes
 } = require('./auth')
 
@@ -19,10 +23,6 @@ const {
 const {
     fileRoutes
 } = require('./file')
-
-const {
-    handleMessage
-} = require('./message_handler');
 
 const app = express();
 

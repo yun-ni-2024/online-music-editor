@@ -1,5 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const http = require('http');
+const socketIo = require('socket.io');
 
 const {
     MusicFile,
@@ -7,6 +9,8 @@ const {
 } = require('./models');
 
 const fileRoutes = express.Router();
+
+let port = 4333;
 
 fileRoutes.post('/saveAs', async (req, res) => {
     console.log('Handling POST /file/saveAs');
@@ -72,6 +76,73 @@ fileRoutes.post('/fetch', async (req, res) => {
         res.status(200).json({ music: music });
     } catch (error) {
         console.log('Error fetching file:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+fileRoutes.post('/cowork', async (req, res) => {
+    console.log('Handling POST /file/cowork');
+
+    const { tmpMusic } = req.body;
+    console.log('tmpMusic:', tmpMusic);
+
+    try {
+        const coworkApp = express();
+        const server = http.createServer(coworkApp);
+        const io = socketIo(server);
+
+        coworkApp.use(express.static('public'));
+
+        io.on('connection', (socket) => {
+            console.log('a user connected');
+
+            socket.on('get currMusic', () => {
+                socket.emit('currMusic', tmpMusic);
+            });
+
+            socket.on('add track', (opt) => {
+                console.log('Receive socket message: add track');
+
+                tmpMusic.music.tracks.push({ beats: [] });
+                for (let i = 0; i < opt.beatNum; i++) {
+                    tmpMusic.music.tracks[opt.trackId].beats.push({ notes: [] });
+                    for (let j = 0; j < opt.noteNum; j++) {
+                        tmpMusic.music.tracks[opt.trackId].beats[i].notes.push({ instrument: 'none' });
+                    }
+                }
+
+                socket.broadcast.emit('add track', opt);
+            });
+
+            socket.on('del track', (opt) => {
+                console.log('Receive socket message: del track');
+
+                tmpMusic.music.tracks.splice(opt.trackId, 1);
+
+                socket.broadcast.emit('del track', opt);
+            });
+
+            socket.on('edit note', (opt) => {
+                console.log('Receive socket message: edit note');
+
+                tmpMusic.music.tracks[opt.trackId].beats[opt.beatId].notes[opt.noteId].instrument = opt.instrument;
+
+                socket.broadcast.emit('edit note', opt);
+            });
+
+            socket.on('disconnect', () => {
+                console.log('user disconnected');
+            });
+        });
+
+        port++;
+        server.listen(port, () => {
+            console.log('listening on port:', port);
+        });
+
+        res.status(200).json({ port: port });
+    } catch (error) {
+        console.error('Error starting coworking:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
