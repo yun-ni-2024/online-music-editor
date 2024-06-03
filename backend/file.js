@@ -86,7 +86,7 @@ fileRoutes.post('/fetch', async (req, res) => {
 fileRoutes.post('/cowork', async (req, res) => {
     console.log('Handling POST /file/cowork');
 
-    const { tmpMusic } = req.body;
+    const { tmpMusic, hostId } = req.body;
     console.log('tmpMusic:', tmpMusic);
 
     try {
@@ -96,11 +96,14 @@ fileRoutes.post('/cowork', async (req, res) => {
 
         coworkApp.use(express.static('public'));
 
-        io.on('connection', (socket) => {
+        io.on('connection', async (socket) => {
             console.log('a user connected');
 
             socket.on('get currMusic', () => {
-                socket.emit('currMusic', tmpMusic);
+                socket.emit('currMusic', {
+                    tmpMusic,
+                    hostId
+                });
             });
 
             socket.on('add track', (opt) => {
@@ -131,6 +134,58 @@ fileRoutes.post('/cowork', async (req, res) => {
                 tmpMusic.music.tracks[opt.trackId].beats[opt.beatId].notes[opt.noteId].instrument = opt.instrument;
 
                 socket.broadcast.emit('edit note', opt);
+            });
+
+            socket.on('save file as', async (opt) => {
+                console.log('Receive socket message: save file as');
+
+                try {
+                    // 保存音乐文件到数据库
+                    const musicFile = new MusicFile({
+                        music: tmpMusic.music
+                    });
+                
+                    const savedMusicFile = await musicFile.save();
+                    const fileId = savedMusicFile._id;
+
+                    tmpMusic.fileId = fileId;
+                    tmpMusic.uid = hostId;
+                
+                    // 保存音乐描述数据到数据库
+                    const musicDesc = new MusicDesc({
+                        uid: hostId,
+                        fileId: fileId,
+                        fileName: opt.fileName
+                    });
+                
+                    await musicDesc.save();
+            
+                    res.status(200).json({ fileId: fileId });
+                } catch (error) {
+                    console.log('Error saving file as:', error);
+                }
+                
+                socket.broadcast.emit('save file as', opt);
+            });
+
+            socket.on('save file', async () => {
+                try {
+                    const musicId = tmpMusic.fileId;
+                    const originalMusic = await MusicFile.findById(musicId);
+            
+                    originalMusic.music = tmpMusic.music;
+            
+                    await originalMusic.save();
+                } catch (error) {
+                    console.error('Error saving music:', error);
+                }
+            })
+
+            socket.on('fetch music to play', () => {
+                const music = tmpMusic.music;
+                socket.emit('music to play', {
+                    music
+                });
             });
 
             socket.on('disconnect', () => {

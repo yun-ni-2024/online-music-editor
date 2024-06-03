@@ -8,18 +8,13 @@ import {
 } from './cowork_content.js';
 
 import {
-    fetchMusic
+    playMusic
 } from './cowork_play.js';
 
 import {
     saveFile,
     saveFileAs
 } from './cowork_file.js';
-
-import {
-    getTmpMusic,
-    tmpMusicNewTrack
-} from './tmp_music.js';
 
 import {
     getUrlParam
@@ -113,25 +108,25 @@ document.addEventListener("DOMContentLoaded", async function() {
     // Add event listener to 'play all'button
     const playAllButton = document.getElementById('play-all');
 
-    playAllButton.addEventListener('click', function(){
-        fetchMusic();
+    playAllButton.addEventListener('click', function() {
+        socket.emit('fetch music to play');
     });
 
     // Add event listener to 'save' button
     const saveButton = document.getElementById('save');
-    saveButton.addEventListener('click', () => {
+    saveButton.addEventListener('click', async  () => {
         const trackEditor = document.querySelector('.track-editor');
         if (trackEditor.dataset.isNew == 'true') {
-            saveFileAs();
+            await saveFileAs();
         } else {
-            saveFile();
+            await saveFile();
         }
     });
 
     // Add event listener to 'save as' button
     const saveAsButton = document.getElementById('save-as');
-    saveAsButton.addEventListener('click', () => {
-        saveFileAs();
+    saveAsButton.addEventListener('click', async () => {
+        await saveFileAs();
     });
 
     // Add event listener to 'home' button

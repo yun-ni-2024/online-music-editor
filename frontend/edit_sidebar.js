@@ -7,7 +7,7 @@ import {
 } from './edit_content.js';
 
 import {
-    fetchMusic
+    playMusic
 } from './edit_play.js';
 
 import {
@@ -112,13 +112,14 @@ document.addEventListener("DOMContentLoaded", async function() {
     // Add event listener to 'play all'button
     const playAllButton = document.getElementById('play-all');
 
-    playAllButton.addEventListener('click', function(){
-        fetchMusic();
+    playAllButton.addEventListener('click', function() {
+        const tmpMusicId = getUrlParam('tmpMusicId');
+        playMusic(tmpMusicId);
     });
 
     // Add event listener to 'save' button
     const saveButton = document.getElementById('save');
-    saveButton.addEventListener('click',async  () => {
+    saveButton.addEventListener('click', async  () => {
         const trackEditor = document.querySelector('.track-editor');
         if (trackEditor.dataset.isNew == 'true') {
             await saveFileAs();
@@ -139,12 +140,13 @@ document.addEventListener("DOMContentLoaded", async function() {
         try {
             const tmpMusicId = getUrlParam('tmpMusicId');
             const tmpMusic = getTmpMusic(tmpMusicId);
+            const hostId = localStorage.getItem('uid');
             const response = await fetch(`http://${config.online ? config.onlineIP : config.offlineIP}:3333/file/cowork`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ tmpMusic })
+                body: JSON.stringify({ tmpMusic, hostId })
             });
 
             const data = await response.json();

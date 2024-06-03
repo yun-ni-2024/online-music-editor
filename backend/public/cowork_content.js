@@ -45,8 +45,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Load current music file
     socket.emit('get currMusic');
-    socket.on('currMusic', (currMusic) => {
-        InitCurrMusic(currMusic);
+    socket.on('currMusic', (data) => {
+        InitCurrMusic(data);
     });
 
     socket.on('del track', (opt) => {
@@ -94,15 +94,21 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-function InitCurrMusic(currMusic) {
+function InitCurrMusic(data) {
     console.log('In function \'initEditMusic\'');
 
+    const currMusic = data.tmpMusic;
+    const hostId = data.hostId;
+
     console.log('currMusic:', currMusic);
+    console.log('hostId:', hostId);
 
     const trackEditor = document.querySelector('.track-editor');
-    // if (currMusic.fileId && currMusic.uid == localStorage.getItem('uid')) {
-    //     trackEditor.dataset.isNew = 'false';
-    // }
+    if (currMusic.fileId && currMusic.uid == hostId) {
+        trackEditor.dataset.isNew = 'false';
+    }
+
+    localStorage.setItem('hostId', hostId);
 
     const trackNum = currMusic.music.tracks.length;
     let beatNum = INIT_BEAT_NUM;

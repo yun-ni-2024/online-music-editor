@@ -6,21 +6,21 @@ import {
     sleep
 } from './package.js';
 
+import {
+    socket
+} from './cowork_content.js';
+
 const pinch = [
     'C4', 'C4s', 'D4', 'D4s', 'E4', 'F4', 'F4s', 'G4', 'G4s', 'A4', 'A4s', 'B4',
     'C5', 'C5s', 'D5', 'D5s', 'E5', 'F5', 'F5s', 'G5', 'G5s', 'A5', 'A5s', 'B5',
     'C6', 'C6s', 'D6', 'D6s', 'E6', 'F6', 'F6s', 'G6', 'G6s', 'A6', 'A6s', 'B6'
 ];
 
-// Fetch current music
-function fetchMusic() {
-    console.log('In function \'fetchMusic\'');
-
-    // sendMessage({
-    //     type: 'fetch',
-    //     option: 'fetch current music'
-    // });
-}
+document.addEventListener("DOMContentLoaded", async function() {
+    socket.on('music to play', (data) => {
+        playMusic(data.music);
+    })
+});
 
 async function playMusic(music) {
     console.log('In function \'playMusic\'');
@@ -106,6 +106,5 @@ function playSound(instrument, pinchId, duration) {
 }
 
 export {
-    fetchMusic,
     playMusic
 };
