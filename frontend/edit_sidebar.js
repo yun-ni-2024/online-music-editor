@@ -118,19 +118,19 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     // Add event listener to 'save' button
     const saveButton = document.getElementById('save');
-    saveButton.addEventListener('click', () => {
+    saveButton.addEventListener('click',async  () => {
         const trackEditor = document.querySelector('.track-editor');
         if (trackEditor.dataset.isNew == 'true') {
-            saveFileAs();
+            await saveFileAs();
         } else {
-            saveFile();
+            await saveFile();
         }
     });
 
     // Add event listener to 'save as' button
     const saveAsButton = document.getElementById('save-as');
-    saveAsButton.addEventListener('click', () => {
-        saveFileAs();
+    saveAsButton.addEventListener('click', async () => {
+        await saveFileAs();
     });
 
     // Add event listener to 'cowork' button

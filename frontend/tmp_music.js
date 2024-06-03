@@ -40,6 +40,8 @@ function tmpMusicNewTrack(tmpMusicId, trackId, beatNum, noteNum) {
 }
 
 async function saveTmpMusicAs(tmpMusicId, uid, fileName) {
+    console.log('In function \'saveTmpMusicAs\'');
+
     const tmpMusics = JSON.parse(localStorage.getItem('tmpMusics')) || {};
     const tmpMusic = tmpMusics[tmpMusicId];
 
@@ -66,19 +68,22 @@ async function saveTmpMusicAs(tmpMusicId, uid, fileName) {
 }
 
 async function saveTmpMusic(tmpMusicId) {
+    console.log('In function \'saveTmpMusic\'');
+    
     const tmpMusics = JSON.parse(localStorage.getItem('tmpMusics')) || {};
     const tmpMusic = tmpMusics[tmpMusicId];
 
     try {
-        const music = tmpMusic.music;
-
         const response = await fetch(`http://${config.online ? config.onlineIP : config.offlineIP}:3333/file/save`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ music })
+            body: JSON.stringify({ tmpMusic })
         });
+
+        const data = await response.json();
+        console.log('Receiving response:', data)
     } catch (error) {
         console.error('Error saving file:', error);
     }
@@ -127,7 +132,10 @@ function tmpMusicDelTrack(tmpMusicId, trackId) {
 
 function removeTmpMusic(tmpMusicId) {
     const tmpMusics = JSON.parse(localStorage.getItem('tmpMusics')) || {};
-    delete tmpMusics.tmpMusicId;
+
+    delete tmpMusics[tmpMusicId];
+
+    localStorage.setItem('tmpMusics', JSON.stringify(tmpMusics));
 }
 
 export {

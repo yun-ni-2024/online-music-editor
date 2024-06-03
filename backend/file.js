@@ -46,18 +46,21 @@ fileRoutes.post('/saveAs', async (req, res) => {
 fileRoutes.post('/save', async (req, res) => {
     console.log('Handling POST /file/save');
 
-    const { updatedMusic } = req.body;
-    console.log('Saving file:', updatedMusic);
+    const { tmpMusic } = req.body;
+    console.log('Saving file:', tmpMusic);
 
     try {
-        const musicId = music.fileId;
+        const musicId = tmpMusic.fileId;
         const originalMusic = await MusicFile.findById(musicId);
 
-        originalMusic.music = updatedMusic;
+        originalMusic.music = tmpMusic.music;
 
         await originalMusic.save();
+
+        res.status(200).json({ fileId: tmpMusic.fileId });
     } catch (error) {
-        console.error('Error updating music:', error);
+        console.error('Error saving music:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
 });
 
