@@ -132,13 +132,13 @@ document.addEventListener("DOMContentLoaded", async function() {
     // Add event listener to 'home' button
     const homeButton = document.getElementById('home');
     homeButton.addEventListener('click', function() {
-        window.location.href = '/home?uid=' + localStorage.getItem('uid');
+        window.location.href = `http://${config.online ? config.onlineIP : config.offlineIP}:2333/home?uid=${getUrlParam('uid')}`;
     });
 
     // Add event listener to 'gallery' button
     const galleryButton = document.getElementById('gallery');
     galleryButton.addEventListener('click', () => {
-        window.location.href = '/gallery';
+        window.location.href = `http://${config.online ? config.onlineIP : config.offlineIP}:2333/gallery`;
     });
 
     // Add event listener to 'switch account' button

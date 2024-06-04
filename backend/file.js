@@ -95,9 +95,15 @@ fileRoutes.post('/cowork', async (req, res) => {
         const io = socketIo(server);
 
         coworkApp.use(express.static('public'));
+        const connectedUsers = {}; // Track connected users
 
         io.on('connection', async (socket) => {
             console.log('a user connected');
+
+            // Track the number of connected users
+            if (!connectedUsers[socket.id]) {
+                connectedUsers[socket.id] = true;
+            }
 
             socket.on('get currMusic', () => {
                 socket.emit('currMusic', {
@@ -190,6 +196,15 @@ fileRoutes.post('/cowork', async (req, res) => {
 
             socket.on('disconnect', () => {
                 console.log('user disconnected');
+
+                delete connectedUsers[socket.id];
+
+                // Check if no users are connected and close the socket if necessary
+                if (Object.keys(connectedUsers).length === 0) {
+                    // Perform any necessary cleanup here
+                    console.log('No users connected. Performing cleanup and closing socket.');
+                    socket.disconnect(true); // Close the socket
+                }
             });
         });
 

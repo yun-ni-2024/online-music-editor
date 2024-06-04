@@ -156,15 +156,11 @@ body, html {
 
 .swiper-container {
     position: relative;
-    width: 500px;
+    width: 750px;
     height: 300px;
     border: 1px solid #ccc;
     /* padding: 10px; */
     overflow: hidden;
-}
-
-.swiper-wrapper {
-
 }
 
 /* Position the next button at the top right */
@@ -186,11 +182,25 @@ body, html {
 /* Make all slides translucent */
 .swiper-slide {
     display: flex;
-    background-color: darkkhaki;
     justify-content: center;
     align-items: center;
+    flex-direction: column; /* Arrange sub-elements vertically */
+    background-color: darkkhaki;
     opacity: 0.5;
     transition: 0.5s ease; /* Ensure a smooth transition */
+}
+
+.slide-content {
+    text-align: center;
+}
+.slide-content .music-name {
+    font-size: 20px;
+    font-weight: bold;
+}
+.slide-content .author {
+    font-size: 16px;
+    color: blue;
+    cursor: pointer;
 }
 
 /* Override the opacity for the active slide to make it fully opaque */
@@ -214,19 +224,7 @@ body, html {
     width: 0; /* Hide scrollbar */
 }
 
-/* Styles for image container
-.work-container {
-    width: 200px;
-    height: 200px;
-    display: inline-block;
-    background-color: aqua;
-    margin-right: 10px;
-} */
-
 .works {
-    /* flex: 1; */
-    /* flex-grow: 1; */
-    /* min-height: calc(100% - 300px - 20px); */
     min-height: calc(100% - 500px - 36px - 20px - 20px);
     padding: 10px; /* 设置作品区域的内边距 */
     background-color: linen;
@@ -238,8 +236,52 @@ body, html {
 }
 
 .work {
+    display: flex;
+    flex-direction: column;
     width: calc(20% - 20px); /* 每行5个作品，减去间距 */
     height: 200px; /* 作品高度 */
     margin: 10px; /* 设置作品之间的间距 */
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
     background-color: lightblue;
+}
+
+.author {
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.cowork-modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+  
+.cowork-modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 250px;
+}
+  
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+  
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
 }

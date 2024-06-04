@@ -40,8 +40,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     } else {
         initSearchBar();
         createScrollingBoard();
-        initScrollingBoard();
-        await initWorks();
+        const musicDescs = await getWorks();
+        initScrollingBoard(musicDescs);
+        initWorks(musicDescs);
     }
 });
 
@@ -94,38 +95,88 @@ function createScrollingBoard() {
     content.insertBefore(scrollingBoard, works);
 }
 
-function initScrollingBoard() {
+async function getWorks() {
+    try {
+        const response = await fetch(`http://${config.online ? config.onlineIP : config.offlineIP}:3333/gallery`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const data = await response.json();
+        console.log('Receiving response:', data);
+
+        return data.musicDescs;
+    } catch (error) {
+        console.error('Error getting works:', error);
+
+        return null;
+    }
+}
+
+function initScrollingBoard(musicDescs) {
     // Get the swiper wrapper element
     const swiperWrapper = document.querySelector('.swiper-wrapper');
 
-    // Define an array of image URLs
-    const imageUrls = [
-        'resource/image/test.jpg',
-        'resource/image/test.jpg',
-        'resource/image/test.jpg',
-        'resource/image/test.jpg',
-        'resource/image/test.jpg'
-    ];
-
     // Loop through the image URLs and create swiper slides
-    imageUrls.forEach((imageUrl, index) => {
+    musicDescs.forEach(musicDesc => {
         // Create a swiper slide
         const swiperSlide = document.createElement('div');
         swiperSlide.classList.add('swiper-slide');
-
-        // Create an image element
-        // const img = document.createElement('img');
-        // img.src = imageUrl;
-        // img.alt = `Image ${index + 1}`;
-        swiperSlide.textContent = String(index);
-
-        // Append the image to the swiper slide
-        // swiperSlide.appendChild(img);
-
-        // Append the swiper slide to the swiper wrapper
         swiperWrapper.appendChild(swiperSlide);
-    });
 
+        // Create the slide content container
+        const slideContent = document.createElement('div');
+        slideContent.classList.add('slide-content');
+        swiperSlide.appendChild(slideContent);
+
+        // Create and append the file name element
+        const fileName = document.createElement('div');
+        fileName.className = 'music-name';
+        fileName.textContent = musicDesc.fileName;
+        slideContent.appendChild(fileName);
+        
+        // Create and append the author element
+        const author = document.createElement('div');
+        author.className = 'author';
+        author.textContent = musicDesc.uid;
+        slideContent.appendChild(author);
+
+        // 监听作品元素的点击事件
+        swiperSlide.addEventListener('click', async () => {
+            try {
+                const fileId = musicDesc.fileId;
+
+                // Fetch music from database
+                const response = await fetch(`http://${config.online ? config.onlineIP : config.offlineIP}:3333/file/fetch`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ fileId })
+                });
+                    
+                const data = await response.json();
+                console.log('Receiving response:', data);
+
+                const music = data.music;
+
+                // Load music to TmpMusic
+                const tmpMusicId = loadMusicToTmp(music, fileId);
+
+                // Switch to edit page
+                window.location.href = '/edit?tmpMusicId=' + String(tmpMusicId);
+            } catch (error) {
+                console.error('Error fetching file:', error);
+            }
+        });
+
+        author.addEventListener('click', (event) => {
+            event.stopPropagation();
+            window.location.href = '/home?uid=' + musicDesc.uid;
+        });
+    });
     
     const swiper = new Swiper('.swiper-container', {
         slidesPerView: 3, // Display 3 slides at a time
@@ -140,67 +191,65 @@ function initScrollingBoard() {
             nextEl: '.swiper-button-next', // CSS class or DOM element for the next button
             prevEl: '.swiper-button-prev', // CSS class or DOM element for the previous button
         },
-      });
-
-    // swiper.update();
+    });
 }
 
-async function initWorks() {
+async function initWorks(musicDescs) {
     const works = document.querySelector('.works');
+    
+    // 添加所有作品
+    musicDescs.forEach(musicDesc => {
+        // 创建作品元素
+        const work = document.createElement('div');
+        work.classList.add('work');
+        works.appendChild(work);
 
-    try {
-        const response = await fetch(`http://${config.online ? config.onlineIP : config.offlineIP}:3333/gallery`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
+        // Create and append the file name element
+        const fileName = document.createElement('div');
+        fileName.className = 'music-name';
+        fileName.textContent = musicDesc.fileName;
+        work.appendChild(fileName);
+        
+        // Create and append the author element
+        const author = document.createElement('div');
+        author.className = 'author';
+        author.textContent = musicDesc.uid;
+        work.appendChild(author);
+
+        // 监听作品元素的点击事件
+        work.addEventListener('click', async () => {
+            try {
+                const fileId = musicDesc.fileId;
+
+                // Fetch music from database
+                const response = await fetch(`http://${config.online ? config.onlineIP : config.offlineIP}:3333/file/fetch`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ fileId })
+                });
+                    
+                const data = await response.json();
+                console.log('Receiving response:', data);
+
+                const music = data.music;
+
+                // Load music to TmpMusic
+                const tmpMusicId = loadMusicToTmp(music, fileId);
+
+                // Switch to edit page
+                window.location.href = '/edit?tmpMusicId=' + String(tmpMusicId);
+            } catch (error) {
+                console.error('Error fetching file:', error);
             }
         });
 
-        const data = await response.json();
-        console.log('Receiving response:', data);
-
-        // 添加所有作品
-        data.musicDescs.forEach(musicDesc => {
-            // 创建作品元素
-            const work = document.createElement('div');
-            work.classList.add('work');
-            work.textContent = musicDesc.fileName;
-
-            // 将作品元素添加到作品区域的最后
-            works.appendChild(work);
-
-            // 监听作品元素的点击事件
-            work.addEventListener('click', async () => {
-                try {
-                    const fileId = musicDesc.fileId;
-
-                    // Fetch music from database
-                    const response = await fetch(`http://${config.online ? config.onlineIP : config.offlineIP}:3333/file/fetch`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ fileId })
-                    });
-                    
-                    const data = await response.json();
-                    console.log('Receiving response:', data);
-
-                    const music = data.music;
-
-                    // Load music to TmpMusic
-                    const tmpMusicId = loadMusicToTmp(music, fileId);
-
-                    // Switch to edit page
-                    window.location.href = '/edit?tmpMusicId=' + String(tmpMusicId);
-                } catch (error) {
-                    console.error('Error fetching file:', error);
-                }
-            });
+        author.addEventListener('click', (event) => {
+            event.stopPropagation();
+            window.location.href = '/home?uid=' + musicDesc.uid;
         });
-    } catch (error) {
-        console.error('Error initializing home:', error);
-    }
+    });
 }
 
 async function loadSearchedWorks(searchInput) {

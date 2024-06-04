@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     }
 
     const userName = document.getElementById('user-name');
-    userName.textContent = localStorage.getItem('uid');
+    userName.textContent = getUrlParam('uid');
 
     // 获取作品区域元素
     const works = document.querySelector('.works');
@@ -99,25 +99,27 @@ document.addEventListener("DOMContentLoaded", async function() {
         console.error('Error initializing home:', error);
     }
 
-    // 创建新建作品元素
-    const newWork = document.createElement('div');
-    newWork.classList.add('new-work');
-    newWork.textContent = '新建作品';
+    if (localStorage.getItem('uid') == getUrlParam('uid')) {
+        // 创建新建作品元素
+        const newWork = document.createElement('div');
+        newWork.classList.add('new-work');
+        newWork.textContent = '新建作品';
 
-    // 将新建作品元素添加到作品区域的最后
-    works.appendChild(newWork);
+        // 将新建作品元素添加到作品区域的最后
+        works.appendChild(newWork);
 
-    // 监听新建作品元素的点击事件
-    newWork.addEventListener('click', () => {
-        // // 清空 tmpMusic
-        // sendMessage({
-        //     type: 'edit',
-        //     option: 'clear tmp music'
-        // });
+        // 监听新建作品元素的点击事件
+        newWork.addEventListener('click', () => {
+            // // 清空 tmpMusic
+            // sendMessage({
+            //     type: 'edit',
+            //     option: 'clear tmp music'
+            // });
 
-        const tmpMusicId = newTmpMusic();
-        
-        // 跳转到编辑页面
-        window.location.href = '/edit?tmpMusicId=' + String(tmpMusicId);
-    });
+            const tmpMusicId = newTmpMusic();
+            
+            // 跳转到编辑页面
+            window.location.href = '/edit?tmpMusicId=' + String(tmpMusicId);
+        });
+    }
 });

@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", async function() {
             console.log('Receiving response:', data);
 
             const port = data.port;
-            window.location.href = `http://${config.online ? config.onlineIP : config.offlineIP}:${port}`;
+            window.location.href = `http://${config.online ? config.onlineIP : config.offlineIP}:${port}?uid=${localStorage.getItem('uid')}`;
         } catch (error) {
             console.error('Error starting cowork:', error);
         }

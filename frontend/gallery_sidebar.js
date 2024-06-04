@@ -33,6 +33,35 @@ document.addEventListener("DOMContentLoaded", function() {
         window.location.href = '/gallery';
     });
 
+    const coworkBtn = document.getElementById('coworkButton');
+    coworkBtn.addEventListener('click', function() {
+        const port = document.getElementById('coworkId').value;
+
+        window.location.href = `http://${config.online ? config.onlineIP : config.offlineIP}:${port}?uid=${localStorage.getItem('uid')}`;
+
+        // Hide save modal
+        saveModal.style.display = "none";
+    });
+
+    // Add event listener to 'cowork' button
+    const coworkButton = document.getElementById('cowork');
+    coworkButton.addEventListener('click', () => {
+        const coworkModal = document.querySelector('.cowork-modal');
+        
+        coworkModal.style.display = "block";
+
+        const coworkModelCloseBtn = document.querySelectorAll('.close')[0];
+        coworkModelCloseBtn.onclick = function() {
+            coworkModal.style.display = "none";
+        };
+
+        window.onclick = function(event) {
+            if (event.target == coworkModal) {
+                coworkModal.style.display = "none";
+            }
+        };
+    });
+
     // Add event listener to 'switch account' button
     const switchAccountButton = document.getElementById('switch-account');
     switchAccountButton.addEventListener('click', () => {
