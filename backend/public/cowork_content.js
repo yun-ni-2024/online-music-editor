@@ -20,6 +20,9 @@ const MAX_NOTE_NUM = 36;
 const pianoColor = '#99ccff';
 const guitarColor = '#ffcc00';
 const violinColor = '#ff99ff';
+const bassColor = '#ff9933';
+const drumColor = '#90ee90';
+const keyColor = '#ab82ff';
 
 const pinch = [
     'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4', 'A#4', 'B4',
@@ -88,6 +91,18 @@ document.addEventListener("DOMContentLoaded", function() {
                 note.dataset.instrument = 'violin';
                 note.style.backgroundColor = violinColor;
                 break;
+            case 'bass':
+                note.dataset.instrument = 'bass';
+                note.style.backgroundColor = bassColor;
+                break;
+            case 'drum':
+                note.dataset.instrument = 'drum';
+                note.style.backgroundColor = drumColor;
+                break;
+            case 'key':
+                note.dataset.instrument = 'key';
+                note.style.backgroundColor = keyColor;
+                break;
             default:
                 break;
         }
@@ -148,6 +163,18 @@ function InitCurrMusic(data) {
                     case 'violin':
                         noteElement.dataset.instrument = 'violin';
                         noteElement.style.backgroundColor = violinColor;
+                        break;
+                    case 'bass':
+                        noteElement.dataset.instrument = 'bass';
+                        noteElement.style.backgroundColor = bassColor;
+                        break;
+                    case 'drum':
+                        noteElement.dataset.instrument = 'drum';
+                        noteElement.style.backgroundColor = drumColor;
+                        break;
+                    case 'key':
+                        noteElement.dataset.instrument = 'key';
+                        noteElement.style.backgroundColor = keyColor;
                         break;
                     default:
                         break;
@@ -495,6 +522,15 @@ function editNote(note) {
                 break;
             case 'violin':
                 note.style.backgroundColor = violinColor;
+                break;
+            case 'bass':
+                note.style.backgroundColor = bassColor;
+                break;
+            case 'drum':
+                note.style.backgroundColor = drumColor;
+                break;
+            case 'key':
+                note.style.backgroundColor = keyColor;
                 break;
             default:
                 console.error('Unknown instrument: ', cote.dataset.instrument);

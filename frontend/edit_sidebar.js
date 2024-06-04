@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     // 设置乐器选项的点击事件
     const musicMenu = document.getElementById('music-menu');
     const instrumentButtons = musicMenu.querySelectorAll('.submenu-item');
-    const instruments = ['piano', 'guitar', 'violin'];
+    const instruments = ['piano', 'guitar', 'violin', 'bass', 'drum', 'key'];
 
     let activeInstrumentButton = instrumentButtons[0];
     activeInstrumentButton.style.filter = 'brightness(85%)';
