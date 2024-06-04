@@ -101,7 +101,7 @@ body, html {
 .works {
     min-height: calc(100% - 300px - 20px); /* 设置works区域的最小高度为剩余空间的高度 */
     padding: 10px; /* 设置作品区域的内边距 */
-    background-color: linen;
+    background-color: rgb(208, 241, 241);
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start; /* 从左向右排列 */
@@ -109,10 +109,45 @@ body, html {
 }
 
 .work {
-    width: calc(20% - 20px); /* 每行5个作品，减去间距 */
+    display: flex;
+    flex-direction: column;
+    width: calc(20% - 25px); /* 每行5个作品，减去间距 */
     height: 200px; /* 作品高度 */
     margin: 10px; /* 设置作品之间的间距 */
-    background-color: lightblue;
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
+    background-color: rgb(168, 213, 168);
+    border-radius: 10px;
+    border: 3px solid rgb(113, 152, 113);
+    opacity: 0;
+    transform: translateY(100px);
+}
+
+.work:hover {
+    background-color: darkseagreen;
+}
+
+@keyframes bounceUp {
+    0% {
+        opacity: 1;
+        transform: translateY(100px);
+    }
+    40% {
+        opacity: 1;
+        transform: translateY(-20px);
+    }
+    60% {
+        opacity: 1;
+        transform: translateY(10px);
+    }
+    80% {
+        opacity: 1;
+        transform: translateY(-5px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .new-work {

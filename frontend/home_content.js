@@ -95,6 +95,12 @@ document.addEventListener("DOMContentLoaded", async function() {
                 }
             });
         });
+
+        works.querySelectorAll('.work').forEach((work, index) => {
+            setTimeout(() => {
+                work.style.animation = `bounceUp 1s ease-out forwards`;
+            }, index * 200); // Delay each element by 200ms
+        });
     } catch (error) {
         console.error('Error initializing home:', error);
     }

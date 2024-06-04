@@ -88,18 +88,21 @@ body, html {
 
 /* Styles for search bar */
 .search-bar {
+    padding: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 20px;
+    /* margin-bottom: 20px; */
+    background-color: rgb(208, 241, 241);
 }
 
 /* Styles for search input */
 #search-input {
     padding: 8px 12px;
+    width: 320px;
     font-size: 16px;
     border: 1px solid #ccc;
-    border-radius: 5px 0 0 5px;
+    border-radius: 5px;
     outline: none;
 }
 
@@ -108,7 +111,7 @@ body, html {
     padding: 8px 20px;
     font-size: 16px;
     border: 1px solid #ccc;
-    border-radius: 0 5px 5px 0;
+    border-radius: 5px;
     background-color: #f0f0f0;
     cursor: pointer;
     outline: none;
@@ -121,22 +124,13 @@ body, html {
 
 /* Styles for scrolling board */
 .scrolling-board {
-    
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     height: 300px;
-    background-color: lemonchiffon;
+    background-color: rgb(208, 241, 241);
     box-sizing: border-box; /* Ensure padding and border are included in the height */
-    /* display: flex;
-    height: 300px;
-    justify-content: center;
-    align-items: center;
-    overflow-x: auto;
-    white-space: nowrap;
-    margin-bottom: 20px;
-    background-color: aqua; */
 }
 
 .swiper-button-prev {
@@ -158,7 +152,7 @@ body, html {
     position: relative;
     width: 750px;
     height: 300px;
-    border: 1px solid #ccc;
+    /* border: 1px solid #ccc; */
     /* padding: 10px; */
     overflow: hidden;
 }
@@ -185,9 +179,11 @@ body, html {
     justify-content: center;
     align-items: center;
     flex-direction: column; /* Arrange sub-elements vertically */
-    background-color: darkkhaki;
-    opacity: 0.5;
-    transition: 0.5s ease; /* Ensure a smooth transition */
+    /* height: 296px; */
+    background-color: rgb(240, 221, 111);
+    /* border: 3px solid rgb(173, 158, 68); */
+    /* opacity: 0.5;
+    transition: 0.5s ease; */
 }
 
 .slide-content {
@@ -227,7 +223,7 @@ body, html {
 .works {
     min-height: calc(100% - 500px - 36px - 20px - 20px);
     padding: 10px; /* 设置作品区域的内边距 */
-    background-color: linen;
+    background-color: rgb(208, 241, 241);
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start; /* 从左向右排列 */
@@ -238,12 +234,43 @@ body, html {
 .work {
     display: flex;
     flex-direction: column;
-    width: calc(20% - 20px); /* 每行5个作品，减去间距 */
+    width: calc(20% - 25px); /* 每行5个作品，减去间距 */
     height: 200px; /* 作品高度 */
     margin: 10px; /* 设置作品之间的间距 */
     justify-content: center; /* 水平居中 */
     align-items: center; /* 垂直居中 */
-    background-color: lightblue;
+    background-color: rgb(168, 213, 168);
+    border-radius: 10px;
+    border: 3px solid rgb(113, 152, 113);
+    opacity: 0;
+    transform: translateY(100px);
+}
+
+.work:hover {
+    background-color: darkseagreen;
+}
+
+@keyframes bounceUp {
+    0% {
+        opacity: 1;
+        transform: translateY(100px);
+    }
+    40% {
+        opacity: 1;
+        transform: translateY(-20px);
+    }
+    60% {
+        opacity: 1;
+        transform: translateY(10px);
+    }
+    80% {
+        opacity: 1;
+        transform: translateY(-5px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .author {

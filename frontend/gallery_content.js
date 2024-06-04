@@ -78,16 +78,8 @@ function createScrollingBoard() {
     const swiperWrapper = document.createElement('div');
     swiperWrapper.classList.add('swiper-wrapper');
 
-    const swiperButtonNext = document.createElement('div');
-    swiperButtonNext.classList.add('swiper-button-next');
-
-    const swiperButtonPrev = document.createElement('div');
-    swiperButtonPrev.classList.add('swiper-button-prev');
-
     // Append the elements in the correct hierarchy
     swiperContainer.appendChild(swiperWrapper);
-    swiperContainer.appendChild(swiperButtonNext);
-    swiperContainer.appendChild(swiperButtonPrev);
     scrollingBoard.appendChild(swiperContainer);
 
     // Insert the scrolling board before the works section
@@ -179,18 +171,16 @@ function initScrollingBoard(musicDescs) {
     });
     
     const swiper = new Swiper('.swiper-container', {
-        slidesPerView: 3, // Display 3 slides at a time
-        centeredSlides: true, // Center the active slide
         loop: true, // Enable loop mode
-        spaceBetween: 20,
         autoplay: {
           delay: 2000, // Adjust autoplay delay as needed
         //   disableOnInteraction: false // Continue autoplay even when user interacts with the slider
         },
-        navigation: {
-            nextEl: '.swiper-button-next', // CSS class or DOM element for the next button
-            prevEl: '.swiper-button-prev', // CSS class or DOM element for the previous button
+        effect: 'cube',
+        mousewheel: {
+            invert: false,
         },
+        grabCursor: true
     });
 }
 
@@ -250,6 +240,12 @@ async function initWorks(musicDescs) {
             window.location.href = '/home?uid=' + musicDesc.uid;
         });
     });
+
+    works.querySelectorAll('.work').forEach((work, index) => {
+        setTimeout(() => {
+            work.style.animation = `bounceUp 1s ease-out forwards`;
+        }, index * 200); // Delay each element by 200ms
+    });
 }
 
 async function loadSearchedWorks(searchInput) {
@@ -270,10 +266,19 @@ async function loadSearchedWorks(searchInput) {
         // 创建作品元素
         const work = document.createElement('div');
         work.classList.add('work');
-        work.textContent = musicDesc.fileName;
-
-        // 将作品元素添加到作品区域的最后
         works.appendChild(work);
+
+        // Create and append the file name element
+        const fileName = document.createElement('div');
+        fileName.className = 'music-name';
+        fileName.textContent = musicDesc.fileName;
+        work.appendChild(fileName);
+        
+        // Create and append the author element
+        const author = document.createElement('div');
+        author.className = 'author';
+        author.textContent = musicDesc.uid;
+        work.appendChild(author);
 
         // 监听作品元素的点击事件
         work.addEventListener('click', async () => {
@@ -303,5 +308,16 @@ async function loadSearchedWorks(searchInput) {
                 console.error('Error fetching file:', error);
             }
         });
+
+        author.addEventListener('click', (event) => {
+            event.stopPropagation();
+            window.location.href = '/home?uid=' + musicDesc.uid;
+        });
+    });
+
+    works.querySelectorAll('.work').forEach((work, index) => {
+        setTimeout(() => {
+            work.style.animation = `bounceUp 1s ease-out forwards`;
+        }, index * 200); // Delay each element by 200ms
     });
 }

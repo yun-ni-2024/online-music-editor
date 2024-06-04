@@ -202,7 +202,7 @@ fileRoutes.post('/cowork', async (req, res) => {
                 // Check if no users are connected and close the socket if necessary
                 if (Object.keys(connectedUsers).length === 0) {
                     // Perform any necessary cleanup here
-                    console.log('No users connected. Performing cleanup and closing socket.');
+                    console.log('No user connected. Performing cleanup and closing socket.');
                     socket.disconnect(true); // Close the socket
                 }
             });
