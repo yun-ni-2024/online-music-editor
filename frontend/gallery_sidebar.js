@@ -33,6 +33,13 @@ document.addEventListener("DOMContentLoaded", function() {
         window.location.href = '/gallery';
     });
 
+    const joinButton = document.getElementById('join-button');
+    joinButton.addEventListener('click', () => {
+        const port = document.getElementById('cowork-id').value;
+
+        window.location.href = `http://${config.online ? config.onlineIP : config.offlineIP}:${port}?uid=${localStorage.getItem('uid')}`;
+    })
+
     // Add event listener to 'cowork' button
     const coworkButton = document.getElementById('cowork');
     coworkButton.addEventListener('click', () => {
