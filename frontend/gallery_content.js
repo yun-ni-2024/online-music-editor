@@ -10,6 +10,10 @@ import {
     getUrlParam
 } from './package.js';
 
+import {
+    Swiper
+} from './lib/swiper-bundle.min.js';
+
 document.addEventListener("DOMContentLoaded", async () => {
     const path = document.location.pathname;
     console.log('Path = ', path);
