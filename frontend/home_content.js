@@ -70,6 +70,7 @@ document.addEventListener("DOMContentLoaded", async function() {
             work.addEventListener('click', async () => {
                 try {
                     const fileId = musicDesc.fileId;
+                    const uid = musicDesc.uid;
 
                     // Fetch music from database
                     const response = await fetch(`http://${config.online ? config.onlineIP : config.offlineIP}:3333/file/fetch`, {
@@ -86,7 +87,7 @@ document.addEventListener("DOMContentLoaded", async function() {
                     const music = data.music;
 
                     // Load music to TmpMusic
-                    const tmpMusicId = loadMusicToTmp(music, fileId, localStorage.getItem('uid'));
+                    const tmpMusicId = loadMusicToTmp(music, fileId, uid);
 
                     // Switch to edit page
                     window.location.href = '/edit?tmpMusicId=' + String(tmpMusicId);
