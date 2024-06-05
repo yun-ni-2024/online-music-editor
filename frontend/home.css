@@ -153,7 +153,7 @@ body, html {
 .new-work {
     display: flex;
     flex-direction: column;
-    width: calc(20% - 20px); /* 每行5个作品，减去间距 */
+    width: calc(20% - 25px); /* 每行5个作品，减去间距 */
     height: 200px; /* 作品高度 */
     margin: 10px; /* 设置作品之间的间距 */
     justify-content: center; /* 水平居中 */
