@@ -36,13 +36,6 @@ document.addEventListener("DOMContentLoaded", async function() {
         const uid = localStorage.getItem('uid');
         const fileName = document.getElementById('saveFileName').value;
         
-        // // 向后端发送消息，执行保存操作
-        // sendMessage({
-        //     type: 'file',
-        //     option: 'save file as',
-        //     uid: uid,
-        //     fileName: fileName
-        // });
         const tmpMusicId = getUrlParam('tmpMusicId');
         await saveTmpMusicAs(tmpMusicId, uid, fileName);
 

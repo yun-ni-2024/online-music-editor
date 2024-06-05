@@ -226,7 +226,8 @@ function createTrack(beatNum, noteNum) {
 
 // 删除音轨容器
 function deleteTrackContainer(trackContainer) {
-    const id = parseInt(trackContainer.dataset.id, 10);
+    const tmpMusicId = getUrlParam('tmpMusicId');
+    const trackId = parseInt(trackContainer.dataset.id, 10);
     const trackEditor = trackContainer.parentNode;
 
     // Delete track container
@@ -240,7 +241,7 @@ function deleteTrackContainer(trackContainer) {
     for (let i = 0; i < trackEditor.children.length; i++) {
         const element = trackEditor.children[i];
         const elementId = parseInt(element.dataset.id, 10);
-        if (element.classList.contains('track-container') && elementId > id) {
+        if (element.classList.contains('track-container') && elementId > trackId) {
             element.dataset.id = String(elementId - 1);
         }
     }

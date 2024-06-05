@@ -96,36 +96,38 @@ document.addEventListener("DOMContentLoaded", async function() {
             });
         });
 
-        works.querySelectorAll('.work').forEach((work, index) => {
+        if (localStorage.getItem('uid') == getUrlParam('uid')) {
+            console.log('Creating new work');
+
+            // 创建新建作品元素
+            const newWork = document.createElement('div');
+            newWork.classList.add('new-work');
+            newWork.textContent = '新建作品';
+    
+            // 将新建作品元素添加到作品区域的最后
+            works.appendChild(newWork);
+    
+            // 监听新建作品元素的点击事件
+            newWork.addEventListener('click', () => {
+                // // 清空 tmpMusic
+                // sendMessage({
+                //     type: 'edit',
+                //     option: 'clear tmp music'
+                // });
+    
+                const tmpMusicId = newTmpMusic();
+                
+                // 跳转到编辑页面
+                window.location.href = '/edit?tmpMusicId=' + String(tmpMusicId);
+            });
+        }
+
+        works.querySelectorAll('.work, .new-work').forEach((work, index) => {
             setTimeout(() => {
                 work.style.animation = `bounceUp 1s ease-out forwards`;
             }, index * 200); // Delay each element by 200ms
         });
     } catch (error) {
         console.error('Error initializing home:', error);
-    }
-
-    if (localStorage.getItem('uid') == getUrlParam('uid')) {
-        // 创建新建作品元素
-        const newWork = document.createElement('div');
-        newWork.classList.add('new-work');
-        newWork.textContent = '新建作品';
-
-        // 将新建作品元素添加到作品区域的最后
-        works.appendChild(newWork);
-
-        // 监听新建作品元素的点击事件
-        newWork.addEventListener('click', () => {
-            // // 清空 tmpMusic
-            // sendMessage({
-            //     type: 'edit',
-            //     option: 'clear tmp music'
-            // });
-
-            const tmpMusicId = newTmpMusic();
-            
-            // 跳转到编辑页面
-            window.location.href = '/edit?tmpMusicId=' + String(tmpMusicId);
-        });
     }
 });

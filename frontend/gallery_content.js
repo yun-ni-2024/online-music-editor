@@ -41,7 +41,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         initSearchBar();
         createScrollingBoard();
         const musicDescs = await getWorks();
-        initScrollingBoard(musicDescs);
+        try {
+            initScrollingBoard(musicDescs);
+        } catch(error) {
+            console.log('Error initing scrolling board:', error);
+        }
         initWorks(musicDescs);
     }
 });
@@ -139,6 +143,7 @@ function initScrollingBoard(musicDescs) {
         swiperSlide.addEventListener('click', async () => {
             try {
                 const fileId = musicDesc.fileId;
+                const uid = musicDesc.uid;
 
                 // Fetch music from database
                 const response = await fetch(`http://${config.online ? config.onlineIP : config.offlineIP}:3333/file/fetch`, {
@@ -155,7 +160,7 @@ function initScrollingBoard(musicDescs) {
                 const music = data.music;
 
                 // Load music to TmpMusic
-                const tmpMusicId = loadMusicToTmp(music, fileId);
+                const tmpMusicId = loadMusicToTmp(music, fileId, uid);
 
                 // Switch to edit page
                 window.location.href = '/edit?tmpMusicId=' + String(tmpMusicId);
@@ -210,6 +215,7 @@ async function initWorks(musicDescs) {
         work.addEventListener('click', async () => {
             try {
                 const fileId = musicDesc.fileId;
+                const uid = musicDesc.uid;
 
                 // Fetch music from database
                 const response = await fetch(`http://${config.online ? config.onlineIP : config.offlineIP}:3333/file/fetch`, {
@@ -226,7 +232,7 @@ async function initWorks(musicDescs) {
                 const music = data.music;
 
                 // Load music to TmpMusic
-                const tmpMusicId = loadMusicToTmp(music, fileId);
+                const tmpMusicId = loadMusicToTmp(music, fileId, uid);
 
                 // Switch to edit page
                 window.location.href = '/edit?tmpMusicId=' + String(tmpMusicId);
@@ -284,6 +290,7 @@ async function loadSearchedWorks(searchInput) {
         work.addEventListener('click', async () => {
             try {
                 const fileId = musicDesc.fileId;
+                const uid = musicDesc.uid;
 
                 // Fetch music from database
                 const response = await fetch(`http://${config.online ? config.onlineIP : config.offlineIP}:3333/file/fetch`, {
@@ -300,7 +307,7 @@ async function loadSearchedWorks(searchInput) {
                 const music = data.music;
 
                 // Load music to TmpMusic
-                const tmpMusicId = loadMusicToTmp(music, fileId);
+                const tmpMusicId = loadMusicToTmp(music, fileId, uid);
 
                 // Switch to edit page
                 window.location.href = '/edit?tmpMusicId=' + String(tmpMusicId);

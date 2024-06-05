@@ -96,14 +96,6 @@ document.addEventListener("DOMContentLoaded", async function() {
         trackEditor.appendChild(trackContainer);
 
         console.log(`Add track, id = ${trackId}`);
-        // Send message to backend to create a track
-        // sendMessage({
-        //     type: 'edit',
-        //     option: 'new track',
-        //     id: id,
-        //     beatNum: beatNum,
-        //     noteNum: noteNum
-        // });
 
         const tmpMusicId = getUrlParam('tmpMusicId');
         tmpMusicNewTrack(tmpMusicId, trackId, beatNum, noteNum);

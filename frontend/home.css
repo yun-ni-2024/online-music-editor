@@ -151,10 +151,22 @@ body, html {
 }
 
 .new-work {
+    display: flex;
+    flex-direction: column;
     width: calc(20% - 20px); /* 每行5个作品，减去间距 */
     height: 200px; /* 作品高度 */
     margin: 10px; /* 设置作品之间的间距 */
-    background-color: lightblue;
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
+    background-color: rgb(226, 213, 139);
+    border-radius: 10px;
+    border: 3px solid rgb(239, 215, 82);
+    opacity: 0;
+    transform: translateY(100px);
+}
+
+.new-work:hover {
+    background-color: rgb(225, 208, 112);
 }
 
 .cowork-modal {
