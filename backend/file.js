@@ -64,6 +64,36 @@ fileRoutes.post('/save', async (req, res) => {
     }
 });
 
+fileRoutes.post('/delete', async (req, res) => {
+    console.log('Handling POST /file/delete');
+
+    const { fileId } = req.body;
+    console.log('Deleting file:', fileId);
+
+    try {
+        const resultFile = await MusicFile.findByIdAndDelete(fileId);
+
+        if (resultFile) {
+            console.log(`File with ID ${fileId} deleted successfully`);
+        } else {
+            console.log(`File with ID ${fileId} not found`);
+        }
+        
+        const resultDesc = await MusicDesc.deleteMany({ fileId: fileId });
+
+        if (resultDesc.deletedCount > 0) {
+            console.log(`Files with property ${JSON.stringify(property)} deleted successfully`);
+        } else {
+            console.log(`No files matching the property ${JSON.stringify(property)} were found`);
+        }
+
+        res.status(200).json({ fileId: fileId });
+    } catch (error) {
+        console.error('Error saving music:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 fileRoutes.post('/fetch', async (req, res) => {
     console.log('Handling POST /file/fetch');
 

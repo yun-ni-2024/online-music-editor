@@ -83,7 +83,27 @@ async function saveFileAs() {
     };
 }
 
+async function deleteFile(fileId) {
+    console.log('In function \'deleteFile\'');
+
+    try {
+        const response = await fetch(`http://${config.online ? config.onlineIP : config.offlineIP}:3333/file/delete`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ fileId })
+        });
+
+        const data = await response.json();
+        console.log('Receiving response:', data)
+    } catch (error) {
+        console.error('Error deleting file:', error);
+    }
+}
+
 export {
     saveFile,
-    saveFileAs
+    saveFileAs,
+    deleteFile
 };

@@ -126,6 +126,19 @@ document.addEventListener("DOMContentLoaded", async function() {
         await saveFileAs();
     });
 
+    // Add event listener to 'delete' button
+    const deleteButton = document.getElementById('delete');
+    deleteButton.addEventListener('click', async () => {
+        const tmpMusic = getTmpMusic();
+        const fileId = tmpMusic.fileId;
+
+        if (fileId && tmpMusic.uid == localStorage.getItem('uid')) {
+            await deleteFile(fileId);
+        }
+
+        window.location.href = '/home?uid=' + localStorage.getItem('uid');
+    });
+
     // Add event listener to 'cowork' button
     const coworkButton = document.getElementById('cowork');
     coworkButton.addEventListener('click', async () => {
