@@ -129,7 +129,8 @@ document.addEventListener("DOMContentLoaded", async function() {
     // Add event listener to 'delete' button
     const deleteButton = document.getElementById('delete');
     deleteButton.addEventListener('click', async () => {
-        const tmpMusic = getTmpMusic();
+        const tmpMusicId = getUrlParam('tmpMusicId');
+        const tmpMusic = getTmpMusic(tmpMusicId);
         const fileId = tmpMusic.fileId;
 
         if (fileId && tmpMusic.uid == localStorage.getItem('uid')) {
