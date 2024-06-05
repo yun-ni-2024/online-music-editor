@@ -16,7 +16,8 @@ import {
 
 import {
     saveFile,
-    saveFileAs
+    saveFileAs,
+    deleteFile
 } from './edit_file.js';
 
 import {
