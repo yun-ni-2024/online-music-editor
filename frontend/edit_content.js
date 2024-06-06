@@ -251,6 +251,8 @@ function deleteTrackContainer(trackContainer) {
 
 // 切管音轨容器状态为编辑状态
 function toggleTrackEdit(trackContainer) {
+    console.log('In function \'toggleTrackEdit\'');
+    
     if (trackContainer.dataset.editMode == 'true') {
         return;
     }
@@ -370,6 +372,8 @@ function createNote() {
 
 // 鼠标在音符上悬停
 function hoverNote(currNote) {
+    console.log('In function \'hoverNote\'');
+
     const beat = currNote.parentElement;
     const track = beat.parentElement;
     const trackContainer = track.parentElement;
@@ -377,6 +381,8 @@ function hoverNote(currNote) {
 
     const noteId = parseInt(currNote.dataset.id, 10);
     const noteNum = parseInt(trackEditor.dataset.noteNum, 10);
+
+    console.log(noteId);
 
     // Add shadow effect to notes in the same column
     const notes = beat.querySelectorAll('.note');
@@ -406,6 +412,8 @@ function hoverNote(currNote) {
 
 // 鼠标离开音符
 function cancelHoverNote(currNote) {
+    console.log('In function \'cancelHoverNote\'');
+    
     const beat = currNote.parentElement;
     const track = beat.parentElement;
     const trackContainer = track.parentElement;
