@@ -35,7 +35,7 @@ authRoutes.post('/login', async (req, res) => {
 
         // 用户不存在
         if (!user) {
-            return res.status(404).json({ error: 'User not found' });
+            return res.status(404).json({ error: '用户不存在' });
         }
 
         // 验证密码
@@ -43,7 +43,7 @@ authRoutes.post('/login', async (req, res) => {
 
         // 密码错误
         if (!passwordMatch) {
-            return res.status(401).json({ error: 'Incorrect password' });
+            return res.status(401).json({ error: '密码错误' });
         }
 
         // 登录成功
