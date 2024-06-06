@@ -382,8 +382,6 @@ function hoverNote(currNote) {
     const noteId = parseInt(currNote.dataset.id, 10);
     const noteNum = parseInt(trackEditor.dataset.noteNum, 10);
 
-    console.log(noteId);
-
     // Add shadow effect to notes in the same column
     const notes = beat.querySelectorAll('.note');
     notes.forEach(note => {
