@@ -72,12 +72,16 @@ async function saveFileAs() {
     // 当点击关闭按钮时，隐藏保存弹窗
     const saveModelCloseBtn = document.querySelectorAll('.close')[0];
     saveModelCloseBtn.onclick = function() {
+        const fileName = document.getElementById('saveFileName').value;
+        console.log(fileName);
         saveModal.style.display = "none";
     };
 
     // 当用户点击其他地方时，隐藏保存弹窗
     window.onclick = function(event) {
         if (event.target == saveModal) {
+            const fileName = document.getElementById('saveFileName').value;
+            console.log(fileName);
             saveModal.style.display = "none";
         }
     };
