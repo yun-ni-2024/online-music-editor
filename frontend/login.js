@@ -6,13 +6,16 @@ import {
     showToast
 } from './package.js'
 
+
+// Initialize page
 document.addEventListener("DOMContentLoaded", function() {
     console.log('In function \'DOMContentLoaded\'');
     
     const loginForm = document.querySelector('form');
 
+    // When clicking 'login'
     loginForm.addEventListener('submit', async function(event) {
-        event.preventDefault(); // 阻止默认表单提交行为
+        event.preventDefault();
 
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
@@ -29,17 +32,15 @@ document.addEventListener("DOMContentLoaded", function() {
             const data = await response.json();
             console.log(data)
 
-            // 如果登录成功并且后端返回了认证令牌
+            // If login successful
             if (response.ok && data.authToken) {
-                // 将用户信息、认证令牌存储到 localStorage 中
+                // Save user information adn token to local storage
                 localStorage.setItem('uid', data.uid);
                 localStorage.setItem('authToken', data.authToken);
 
-                // 重定向到用户的个人页面或其他需要登录的页面
-                // showToast('登陆成功', 3000);
+                // Redirect to home page
                 window.location.href = '/home?uid=' + data.uid;
             } else {
-                // 登录失败，显示错误消息
                 showToast(data.error, 3000);
             }
         } catch (error) {
@@ -48,6 +49,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // 添加注册超链接
+    // When clicking register button, redirect to the register page
     document.getElementById('register-link').href = '/register';
 });

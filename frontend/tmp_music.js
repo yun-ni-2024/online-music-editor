@@ -2,6 +2,7 @@ import {
     config
 } from './config.js';
 
+// Create a new temporary music file in local storage
 function newTmpMusic() {
     const tmpMusics = JSON.parse(localStorage.getItem('tmpMusics')) || {};
     const nonce = parseInt(localStorage.getItem('nonce'), 10) || 0;
@@ -20,6 +21,7 @@ function newTmpMusic() {
     return nonce;
 }
 
+// Edit a music file in local storage: adding a track
 function tmpMusicNewTrack(tmpMusicId, trackId, beatNum, noteNum) {
     const tmpMusics = JSON.parse(localStorage.getItem('tmpMusics')) || {};
     const tmpMusic = tmpMusics[tmpMusicId];
@@ -39,6 +41,7 @@ function tmpMusicNewTrack(tmpMusicId, trackId, beatNum, noteNum) {
     console.log(tmpMusics);
 }
 
+// Save a music file in local storage to database
 async function saveTmpMusicAs(tmpMusicId, uid, fileName) {
     console.log('In function \'saveTmpMusicAs\'');
 
@@ -67,6 +70,7 @@ async function saveTmpMusicAs(tmpMusicId, uid, fileName) {
     }
 }
 
+// Update a file in database
 async function saveTmpMusic(tmpMusicId) {
     console.log('In function \'saveTmpMusic\'');
     
@@ -89,6 +93,7 @@ async function saveTmpMusic(tmpMusicId) {
     }
 }
 
+// Return a temporary music file in local storage
 function getTmpMusic(tmpMusicId) {
     const tmpMusics = JSON.parse(localStorage.getItem('tmpMusics')) || {};
     const tmpMusic = tmpMusics[tmpMusicId];
@@ -96,6 +101,7 @@ function getTmpMusic(tmpMusicId) {
     return tmpMusic;
 }
 
+// Load a music file to local storage
 function loadMusicToTmp(music, fileId, uid) {
     const tmpMusics = JSON.parse(localStorage.getItem('tmpMusics')) || {};
     const nonce = parseInt(localStorage.getItem('nonce'), 10) || 0;
@@ -112,6 +118,7 @@ function loadMusicToTmp(music, fileId, uid) {
     return nonce;
 }
 
+// Edit a music file in local storage: editting a note
 function tmpMusicEditNote(tmpMusicId, trackId, beatId, noteId, instrument) {
     const tmpMusics = JSON.parse(localStorage.getItem('tmpMusics')) || {};
     const tmpMusic = tmpMusics[tmpMusicId];
@@ -121,6 +128,7 @@ function tmpMusicEditNote(tmpMusicId, trackId, beatId, noteId, instrument) {
     localStorage.setItem('tmpMusics', JSON.stringify(tmpMusics));
 }
 
+// Edit a music file in local storage: deleting a track
 function tmpMusicDelTrack(tmpMusicId, trackId) {
     const tmpMusics = JSON.parse(localStorage.getItem('tmpMusics')) || {};
     const tmpMusic = tmpMusics[tmpMusicId];
@@ -130,6 +138,7 @@ function tmpMusicDelTrack(tmpMusicId, trackId) {
     localStorage.setItem('tmpMusics', JSON.stringify(tmpMusics));
 }
 
+// Remove a music file from local storage
 function removeTmpMusic(tmpMusicId) {
     const tmpMusics = JSON.parse(localStorage.getItem('tmpMusics')) || {};
 

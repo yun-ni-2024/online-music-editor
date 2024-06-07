@@ -11,10 +11,6 @@ import {
 } from './edit_play.js';
 
 import {
-    sendMessage
-} from './message.js';
-
-import {
     saveFile,
     saveFileAs,
     deleteFile
@@ -29,7 +25,7 @@ import {
     getUrlParam
 } from './package.js';
 
-// Initialize
+// Initialize the page
 document.addEventListener("DOMContentLoaded", async function() {
     const path = document.location.pathname;
     console.log('Path = ', path);
@@ -56,7 +52,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         });
     });
 
-    // 设置乐器选项的点击事件
+    // Add listener to instrument buttons
     const musicMenu = document.getElementById('music-menu');
     const instrumentButtons = musicMenu.querySelectorAll('.submenu-item');
     const instruments = ['piano', 'guitar', 'violin', 'bass', 'drum', 'key'];
@@ -160,7 +156,7 @@ document.addEventListener("DOMContentLoaded", async function() {
             console.log('Receiving response:', data);
 
             const port = data.port;
-            alert(`当前房间编号 ${port}`);
+            alert(`Current lobby ID: ${port}`);
             
             window.location.href = `http://${config.online ? config.onlineIP : config.offlineIP}:${port}?uid=${localStorage.getItem('uid')}`;
         } catch (error) {

@@ -2,7 +2,7 @@ import {
     config
 } from './config.js';
 
-// Initialize
+// Initialize tha page
 document.addEventListener("DOMContentLoaded", function() {
     const menuItems = document.querySelectorAll('.menu-item');
     let activeMenu = menuItems[0];

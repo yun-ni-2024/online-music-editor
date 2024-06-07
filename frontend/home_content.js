@@ -3,10 +3,6 @@ import {
 } from './config.js';
 
 import {
-    // sendMessage
-} from './message.js';
-
-import {
     newTmpMusic,
     loadMusicToTmp
 } from './tmp_music.js';
@@ -26,14 +22,13 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     console.log('In function \'DOMContentLoaded\'')
     
-    // 检查是否存在认证令牌
+    // Check token
     const authToken = localStorage.getItem('authToken');
 
     if (authToken) {
-        // 用户已登录，可以执行相关操作，例如显示用户信息或访问受限资源
         console.log('User is logged in');
     } else {
-        // 用户未登录，重定向到登录页面
+        // Redirect to login page
         console.log('User is not logged in');
         window.location.href = '/login';
     }
@@ -41,11 +36,13 @@ document.addEventListener("DOMContentLoaded", async function() {
     const userName = document.getElementById('user-name');
     userName.textContent = getUrlParam('uid');
 
-    // 获取作品区域元素
+    // Get the works element
     const works = document.querySelector('.works');
 
     try {
         const uid = getUrlParam('uid');
+
+        // Fetch all music description files from backend
         const response = await fetch(`http://${config.online ? config.onlineIP : config.offlineIP}:3333/home/?uid=${uid}`, {
             method: 'GET',
             headers: {
@@ -56,17 +53,15 @@ document.addEventListener("DOMContentLoaded", async function() {
         const data = await response.json();
         console.log('Receiving response:', data);
 
-        // 添加所有作品
+        // Add all works
         data.musicDescs.forEach(musicDesc => {
-            // 创建作品元素
+            // Create work element
             const work = document.createElement('div');
             work.classList.add('work');
             work.textContent = musicDesc.fileName;
-
-            // 将作品元素添加到作品区域的最后
             works.appendChild(work);
 
-            // 监听作品元素的点击事件
+            // When clicking the work
             work.addEventListener('click', async () => {
                 try {
                     const fileId = musicDesc.fileId;
@@ -100,25 +95,18 @@ document.addEventListener("DOMContentLoaded", async function() {
         if (localStorage.getItem('uid') == getUrlParam('uid')) {
             console.log('Creating new work');
 
-            // 创建新建作品元素
+            // Create 'new work' element
             const newWork = document.createElement('div');
             newWork.classList.add('new-work');
-            newWork.textContent = '新建作品';
-    
-            // 将新建作品元素添加到作品区域的最后
+            newWork.textContent = 'New work';
             works.appendChild(newWork);
     
-            // 监听新建作品元素的点击事件
+            // When clicking 'new work'
             newWork.addEventListener('click', () => {
-                // // 清空 tmpMusic
-                // sendMessage({
-                //     type: 'edit',
-                //     option: 'clear tmp music'
-                // });
-    
+                // Create a new music file in local storage
                 const tmpMusicId = newTmpMusic();
                 
-                // 跳转到编辑页面
+                // Switch to editing page
                 window.location.href = '/edit?tmpMusicId=' + String(tmpMusicId);
             });
         }

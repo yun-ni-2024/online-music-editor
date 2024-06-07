@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>在线音乐编辑器 - 编辑</title>
+        <title>Online Music Editor - Edit</title>
         <link rel="stylesheet" href="edit.css">
     </head>
     <body>
@@ -11,52 +11,51 @@
             <div id="sidebar">
                 <div class="menu">
                     <div class="menu-item" id="music-menu">
-                        <div class="submenu-head centering">乐器</div>
+                        <div class="submenu-head centering">Instrument</div>
                         <div class="submenu">
-                            <div class="submenu-item button" id="piano">钢琴</div>
-                            <div class="submenu-item button" id="guitar">吉他</div>
-                            <div class="submenu-item button" id="violin">小提琴</div>
-                            <div class="submenu-item button" id="bass">贝斯</div>
-                            <div class="submenu-item button" id="drum">鼓</div>
-                            <div class="submenu-item button" id="key">键盘</div>
+                            <div class="submenu-item button" id="piano">Piano</div>
+                            <div class="submenu-item button" id="guitar">Guitar</div>
+                            <div class="submenu-item button" id="violin">Violin</div>
+                            <div class="submenu-item button" id="bass">Bass</div>
+                            <div class="submenu-item button" id="drum">Drum</div>
+                            <div class="submenu-item button" id="key">Key</div>
                         </div>
                     </div>
                     <div class="menu-item" id="music-menu">
-                        <div class="submenu-head centering">编辑</div>
+                        <div class="submenu-head centering">Edit</div>
                         <div class="submenu">
-                            <div class="submenu-item button" id="new-track">新建音轨</div>
-                            <div class="submenu-item button" id="play-all">播放全部</div>
+                            <div class="submenu-item button" id="new-track">New track</div>
+                            <div class="submenu-item button" id="play-all">Play all</div>
                         </div>
                     </div>
                     <div class="menu-item" id="file-menu">
-                        <div class="submenu-head centering">文件</div>
+                        <div class="submenu-head centering">File</div>
                         <div class="submenu">
-                            <div class="submenu-item button" id="save">保存</div>
-                            <div class="submenu-item button" id="save-as">另存为</div>
-                            <div class="submenu-item button" id="delete">删除</div>
-                            <div class="submenu-item button" id="cowork">共同创作</div>
+                            <div class="submenu-item button" id="save">Save</div>
+                            <div class="submenu-item button" id="save-as">Save as</div>
+                            <div class="submenu-item button" id="delete">Delete</div>
+                            <div class="submenu-item button" id="cowork">Co-work</div>
                         </div>
                     </div>
                     <div class="menu-item" id="web-menu">
-                        <div class="submenu-head centering">网页选项</div>
+                        <div class="submenu-head centering">Web pages</div>
                         <div class="submenu">
-                            <div class="submenu-item button" id="home">我的空间</div>
-                            <div class="submenu-item button" id="gallery">音乐馆</div>
-                            <div class="submenu-item button" id="switch-account">切换账号</div>
+                            <div class="submenu-item button" id="home">Home</div>
+                            <div class="submenu-item button" id="gallery">Gallery</div>
+                            <div class="submenu-item button" id="switch-account">Switch account</div>
                         </div>
                     </div>
                 </div>
             </div>
             <div id="content">
-                <!-- <button id="new-music-button">新建</button> -->
             </div>
         </div>
         <div class="save-modal">
             <div class="save-modal-content">
                 <span class="close">&times;</span>
-                <p>请输入保存的文件名</p>
-                <input type="text" id="saveFileName" placeholder="输入文件名">
-                <button id="saveButton">保存</button>
+                <p>Please enter file name</p>
+                <input type="text" id="saveFileName" placeholder="Please enter file name">
+                <button id="saveButton">Save</button>
             </div>
         </div>
         <script type="module" src="edit_sidebar.js"></script>

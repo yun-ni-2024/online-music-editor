@@ -7,8 +7,8 @@ body, html {
 
 .button {
     display: flex;
-    justify-content: center; /* 水平居中 */
-    align-items: center; /* 垂直居中 */
+    justify-content: center;
+    align-items: center;
     --hover-brightness: 90%;
     --active-brightness: 80%;
 }
@@ -23,8 +23,8 @@ body, html {
 
 .centering {
     display: flex;
-    justify-content: center; /* 水平居中 */
-    align-items: center; /* 垂直居中 */
+    justify-content: center;
+    align-items: center;
 }
 
 .hoverable {
@@ -51,7 +51,6 @@ body, html {
 
 #content {
     flex: 1;
-    /* display: flex; */
     flex-direction: column;
     overflow: auto;
     background-color:#f0f0f0;
@@ -86,17 +85,14 @@ body, html {
     height: 50px;
 }
 
-/* Styles for search bar */
 .search-bar {
     padding: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    /* margin-bottom: 20px; */
     background-color: rgb(208, 241, 241);
 }
 
-/* Styles for search input */
 #search-input {
     padding: 8px 12px;
     width: 320px;
@@ -106,7 +102,6 @@ body, html {
     outline: none;
 }
 
-/* Styles for search button */
 #search-button {
     padding: 8px 20px;
     font-size: 16px;
@@ -117,12 +112,10 @@ body, html {
     outline: none;
 }
 
-/* Styles for search button hover state */
 #search-button:hover {
     background-color: #e0e0e0;
 }
 
-/* Styles for scrolling board */
 .scrolling-board {
     display: flex;
     flex-direction: column;
@@ -130,7 +123,7 @@ body, html {
     justify-content: center;
     height: 300px;
     background-color: rgb(208, 241, 241);
-    box-sizing: border-box; /* Ensure padding and border are included in the height */
+    box-sizing: border-box;
 }
 
 .swiper-button-prev {
@@ -152,12 +145,9 @@ body, html {
     position: relative;
     width: 750px;
     height: 300px;
-    /* border: 1px solid #ccc; */
-    /* padding: 10px; */
     overflow: hidden;
 }
 
-/* Position the next button at the top right */
 .swiper-button-next {
     top: 10px;
     right: 10px;
@@ -165,7 +155,6 @@ body, html {
     transform: none;
 }
 
-/* Position the prev button at the top left */
 .swiper-button-prev {
     top: 10px;
     left: 10px;
@@ -173,17 +162,12 @@ body, html {
     transform: none;
 }
 
-/* Make all slides translucent */
 .swiper-slide {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column; /* Arrange sub-elements vertically */
-    /* height: 296px; */
+    flex-direction: column;
     background-color: rgb(240, 221, 111);
-    /* border: 3px solid rgb(173, 158, 68); */
-    /* opacity: 0.5;
-    transition: 0.5s ease; */
 }
 
 .slide-content {
@@ -199,7 +183,6 @@ body, html {
     cursor: pointer;
 }
 
-/* Override the opacity for the active slide to make it fully opaque */
 .swiper-slide-active {
     opacity: 1;
 }
@@ -209,36 +192,36 @@ body, html {
 }
 
 .scrolling-board::-webkit-scrollbar {
-    width: 0; /* Hide scrollbar */
+    width: 0;
 }
 
 .swiper-container::-webkit-scrollbar {
-    width: 0; /* Hide scrollbar */
+    width: 0;
 }
 
 .swiper-wrapper::-webkit-scrollbar {
-    width: 0; /* Hide scrollbar */
+    width: 0;
 }
 
 .works {
     min-height: calc(100% - 500px - 36px - 20px - 20px);
-    padding: 10px; /* 设置作品区域的内边距 */
+    padding: 10px;
     background-color: rgb(208, 241, 241);
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start; /* 从左向右排列 */
-    align-content: flex-start; /* 从上向下排列 */
-    box-sizing: border-box; /* Ensure padding and border are included in the height */
+    justify-content: flex-start;
+    align-content: flex-start;
+    box-sizing: border-box;
 }
 
 .work {
     display: flex;
     flex-direction: column;
-    width: calc(20% - 25px); /* 每行5个作品，减去间距 */
-    height: 200px; /* 作品高度 */
-    margin: 10px; /* 设置作品之间的间距 */
-    justify-content: center; /* 水平居中 */
-    align-items: center; /* 垂直居中 */
+    width: calc(20% - 25px);
+    height: 200px;
+    margin: 10px;
+    justify-content: center;
+    align-items: center;
     background-color: rgb(168, 213, 168);
     border-radius: 10px;
     border: 3px solid rgb(113, 152, 113);

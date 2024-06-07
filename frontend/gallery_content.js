@@ -14,6 +14,7 @@ import {
     Swiper
 } from './lib/swiper-bundle.min.js';
 
+// Initialize the page
 document.addEventListener("DOMContentLoaded", async () => {
     const path = document.location.pathname;
     console.log('Path = ', path);
@@ -25,23 +26,24 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     console.log('In function \'DOMContentLoaded\'')
     
-    // 检查是否存在认证令牌
+    // Check token
     const authToken = localStorage.getItem('authToken');
 
     if (authToken) {
-        // 用户已登录，可以执行相关操作，例如显示用户信息或访问受限资源
         console.log('User is logged in');
     } else {
-        // 用户未登录，重定向到登录页面
+        // Redirect to login page
         console.log('User is not logged in');
         window.location.href = '/login';
     }
 
     const searchInput = getUrlParam('search');
     if (searchInput) {
+        // Show searching results
         initSearchBar();
         await loadSearchedWorks(searchInput);
     } else {
+        // Initialize gallery content
         initSearchBar();
         createScrollingBoard();
         const musicDescs = await getWorks();
@@ -54,14 +56,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 });
 
+// Initialize search bar
 function initSearchBar() {
     const searchBtn = document.getElementById('search-button');
 
     searchBtn.addEventListener('click', () => {
         // Get the search input value
         const searchInput = document.getElementById('search-input').value.trim();
-
-        // console.log(searchInput)
 
         if (searchInput) {
             // Construct the search query URL
@@ -73,6 +74,7 @@ function initSearchBar() {
     });
 }
 
+// Create blank scrolling board
 function createScrollingBoard() {
     const content = document.getElementById('content');
 
@@ -95,6 +97,7 @@ function createScrollingBoard() {
     content.insertBefore(scrollingBoard, works);
 }
 
+// Fetch all music description files from backend server
 async function getWorks() {
     try {
         const response = await fetch(`http://${config.online ? config.onlineIP : config.offlineIP}:3333/gallery`, {
@@ -115,6 +118,7 @@ async function getWorks() {
     }
 }
 
+// Initialize scrolling board content
 function initScrollingBoard(musicDescs) {
     // Get the swiper wrapper element
     const swiperWrapper = document.querySelector('.swiper-wrapper');
@@ -143,7 +147,7 @@ function initScrollingBoard(musicDescs) {
         author.textContent = musicDesc.uid;
         slideContent.appendChild(author);
 
-        // 监听作品元素的点击事件
+        // When clicking a work element
         swiperSlide.addEventListener('click', async () => {
             try {
                 const fileId = musicDesc.fileId;
@@ -173,6 +177,7 @@ function initScrollingBoard(musicDescs) {
             }
         });
 
+        // When clicking author name
         author.addEventListener('click', (event) => {
             event.stopPropagation();
             window.location.href = '/home?uid=' + musicDesc.uid;
@@ -180,10 +185,9 @@ function initScrollingBoard(musicDescs) {
     });
     
     const swiper = new Swiper('.swiper-container', {
-        loop: true, // Enable loop mode
+        loop: true,
         autoplay: {
-          delay: 2000, // Adjust autoplay delay as needed
-        //   disableOnInteraction: false // Continue autoplay even when user interacts with the slider
+          delay: 2000
         },
         effect: 'cube',
         mousewheel: {
@@ -193,12 +197,13 @@ function initScrollingBoard(musicDescs) {
     });
 }
 
+// Initialize all works
 async function initWorks(musicDescs) {
     const works = document.querySelector('.works');
     
-    // 添加所有作品
+    // Add work elements
     musicDescs.forEach(musicDesc => {
-        // 创建作品元素
+        // Create work element
         const work = document.createElement('div');
         work.classList.add('work');
         works.appendChild(work);
@@ -215,7 +220,7 @@ async function initWorks(musicDescs) {
         author.textContent = musicDesc.uid;
         work.appendChild(author);
 
-        // 监听作品元素的点击事件
+        // When clicking the work element
         work.addEventListener('click', async () => {
             try {
                 const fileId = musicDesc.fileId;
@@ -258,6 +263,7 @@ async function initWorks(musicDescs) {
     });
 }
 
+// Show searched results
 async function loadSearchedWorks(searchInput) {
     const response = await fetch(`http://${config.online ? config.onlineIP : config.offlineIP}:3333/gallery?search=${searchInput}`, {
         method: 'GET',
@@ -271,9 +277,9 @@ async function loadSearchedWorks(searchInput) {
 
     const works = document.querySelector('.works');
 
-    // 添加所有作品
+    // Add all works
     data.musicDescs.forEach(musicDesc => {
-        // 创建作品元素
+        // Create work element
         const work = document.createElement('div');
         work.classList.add('work');
         works.appendChild(work);
@@ -290,7 +296,7 @@ async function loadSearchedWorks(searchInput) {
         author.textContent = musicDesc.uid;
         work.appendChild(author);
 
-        // 监听作品元素的点击事件
+        // When clicking the work
         work.addEventListener('click', async () => {
             try {
                 const fileId = musicDesc.fileId;

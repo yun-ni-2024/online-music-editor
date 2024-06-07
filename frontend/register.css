@@ -74,6 +74,5 @@ button[id="send-code-btn"] {
 }
 
 button:hover {
-    /* background-color: #0056b3; */
     filter: brightness(90%);
 }

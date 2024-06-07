@@ -3,10 +3,6 @@ import {
 } from './config.js';
 
 import {
-    // sendMessage
-} from './message.js';
-
-import {
     sleep
 } from './package.js';
 
@@ -20,6 +16,7 @@ const pinch = [
     'C6', 'C6s', 'D6', 'D6s', 'E6', 'F6', 'F6s', 'G6', 'G6s', 'A6', 'A6s', 'B6'
 ];
 
+// Play the music by temporary music ID
 async function playMusic(tmpMusicId) {
     console.log('In function \'playMusic\'');
 
@@ -43,14 +40,6 @@ async function playMusic(tmpMusicId) {
         playbackIndicator.style.visibility = 'visible';
         playbackIndicator.style.transition = 'left 0.25s linear';
     });
-
-    for (let j = 0; j < trackNum; j++) {
-        for (let k = 0; k < noteNum; k++) {
-            if (music.tracks[j].beats[0].notes[k].instrument != 'none'){
-                const trash = music.tracks[j].beats[0].notes[k].instrument;
-            }
-        }
-    }
 
     for (let i = 0; i < beatNum; i++) {
         // Play all notes at this beat

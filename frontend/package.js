@@ -1,9 +1,10 @@
+// Show toast for a duration
 function showToast(message, duration) {
     var toast = document.createElement('div');
     toast.textContent = message;
     toast.style.cssText = `
         position: fixed;
-        top: 20px; /* 调整为顶部 */
+        top: 20px;
         left: 50%;
         transform: translateX(-50%);
         padding: 10px 20px;
@@ -19,7 +20,7 @@ function showToast(message, duration) {
         toast.style.opacity = '0';
         setTimeout(function() {
             document.body.removeChild(toast);
-        }, 500); // 等待动画完成后移除元素
+        }, 500);
     }, duration);
 }
 
@@ -27,6 +28,7 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+// Get a parameter from url
 function getUrlParam(param) {
     const urlParams = new URLSearchParams(window.location.search);
     const value = urlParams.get(param);
