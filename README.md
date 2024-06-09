@@ -14,23 +14,32 @@ This project implements an online simple electronic music editing and creation p
 
 ## Installation and Usage
 
-1. **Clone the repository**:
+1. **Install dependencies**:
 
     ```bash
-    git clone https://github.com/your-username/your-repository.git
-    cd your-repository
+    npm init -y
     ```
 
-2. **Install dependencies**:
+    You may need to install some npm packages later according to the output in the terminal.
+
+2. **Clone the repository**:
 
     ```bash
-    npm install
+    mkdir source
+    cd source
+    git clone https://github.com/NigelConkeller/online-music-editor.git
     ```
 
 3. **Start the application**:
 
+    *** Start frontend server***
     ```bash
-    npm start
+    node source/frontend/server.js
+    ```
+    
+    *** Start backend server***
+    ```bash
+    node source/backend/server.js
     ```
 
 4. **Access the application**:
