@@ -14,6 +14,8 @@ This project implements an online simple electronic music editing and creation p
 
 ## Installation and Usage
 
+You can simply visit the website with URL `http://119.45.17.160:2333/login`, or if you want to deploy the service in your computer, you can follow these steps.
+
 1. **Install dependencies**:
 
     ```bash
