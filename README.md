@@ -32,19 +32,19 @@ This project implements an online simple electronic music editing and creation p
 
 3. **Start the application**:
 
-    *** Start frontend server***
+   Start frontend server:
     ```bash
     node source/frontend/server.js
     ```
     
-    *** Start backend server***
+    Start backend server:
     ```bash
     node source/backend/server.js
     ```
 
 4. **Access the application**:
 
-    Open `http://localhost:3000` in your browser to start using the application.
+    Open `http://<Your server IP>:2333/login` in your browser to start using the application.
 
 ## Contribution Guidelines
 
