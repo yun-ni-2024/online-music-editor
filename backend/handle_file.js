@@ -1,7 +1,3 @@
-// let {
-//     tmpMusic
-// } = require('./tmp_music');
-
 const {
     MusicFile,
     MusicDesc
@@ -11,10 +7,10 @@ async function saveFile() {
     MusicFile.findById(tmpMusic.fileId)
         .then(musicFile => {
             if (musicFile) {
-                // 编辑文件内容
+                // Edit file content
                 musicFile.music = tmpMusic.music;
 
-                // 保存文件更改
+                // Save updates
                 musicFile.save()
                     .then(updatedMusicFile => {
                         console.log('File updated successfully:', updatedMusicFile);
@@ -34,7 +30,7 @@ async function saveFile() {
 async function saveFileAs(tmpMusic, uid, fileName) {
     let fileId = 'none';
 
-    // 保存音乐文件到数据库
+    // Save music file to mongodb
     const musicFile = new MusicFile({
         music: tmpMusic.music
     });
@@ -42,7 +38,7 @@ async function saveFileAs(tmpMusic, uid, fileName) {
     const savedMusicFile = await musicFile.save();
     fileId = savedMusicFile._id;
 
-    // 保存音乐描述数据到数据库
+    // Save music description
     const musicDesc = new MusicDesc({
         uid: uid,
         fileId: fileId,

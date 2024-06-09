@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     })
 });
 
+// Play the music by temporary music ID
 async function playMusic(music) {
     console.log('In function \'playMusic\'');
 

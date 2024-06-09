@@ -112,12 +112,6 @@ async function handleFile(message) {
         sendBack: 0
     };
     switch (message.option) {
-        // case 'save file':
-        //     await saveFile();
-        //     break;
-        // case 'save file as':
-        //     saveFileAs(message.uid, message.fileName);
-        //     break;
         case 'fetch my file':
             openMyFile(message.id);
             break;

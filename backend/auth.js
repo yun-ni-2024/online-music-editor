@@ -8,47 +8,44 @@ const {
     User
 } = require('./models');
 
-// 记录邮箱对应的验证码
+// Map an email to the verification code
 let tmpVrfyCodeDict = {};
 
-// 生成认证令牌函数
+// Generate authentication token
 function generateAuthToken(user) {
-    // 生成JWT令牌
     const token = jwt.sign({ userId: user._id }, 'your_secret_key', { expiresIn: '1h' });
     return token;
 }
 
 const authRoutes = express.Router();
 
-// 解析请求体中的 JSON 数据
-// authRoutes.use(bodyParser.json());
-
-// 处理登录请求
+// Handle login requests
 authRoutes.post('/login', async (req, res) => {
     console.log('Handling POST /auth/login');
 
     const { email, password } = req.body;
 
     try {
-        // 查找用户
+        // Find user
         const user = await User.findOne({ email: email });
 
-        // 用户不存在
+        // User does not exist
         if (!user) {
-            return res.status(404).json({ error: '用户不存在' });
+            return res.status(404).json({ error: 'User not exist' });
         }
 
-        // 验证密码
+        // Check password
         const passwordMatch = await bcrypt.compare(String(password), user.password);
 
-        // 密码错误
+        // Password wrong
         if (!passwordMatch) {
-            return res.status(401).json({ error: '密码错误' });
+            return res.status(401).json({ error: 'Password wrong' });
         }
 
-        // 登录成功
+        // Login successfully
         console.log('Authentication successful')
-        // 生成认证令牌并发送给客户端
+
+        // Generate token and send to the user
         const authToken = generateAuthToken(user);
         res.cookie('authToken', authToken, { httpOnly: true });
         return res.status(200).json({ success: 'Login successful', uid: user.email, authToken: authToken });
@@ -58,18 +55,18 @@ authRoutes.post('/login', async (req, res) => {
     }
 });
 
-// 处理注册请求
+// Handle register requests
 authRoutes.post('/register', async (req, res) => {
     console.log('Handling POST /auth/register');
 
     const { email, password, vrfyCode } = req.body;
 
-    // 检查验证码是否正确
+    // Check verification code
     if ((!email in tmpVrfyCodeDict) || vrfyCode != tmpVrfyCodeDict[email]) {
         return res.status(401).json({ error: 'Wrong verification code' });
     }
 
-    // 检查邮箱是否已经被注册
+    // Check if the email has already been registered
     let existingUser = null;
 
     try {
@@ -84,7 +81,7 @@ authRoutes.post('/register', async (req, res) => {
     }
 
     try {
-        // 创建新用户
+        // Create a new user
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = new User({ email: email, password: hashedPassword });
         await newUser.save();
@@ -93,19 +90,19 @@ authRoutes.post('/register', async (req, res) => {
         return res.status(500).json({ error: 'Internal server error' });
     }
 
-    // 注册成功
+    // Register successful
     delete tmpVrfyCodeDict.email;
     return res.status(201).json({ success: 'Registration successful' });
 });
 
-// 处理发送邮件请求
+// Handle sending email requests
 authRoutes.post('/send-code', async (req, res) => {
     console.log('Handling POST /auth/send-code');
 
     const { email } = req.body;
 
     try {
-        // 配置发送邮件的邮箱
+        // Configurate the email
         const transporter = nodemailer.createTransport({
             service: 'outlook',
             auth: {
@@ -114,10 +111,10 @@ authRoutes.post('/send-code', async (req, res) => {
             }
         });
 
-        // 生成六位随机验证码
+        // Generate random verification code
         const verificationCode = Math.floor(100000 + Math.random() * 900000);
 
-        // 邮件选项
+        // Edit the email
         const mailOptions = {
             from: 'Righ7house@outlook.com',
             to: email,
@@ -125,13 +122,13 @@ authRoutes.post('/send-code', async (req, res) => {
             text: `Your verification code is: ${verificationCode}`
         };
 
-        // 发送邮件
+        // Send email
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
                 console.error('Error sending verification code:', error);
                 res.status(500).json({ error: 'Failed to send verification code' });
             } else {
-                // 将邮箱与验证码的对应关系存储进临时字典
+                // Map the user email to the code
                 tmpVrfyCodeDict[email] = String(verificationCode);
 
                 console.log('Verification code sent:', info.response);
@@ -144,29 +141,6 @@ authRoutes.post('/send-code', async (req, res) => {
     }
 });
 
-// // 在 home 页面路由中检查认证令牌
-// authRoutes.get('/home', (req, res) => {
-//     if (!req.cookies.authToken) {
-//         console.log('Redirected')
-//         res.redirect('/login'); // 重定向到登录页面
-//     } else {
-//         // 用户已经登录，渲染home页面
-//         res.render('/home');
-//     }
-// });
-
-// // 在 edit 页面路由中检查认证令牌
-// authRoutes.get('/edit', (req, res) => {
-//     if (!req.cookies.authToken) {
-//         console.log('Redirected')
-//         res.redirect('/login'); // 重定向到登录页面
-//     } else {
-//         // 用户已经登录，渲染 edit 页面
-//         res.render('/edit');
-//     }
-// });
-
-// 导出路由
 module.exports = {
     authRoutes
 };

@@ -3,10 +3,6 @@ import {
 } from './config.js';
 
 import {
-    sendMessage
-} from './message.js';
-
-import {
     showToast,
     getUrlParam
 } from './package.js'

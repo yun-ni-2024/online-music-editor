@@ -26,10 +26,9 @@ const {
 
 const app = express();
 
-// 添加 CORS 中间件，允许所有源的请求
+// Allow requests from all sources
 app.use(cors());
 
-// app.use(bodyParser.json());
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 
@@ -41,15 +40,14 @@ app.use('/gallery', galleryRoutes);
 
 app.use('/file', fileRoutes);
 
-// 启动服务器，监听指定端口
+// Start backend server
 const port = 3333;
 app.listen(port, () => {
     console.log(`Backend server is running on port :${port}`);
 });
 
-// 连接到 MongoDB 数据库
+// Connect to mongodb
 mongoose.connect(`mongodb://localhost:27017/online-music-editor`, { useNewUrlParser: true, useUnifiedTopology: true })
-// mongoose.connect(`mongodb://${config.online ? config.onlineIP : config.offlineIP}:27017/online-music-editor`, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         console.log("Connected to MongoDB");
     })

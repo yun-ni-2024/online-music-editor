@@ -3,7 +3,7 @@ function showToast(message, duration) {
     toast.textContent = message;
     toast.style.cssText = `
         position: fixed;
-        top: 20px; /* 调整为顶部 */
+        top: 20px;
         left: 50%;
         transform: translateX(-50%);
         padding: 10px 20px;
@@ -19,7 +19,7 @@ function showToast(message, duration) {
         toast.style.opacity = '0';
         setTimeout(function() {
             document.body.removeChild(toast);
-        }, 500); // 等待动画完成后移除元素
+        }, 500);
     }, duration);
 }
 

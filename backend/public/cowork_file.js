@@ -11,22 +11,22 @@ import {
     socket
 } from './cowork_content.js';
 
-// 获取保存弹窗容器
+// Get the save modal element
 const saveModal = document.querySelector('.save-modal');
 
-// Initialize
+// Initialize the page
 document.addEventListener("DOMContentLoaded", async function() {
-    // 点击保存按钮时，保存为输入的文件名
+    // When clicking the save button, save the file as the file name
     const saveBtn = document.getElementById('saveButton');
     saveBtn.addEventListener('click', async function() {
-        // 获取用户 id 和文件名
+        // Get user ID and file name
         const fileName = document.getElementById('saveFileName').value;
         
         socket.emit('save file as', ({
             fileName
         }));
 
-        // 更新当前音乐文件状态
+        // Update the status of current temporary music file
         const trackEditor = document.querySelector('.track-editor');
         trackEditor.dataset.isNew = 'false';
 
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         saveModal.style.display = "none";
 
         // Show toast
-        showToast('保存成功', 3000);
+        showToast('Saved', 3000);
     });
 
     socket.on('save file as', (opt) => {
@@ -43,30 +43,30 @@ document.addEventListener("DOMContentLoaded", async function() {
     });
 });
 
-// 保存为已有文件
+// Save existing file
 async function saveFile() {
     console.log('In function \'saveFile\'');
     
     socket.emit('save file');
 
     // Show toast
-    showToast('保存成功', 3000);
+    showToast('Saved', 3000);
 }
 
 // Save current music as a new file
 async function saveFileAs() {
     console.log('In function \'saveFileAs\'');
 
-    // 显示保存弹窗
+    // Show save modal
     saveModal.style.display = "block";
 
-    // 当点击关闭按钮时，隐藏保存弹窗
+    // Hide the save modal when clicking the close button
     const saveModelCloseBtn = document.querySelectorAll('.close')[0];
     saveModelCloseBtn.onclick = function() {
         saveModal.style.display = "none";
     };
 
-    // 当用户点击其他地方时，隐藏保存弹窗
+    // Hide the save modal when clicking other places
     window.onclick = function(event) {
         if (event.target == saveModal) {
             saveModal.style.display = "none";

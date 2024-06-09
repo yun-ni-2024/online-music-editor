@@ -12,6 +12,7 @@ const fileRoutes = express.Router();
 
 let port = 4333;
 
+// Handle saving as request
 fileRoutes.post('/saveAs', async (req, res) => {
     console.log('Handling POST /file/saveAs');
 
@@ -19,7 +20,7 @@ fileRoutes.post('/saveAs', async (req, res) => {
     console.log('Saving file as:', music, uid, fileName);
 
     try {
-        // 保存音乐文件到数据库
+        // Save music file to mongodb
         const musicFile = new MusicFile({
             music: music
         });
@@ -27,7 +28,7 @@ fileRoutes.post('/saveAs', async (req, res) => {
         const savedMusicFile = await musicFile.save();
         const fileId = savedMusicFile._id;
     
-        // 保存音乐描述数据到数据库
+        // Save music description file to mongodb
         const musicDesc = new MusicDesc({
             uid: uid,
             fileId: fileId,
@@ -43,6 +44,7 @@ fileRoutes.post('/saveAs', async (req, res) => {
     }
 });
 
+// Handle saving requests
 fileRoutes.post('/save', async (req, res) => {
     console.log('Handling POST /file/save');
 
@@ -64,6 +66,7 @@ fileRoutes.post('/save', async (req, res) => {
     }
 });
 
+// Handle deleting requests
 fileRoutes.post('/delete', async (req, res) => {
     console.log('Handling POST /file/delete');
 
@@ -94,6 +97,7 @@ fileRoutes.post('/delete', async (req, res) => {
     }
 });
 
+// Handle fetching requests
 fileRoutes.post('/fetch', async (req, res) => {
     console.log('Handling POST /file/fetch');
 
@@ -113,6 +117,7 @@ fileRoutes.post('/fetch', async (req, res) => {
     }
 });
 
+// Handle coworking requests
 fileRoutes.post('/cowork', async (req, res) => {
     console.log('Handling POST /file/cowork');
 
@@ -176,7 +181,6 @@ fileRoutes.post('/cowork', async (req, res) => {
                 console.log('Receive socket message: save file as');
 
                 try {
-                    // 保存音乐文件到数据库
                     const musicFile = new MusicFile({
                         music: tmpMusic.music
                     });
@@ -187,7 +191,6 @@ fileRoutes.post('/cowork', async (req, res) => {
                     tmpMusic.fileId = fileId;
                     tmpMusic.uid = hostId;
                 
-                    // 保存音乐描述数据到数据库
                     const musicDesc = new MusicDesc({
                         uid: hostId,
                         fileId: fileId,

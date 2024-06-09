@@ -33,6 +33,7 @@ const pinch = [
 
 const socket = io();
 
+// Initialize page
 document.addEventListener("DOMContentLoaded", function() {
     // Create track editor
     const content = document.getElementById('content');
@@ -110,6 +111,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
+// Load current music information to page
 function InitCurrMusic(data) {
     console.log('In function \'initEditMusic\'');
 
@@ -126,6 +128,7 @@ function InitCurrMusic(data) {
 
     localStorage.setItem('hostId', hostId);
 
+    // Set the features of track editor
     const trackNum = currMusic.music.tracks.length;
     let beatNum = INIT_BEAT_NUM;
     let noteNum = MAX_NOTE_NUM;
@@ -139,6 +142,7 @@ function InitCurrMusic(data) {
 
     console.log(`trackNum = ${trackNum}, beatNum = ${beatNum}, noteNum = ${noteNum}`);
 
+    // Add tracks, beats and notes
     for (let i = 0; i < trackNum; i++) {
         const trackContainer = createTrackContainer(beatNum, noteNum);
         trackContainer.dataset.id = String(i);
@@ -249,26 +253,22 @@ function createTrackContainer(beatNum, noteNum) {
     return trackContainer;
 }
 
-// 创建音轨
+// Create track
 function createTrack(beatNum, noteNum) {
-    // 创建音轨元素
+    // Create track element
     const track = document.createElement('div');
     track.classList.add('track');
     track.classList.add('hoverable');
 
-    // 为这个音轨元素添加鼠标点击事件的响应函数
     track.addEventListener('click', function(event) {
         event.stopPropagation();
         const trackContainer = track.parentElement;
         toggleTrackEdit(trackContainer);
     });
 
-    // 添加节拍
+    // Add beats
     for (let i = 0; i < beatNum; ++i) {
-        // 创建节拍元素
         const beat = createBeat(i, noteNum);
-
-        // 添加编号
         beat.dataset.id = String(i);
         track.appendChild(beat);
     }
@@ -276,7 +276,7 @@ function createTrack(beatNum, noteNum) {
     return track;
 }
 
-// 删除音轨容器
+// Delete track container
 function deleteTrackContainer(trackContainer) {
     const trackEditor = trackContainer.parentNode;
     const trackId = parseInt(trackContainer.dataset.id, 10);
@@ -298,7 +298,7 @@ function deleteTrackContainer(trackContainer) {
     }
 }
 
-// 切管音轨容器状态为编辑状态
+// Toggle track container status to 'edit'
 function toggleTrackEdit(trackContainer) {
     if (trackContainer.dataset.editMode == 'true') {
         return;
@@ -320,7 +320,7 @@ function toggleTrackEdit(trackContainer) {
     pinchBar.style.height = '557px';
     pinchBar.style.width = '20px';
 
-    // 标记进入编辑模式
+    // Mark the track as 'edit mode' after fully opened
     sleep(500).then(() => {
         trackContainer.dataset.editMode = 'true';
     });
@@ -330,9 +330,9 @@ function toggleTrackEdit(trackContainer) {
     deleteButton.textContent = '收回';
 }
 
-// 关闭音轨容器的编辑状态
+// Close 'edit' mode of a track
 function closeTrackEdit(trackContainer) {
-    // 取消标记编辑模式
+    // Remove 'edit mode'
     trackContainer.dataset.editMode = 'false';
 
     // Decrease track height and add hoverability back
@@ -372,10 +372,7 @@ function createBeat(id, noteNum) {
 
     // Add note
     for (let i = 0; i < noteNum; ++i) {
-        // 创建音符元素
         const note = createNote();
-
-        // 添加编号
         note.dataset.id = String(noteNum - 1 - i);
         beat.appendChild(note);
     }
@@ -383,14 +380,14 @@ function createBeat(id, noteNum) {
     return beat;
 }
 
-// 创建音符
+// Create note
 function createNote() {
-    // 创建音符元素
+    // Create note element
     const note = document.createElement('div');
     note.classList.add('note');
     note.dataset.instrument = 'none';
 
-    // 为这个音符元素添加鼠标点击事件的响应函数
+    // Add listener to click event
     note.addEventListener('click', function() {
         const trackContainer = note.parentElement.parentElement.parentElement;
         if (trackContainer.dataset.editMode == 'true'){
@@ -414,7 +411,7 @@ function createNote() {
         }
     });
 
-    // 为这个音符元素添加鼠标悬停事件的响应函数
+    // Add listener to mouse enter event
     note.addEventListener('mouseenter', () => {
         const trackContainer = note.parentElement.parentElement.parentElement;
         if (trackContainer.dataset.editMode == 'true'){
@@ -422,7 +419,7 @@ function createNote() {
         }
     });
 
-    // 为这个音符元素添加鼠标离开事件的响应函数
+    // Add listener to mouse leave event
     note.addEventListener('mouseleave', () => {
         const trackContainer = note.parentElement.parentElement.parentElement;
         if (trackContainer.dataset.editMode == 'true'){
@@ -433,7 +430,7 @@ function createNote() {
     return note;
 }
 
-// 鼠标在音符上悬停
+// When mouse hovers over a note
 function hoverNote(currNote) {
     const beat = currNote.parentElement;
     const track = beat.parentElement;
@@ -469,7 +466,7 @@ function hoverNote(currNote) {
     pinchLabels[noteNum - 1 - noteId].style.filter = 'brightness(90%)';
 }
 
-// 鼠标离开音符
+// When mouse leaves a note
 function cancelHoverNote(currNote) {
     const beat = currNote.parentElement;
     const track = beat.parentElement;
@@ -502,7 +499,7 @@ function cancelHoverNote(currNote) {
     pinchLabels[noteNum - 1 - noteId].style.filter = '';
 }
 
-// 编辑音符
+// Edit the feature of a note
 function editNote(note) {
     const trackEditor = document.querySelector('.track-editor');
 

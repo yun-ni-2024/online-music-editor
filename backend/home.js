@@ -7,9 +7,6 @@ const {
 
 const homeRoutes = express.Router();
 
-// 解析请求体中的 JSON 数据
-// homeRoutes.use(bodyParser.json());
-
 homeRoutes.get('/', async (req, res) => {
     console.log('Handling GET /home');
     

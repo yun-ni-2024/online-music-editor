@@ -20,7 +20,7 @@ import {
     getUrlParam
 } from './package.js';
 
-// Initialize
+// Initialize the page
 document.addEventListener("DOMContentLoaded", async function() {
     const menuItems = document.querySelectorAll('.menu-item');
     let activeMenu = menuItems[0];
@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         });
     });
 
-    // 设置乐器选项的点击事件
+    // Add listener to instrument buttons
     const musicMenu = document.getElementById('music-menu');
     const instrumentButtons = musicMenu.querySelectorAll('.submenu-item');
     const instruments = ['piano', 'guitar', 'violin', 'bass', 'drum', 'key'];
