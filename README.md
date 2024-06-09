@@ -8,8 +8,7 @@ This project implements an online simple electronic music editing and creation p
 
 - **Online Editing**: Users can create and edit electronic music directly in the browser without the need to install any software.
 - **Real-Time Collaboration**: Supports simultaneous online editing by multiple users with synchronized editing states for real-time collaboration.
-- **Community Sharing**: Users can share their creations with the community, allowing for interaction and feedback.
-- **Multi-User Screen Sharing**: Users can invite others to view their editing process in real-time, facilitating collaborative creation.
+- **Community Sharing**: Users can enjoy the music works made by each other in the gallery.
 - **Low Latency Playback**: Ensures real-time response during editing and playback, providing a smooth user experience.
 - **User-Friendly Interface**: A simple and intuitive interface design lowers the learning curve, enabling users to get started quickly.
 
