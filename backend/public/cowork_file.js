@@ -34,7 +34,16 @@ document.addEventListener("DOMContentLoaded", async function() {
         saveModal.style.display = "none";
 
         // Show toast
-        showToast('Saved', 3000);
+        switch (getUrlParam('lang')) {
+            case 'en':
+                showToast('Saved', 3000);
+                break;
+            case 'zh':
+                showToast('保存成功', 3000);
+                break;
+            default:
+                break;
+        }
     });
 
     socket.on('save file as', (opt) => {
@@ -50,7 +59,16 @@ async function saveFile() {
     socket.emit('save file');
 
     // Show toast
-    showToast('Saved', 3000);
+    switch (getUrlParam('lang')) {
+        case 'en':
+            showToast('Saved', 3000);
+            break;
+        case 'zh':
+            showToast('保存成功', 3000);
+            break;
+        default:
+            break;
+    }
 }
 
 // Save current music as a new file

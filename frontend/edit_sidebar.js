@@ -159,9 +159,21 @@ document.addEventListener("DOMContentLoaded", async function() {
             console.log('Receiving response:', data);
 
             const port = data.port;
-            alert(`Current lobby ID: ${port}`);
+
+            switch (localStorage.getItem('language')) {
+                case 'en':
+                    alert(`Current lobby ID: ${port}`);
+                    break;
+                case 'zh':
+                    alert(`当前房间号: ${port}`);
+                    break;
+                default:
+                    break;
+            }
             
-            window.location.href = `http://${config.online ? config.onlineIP : config.offlineIP}:${port}?uid=${localStorage.getItem('uid')}`;
+            const uid = localStorage.getItem('uid');
+            const lang = localStorage.getItem('language');
+            window.location.href = `http://${config.online ? config.onlineIP : config.offlineIP}:${port}?uid=${uid}&lang=${lang}`;
         } catch (error) {
             console.error('Error starting cowork:', error);
         }

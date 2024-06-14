@@ -17,11 +17,14 @@ import {
 } from './cowork_file.js';
 
 import {
-    getUrlParam
+    getUrlParam,
+    loadLanguage
 } from './package.js';
 
 // Initialize the page
 document.addEventListener("DOMContentLoaded", async function() {
+    loadLanguage(getUrlParam('lang'));
+
     const menuItems = document.querySelectorAll('.menu-item');
     let activeMenu = menuItems[0];
     const menu = document.querySelector('.menu')
