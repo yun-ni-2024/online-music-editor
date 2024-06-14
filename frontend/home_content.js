@@ -98,7 +98,17 @@ document.addEventListener("DOMContentLoaded", async function() {
             // Create 'new work' element
             const newWork = document.createElement('div');
             newWork.classList.add('new-work');
-            newWork.textContent = 'New work';
+            switch (localStorage.getItem('language')) {
+                case 'en':
+                    newWork.textContent = 'New work';
+                    break;
+                case 'zh':
+                    newWork.textContent = '新建作品';
+                    break;
+                default:
+                    break;
+            }
+            
             works.appendChild(newWork);
     
             // When clicking 'new work'

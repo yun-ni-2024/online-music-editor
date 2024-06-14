@@ -3,13 +3,15 @@ import {
 } from './config.js';
 
 import {
-    showToast
+    showToast,
+    loadLanguage
 } from './package.js'
-
 
 // Initialize page
 document.addEventListener("DOMContentLoaded", function() {
     console.log('In function \'DOMContentLoaded\'');
+
+    loadLanguage(localStorage.getItem('language'));
     
     const loginForm = document.querySelector('form');
 

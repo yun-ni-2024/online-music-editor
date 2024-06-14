@@ -7,9 +7,9 @@
         <link rel="stylesheet" href="login.css">
     </head>
     <body>
-        <h1>Online Music Editor</h1>
+        <h1 id="header">Online Music Editor</h1>
         <div class="login-container">
-            <h2>Login</h2>
+            <h2 id="login-header">Login</h2>
             <form method="POST">
                 <div class="form-group">
                     <input type="email" id="email" name="email" placeholder="Please enter email" required>
@@ -17,9 +17,9 @@
                 <div class="form-group">
                     <input type="password" id="password" name="password" placeholder="Please enter password" required>
                 </div>
-                <button type="submit">Login</button>
+                <button type="submit" id="login-button">Login</button>
             </form>
-            <p>No account?<a id="register-link">Register</a></p>
+            <p id="no-account">No account?<a id="register-link">Register</a></p>
         </div>
         <script type="module" src="login.js"></script>
     </body>

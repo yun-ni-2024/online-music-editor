@@ -22,11 +22,14 @@ import {
 } from './tmp_music.js';
 
 import {
-    getUrlParam
+    getUrlParam,
+    loadLanguage
 } from './package.js';
 
 // Initialize the page
 document.addEventListener("DOMContentLoaded", async function() {
+    loadLanguage(localStorage.getItem('language'));
+
     const path = document.location.pathname;
     console.log('Path = ', path);
     const pathWoParams = path.split('?')[0];

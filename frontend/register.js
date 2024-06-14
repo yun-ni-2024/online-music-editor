@@ -2,9 +2,15 @@ import {
     config
 } from './config.js';
 
+import {
+    loadLanguage
+} from './package.js';
+
 // Initialize page
 document.addEventListener('DOMContentLoaded', function() {
     console.log('In function \'DOMContentLoaded\'')
+
+    loadLanguage(localStorage.getItem('language'));
 
     const sendCodeBtn = document.getElementById('send-code-btn');
     const registerBtn = document.getElementById('register-btn');

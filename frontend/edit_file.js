@@ -43,7 +43,16 @@ document.addEventListener("DOMContentLoaded", async function() {
         saveModal.style.display = "none";
 
         // Show toast
-        showToast('Saved', 3000);
+        switch (localStorage.getItem('language')) {
+            case 'en':
+                showToast('Saved', 3000);
+                break;
+            case 'zh':
+                showToast('保存成功', 3000);
+                break;
+            default:
+                break;
+        }
     });
 });
 
@@ -55,7 +64,16 @@ async function saveFile() {
     await saveTmpMusic(tmpMusicId);
 
     // Show toast
-    showToast('Saved', 3000);
+    switch (localStorage.getItem('language')) {
+        case 'en':
+            showToast('Saved', 3000);
+            break;
+        case 'zh':
+            showToast('保存成功', 3000);
+            break;
+        default:
+            break;
+    }
 }
 
 // Save current music as a new file

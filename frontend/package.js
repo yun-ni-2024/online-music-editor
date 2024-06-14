@@ -35,8 +35,29 @@ function getUrlParam(param) {
     return value;
 }
 
+function loadLanguage(language) {
+    fetch(`resource/language/${language}.json`)
+        .then(response => response.json())
+        .then(translations => {
+            for (let id in translations) {
+                if (translations.hasOwnProperty(id)) {
+                    const element = document.getElementById(id);
+                    if (element) {
+                        if (element.tagName.toLowerCase() === 'input') {
+                            element.placeholder = translations[id];
+                        } else {
+                            element.childNodes[0].textContent = translations[id];
+                        }
+                    }
+                }
+            }
+        })
+        .catch(error => console.error('Error loading language file:', error));
+}
+
 export {
     showToast,
     sleep,
-    getUrlParam
+    getUrlParam,
+    loadLanguage
 };

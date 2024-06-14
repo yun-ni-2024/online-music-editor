@@ -2,8 +2,14 @@ import {
     config
 } from './config.js';
 
+import {
+    loadLanguage
+} from './package.js';
+
 // Initialize tha page
 document.addEventListener("DOMContentLoaded", function() {
+    loadLanguage(localStorage.getItem('language'));
+
     const menuItems = document.querySelectorAll('.menu-item');
     let activeMenu = menuItems[0];
     const menu = document.querySelector('.menu')
@@ -63,5 +69,17 @@ document.addEventListener("DOMContentLoaded", function() {
     const switchAccountButton = document.getElementById('switch-account');
     switchAccountButton.addEventListener('click', () => {
         window.location.href = '/login';
-    }); 
+    });
+
+    // Switching language
+    const enButton = document.getElementById('en');
+    const zhButton = document.getElementById('zh');
+    enButton.addEventListener('click', () => {
+        loadLanguage('en');
+        localStorage.setItem('language', 'en');
+    });
+    zhButton.addEventListener('click', () => {
+        loadLanguage('zh');
+        localStorage.setItem('language', 'zh');
+    });
 });
