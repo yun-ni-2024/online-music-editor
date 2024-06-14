@@ -11,7 +11,7 @@ import {
 document.addEventListener("DOMContentLoaded", function() {
     console.log('In function \'DOMContentLoaded\'');
 
-    loadLanguage(localStorage.getItem('language'));
+    loadLanguage();
     
     const loginForm = document.querySelector('form');
 

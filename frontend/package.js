@@ -35,7 +35,13 @@ function getUrlParam(param) {
     return value;
 }
 
-function loadLanguage(language) {
+function loadLanguage() {
+    const language = localStorage.getItem('language');
+    if (language == null) {
+        language = 'en';
+        localStorage.setItem('language', 'en');
+    }
+    
     fetch(`resource/language/${language}.json`)
         .then(response => response.json())
         .then(translations => {

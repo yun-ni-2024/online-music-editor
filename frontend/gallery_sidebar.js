@@ -8,7 +8,7 @@ import {
 
 // Initialize tha page
 document.addEventListener("DOMContentLoaded", function() {
-    loadLanguage(localStorage.getItem('language'));
+    loadLanguage();
 
     const menuItems = document.querySelectorAll('.menu-item');
     let activeMenu = menuItems[0];

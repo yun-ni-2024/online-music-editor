@@ -10,7 +10,7 @@ import {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('In function \'DOMContentLoaded\'')
 
-    loadLanguage(localStorage.getItem('language'));
+    loadLanguage();
 
     const sendCodeBtn = document.getElementById('send-code-btn');
     const registerBtn = document.getElementById('register-btn');

@@ -28,7 +28,7 @@ import {
 
 // Initialize the page
 document.addEventListener("DOMContentLoaded", async function() {
-    loadLanguage(localStorage.getItem('language'));
+    loadLanguage();
 
     const path = document.location.pathname;
     console.log('Path = ', path);
