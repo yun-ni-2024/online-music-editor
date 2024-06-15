@@ -38,8 +38,8 @@ function getUrlParam(param) {
 function loadLanguage() {
     let language = localStorage.getItem('language');
     if (language == null) {
-        language = 'en';
-        localStorage.setItem('language', 'en');
+        language = 'zh';
+        localStorage.setItem('language', 'zh');
     }
     
     fetch(`resource/language/${language}.json`)
