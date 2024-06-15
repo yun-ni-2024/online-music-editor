@@ -39,5 +39,6 @@
     "delete": "Delete",
     "file-name": "Please enter file name",
     "saveFileName": "Please enter file name",
-    "saveButton": "Save"
+    "saveButton": "Save",
+    "new-work": "New Work"
 }

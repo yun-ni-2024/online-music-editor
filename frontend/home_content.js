@@ -98,6 +98,7 @@ document.addEventListener("DOMContentLoaded", async function() {
             // Create 'new work' element
             const newWork = document.createElement('div');
             newWork.classList.add('new-work');
+            newWork.id = 'new-work';
             switch (localStorage.getItem('language')) {
                 case 'en':
                     newWork.textContent = 'New work';

@@ -39,5 +39,6 @@
     "delete": "删除",
     "file-name": "请输入文件名",
     "saveFileName": "请输入文件名",
-    "saveButton": "保存"
+    "saveButton": "保存",
+    "new-work": "新建作品"
 }
