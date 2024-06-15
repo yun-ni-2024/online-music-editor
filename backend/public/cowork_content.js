@@ -229,7 +229,16 @@ function createTrackContainer(beatNum, noteNum) {
     const deleteButton = document.createElement('div');
     deleteButton.classList.add('delete-button');
     deleteButton.classList.add('button');
-    deleteButton.textContent = '删除';
+    switch (getUrlParam('lang')) {
+        case 'en':
+            deleteButton.textContent = 'Delete';
+            break;
+        case 'zh':
+            deleteButton.textContent = '删除';
+            break;
+        default:
+            break;
+    }
 
     deleteButton.addEventListener('click', function(event) {
         event.stopPropagation();
@@ -327,7 +336,16 @@ function toggleTrackEdit(trackContainer) {
 
     // Change the delete button to close button
     const deleteButton = trackContainer.querySelector('.delete-button');
-    deleteButton.textContent = '收回';
+    switch (getUrlParam('lang')) {
+        case 'en':
+            deleteButton.textContent = 'Close';
+            break;
+        case 'zh':
+            deleteButton.textContent = '收回';
+            break;
+        default:
+            break;
+    }
 }
 
 // Close 'edit' mode of a track
@@ -353,7 +371,16 @@ function closeTrackEdit(trackContainer) {
 
     // Change the close button to remove button
     const deleteButton = trackContainer.querySelector('.delete-button');
-    deleteButton.textContent = '删除';
+    switch (getUrlParam('lang')) {
+        case 'en':
+            deleteButton.textContent = 'Delete';
+            break;
+        case 'zh':
+            deleteButton.textContent = '删除';
+            break;
+        default:
+            break;
+    }
 }
 
 // Create beat
