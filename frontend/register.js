@@ -42,7 +42,16 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             if (response.ok) {
-                alert('Verification code has been sent, please check your mailbox');
+                switch (localStorage.getItem('language')) {
+                    case 'en':
+                        alert('Verification code has been sent, please check your mailbox');
+                        break;
+                    case 'zh':
+                        alert('验证码已发送，请检查邮箱');
+                        break;
+                    default:
+                        break;
+                }
             } else {
                 alert('Fail to send verification code, please try again later');
             }
@@ -89,7 +98,16 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (response.ok) {
                 // Register successfully, redirect to login page
-                alert('Register successfully')
+                switch (localStorage.getItem('language')) {
+                    case 'en':
+                        alert('Register successfully')
+                        break;
+                    case 'zh':
+                        alert('注册成功')
+                        break;
+                    default:
+                        break;
+                }
                 window.location.href = '/login';
             } else {
                 const errorMessage = await response.text();
