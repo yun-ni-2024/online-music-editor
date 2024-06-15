@@ -43,7 +43,9 @@ document.addEventListener("DOMContentLoaded", function() {
     joinButton.addEventListener('click', () => {
         const port = document.getElementById('cowork-id').value;
 
-        window.location.href = `http://${config.online ? config.onlineIP : config.offlineIP}:${port}?uid=${localStorage.getItem('uid')}`;
+        const uid = localStorage.getItem('uid');
+        const lang = localStorage.getItem('language');
+        window.location.href = `http://${config.online ? config.onlineIP : config.offlineIP}:${port}??uid=${uid}&lang=${lang}`;
     })
 
     // Add event listener to 'cowork' button
