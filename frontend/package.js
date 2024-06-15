@@ -36,7 +36,7 @@ function getUrlParam(param) {
 }
 
 function loadLanguage() {
-    const language = localStorage.getItem('language');
+    let language = localStorage.getItem('language');
     if (language == null) {
         language = 'en';
         localStorage.setItem('language', 'en');
