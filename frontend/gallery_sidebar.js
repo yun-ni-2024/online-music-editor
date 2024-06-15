@@ -75,11 +75,11 @@ document.addEventListener("DOMContentLoaded", function() {
     const enButton = document.getElementById('en');
     const zhButton = document.getElementById('zh');
     enButton.addEventListener('click', () => {
-        loadLanguage('en');
         localStorage.setItem('language', 'en');
+        loadLanguage('en');
     });
     zhButton.addEventListener('click', () => {
-        loadLanguage('zh');
         localStorage.setItem('language', 'zh');
+        loadLanguage('zh');
     });
 });

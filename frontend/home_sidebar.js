@@ -76,12 +76,12 @@ document.addEventListener("DOMContentLoaded", function() {
     const zhButton = document.getElementById('zh');
     enButton.addEventListener('click', () => {
         console.log('switch to en');
-        loadLanguage('en');
         localStorage.setItem('language', 'en');
+        loadLanguage();
     });
     zhButton.addEventListener('click', () => {
         console.log('switch to zh');
-        loadLanguage('zh');
         localStorage.setItem('language', 'zh');
+        loadLanguage();
     });
 });
