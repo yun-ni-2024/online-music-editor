@@ -42,16 +42,16 @@ document.addEventListener("DOMContentLoaded", function() {
 
     console.log('In function \'DOMContentLoaded\'')
     
-    // Check token
-    const authToken = localStorage.getItem('authToken');
+    // // Check token
+    // const authToken = localStorage.getItem('authToken');
 
-    if (authToken) {
-        console.log('User is logged in');
-    } else {
-        // Redirect to the login page
-        console.log('User is not logged in');
-        window.location.href = '/login';
-    }
+    // if (authToken) {
+    //     console.log('User is logged in');
+    // } else {
+    //     // Redirect to the login page
+    //     console.log('User is not logged in');
+    //     window.location.href = '/login';
+    // }
 
     // Create track editor
     const content = document.getElementById('content');

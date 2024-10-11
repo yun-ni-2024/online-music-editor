@@ -23,21 +23,21 @@ document.addEventListener("DOMContentLoaded", async function() {
     console.log('In function \'DOMContentLoaded\'')
     
     // Check token
-    const authToken = localStorage.getItem('authToken');
+    // const authToken = localStorage.getItem('authToken');
 
-    if (authToken) {
-        console.log('User is logged in');
-    } else {
-        // Redirect to login page
-        console.log('User is not logged in');
-        window.location.href = '/login';
-    }
+    // if (authToken) {
+    //     console.log('User is logged in');
+    // } else {
+    //     // Redirect to login page
+    //     console.log('User is not logged in');
+    //     window.location.href = '/login';
+    // }
 
-    const userName = document.getElementById('user-name');
-    userName.textContent = getUrlParam('uid');
+    // const userName = document.getElementById('user-name');
+    // userName.textContent = getUrlParam('uid');
 
-    // Get the works element
-    const works = document.querySelector('.works');
+    // // Get the works element
+    // const works = document.querySelector('.works');
 
     try {
         const uid = getUrlParam('uid');

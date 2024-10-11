@@ -14,7 +14,7 @@ This project implements an online simple electronic music editing and creation p
 
 ## Installation and Usage
 
-You can simply visit the website with URL `http://119.45.17.160:2333/login`, or if you want to deploy the service in your computer, you can follow these steps.
+If you want to deploy the service in your computer, you can follow these steps.
 
 1. **Install dependencies**:
 
@@ -59,3 +59,9 @@ We welcome suggestions and code contributions to this project. Please follow the
 5. Create a new Pull Request.
 
 Thank you for your interest and support! If you have any questions or suggestions, feel free to reach out.
+
+## Effect Display
+
+Here are some images to showcase the effects:
+
+![](rsc/1.png)
